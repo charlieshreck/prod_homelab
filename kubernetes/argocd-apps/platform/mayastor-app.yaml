@@ -1,39 +1,48 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mayastor
+  name: openebs-operator
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
   project: default
-  sources:
-    - repoURL: https://openebs.github.io/openebs
-      chart: openebs
-      targetRevision: 4.2.0
-      helm:
-        releaseName: openebs
-        values: |
-          # Enable only Mayastor engine
-          engines:
-            local:
-              lvm:
-                enabled: false
-              zfs:
-                enabled: false
-            replicated:
-              mayastor:
-                enabled: true
+  source:
+    repoURL: https://openebs.github.io/openebs
+    chart: openebs
+    targetRevision: 4.2.0
+    helm:
+      releaseName: openebs
+      values: |
+        # Enable only Mayastor engine
+        engines:
+          local:
+            lvm:
+              enabled: false
+            zfs:
+              enabled: false
+          replicated:
+            mayastor:
+              enabled: true
 
-          # Mayastor configuration for Talos Linux
-          mayastor:
-            csi:
+        # Mayastor configuration for Talos Linux
+        mayastor:
+          csi:
+            node:
+              kubeletDir: /var/lib/kubelet
+
+          # Resource limits
+          agents:
+            core:
+              resources:
+                limits:
+                  cpu: "1000m"
+                  memory: "1Gi"
+                requests:
+                  cpu: "500m"
+                  memory: "512Mi"
+            ha:
               node:
-                kubeletDir: /var/lib/kubelet
-
-            # Resource limits
-            agents:
-              core:
                 resources:
                   limits:
                     cpu: "1000m"
@@ -41,30 +50,17 @@ spec:
                   requests:
                     cpu: "500m"
                     memory: "512Mi"
-              ha:
-                node:
-                  resources:
-                    limits:
-                      cpu: "1000m"
-                      memory: "1Gi"
-                    requests:
-                      cpu: "500m"
-                      memory: "512Mi"
 
-            io_engine:
-              resources:
-                limits:
-                  cpu: "2000m"
-                  memory: "2Gi"
-                  hugepages-2Mi: "2Gi"
-                requests:
-                  cpu: "1000m"
-                  memory: "1Gi"
-                  hugepages-2Mi: "2Gi"
-
-    - repoURL: https://github.com/charlieshreck/prod_homelab.git
-      targetRevision: main
-      path: kubernetes/platform/mayastor
+          io_engine:
+            resources:
+              limits:
+                cpu: "2000m"
+                memory: "2Gi"
+                hugepages-2Mi: "2Gi"
+              requests:
+                cpu: "1000m"
+                memory: "1Gi"
+                hugepages-2Mi: "2Gi"
 
   destination:
     server: https://kubernetes.default.svc
@@ -83,3 +79,28 @@ spec:
       kind: CustomResourceDefinition
       jsonPointers:
         - /spec/conversion/webhook/clientConfig/caBundle
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mayastor-storage
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    targetRevision: main
+    path: kubernetes/platform/mayastor
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openebs
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
