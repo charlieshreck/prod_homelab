@@ -7,6 +7,22 @@ terraform {
   }
 }
 
+# Download latest Debian 13 (Trixie) cloud image
+resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name    = var.proxmox_node
+
+  # Debian 13 (Trixie) stable cloud image - automatically gets latest
+  url = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
+
+  file_name               = "debian-13-generic-amd64.qcow2"
+  overwrite               = false
+  overwrite_unmanaged     = true
+  checksum                = null
+  checksum_algorithm      = null
+}
+
 resource "proxmox_virtual_environment_vm" "plex" {
   name        = var.vm_name
   description = "Plex Media Server with Nvidia P4000 GPU passthrough"
@@ -47,7 +63,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
     mtu    = 9000
   }
 
-  # Main Disk - on Ranginui ZFS pool
+  # Main Disk - Import Debian cloud image and resize
   disk {
     datastore_id = var.disk_datastore
     interface    = "scsi0"
@@ -55,6 +71,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
     file_format  = "raw"
     ssd          = true
     discard      = "on"
+    file_id      = proxmox_virtual_environment_download_file.debian_cloud_image.id
   }
 
   # GPU Passthrough - Nvidia P4000
@@ -74,6 +91,13 @@ resource "proxmox_virtual_environment_vm" "plex" {
       ipv4 {
         address = "${var.management_ip}/24"
         gateway = var.gateway
+      }
+    }
+
+    # Second NIC for TrueNAS network
+    ip_config {
+      ipv4 {
+        address = "${var.truenas_ip}/24"
       }
     }
 
