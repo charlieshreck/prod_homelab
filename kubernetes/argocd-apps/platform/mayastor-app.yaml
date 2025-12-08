@@ -14,6 +14,10 @@ spec:
     helm:
       releaseName: openebs
       values: |
+        # Disable pre-upgrade hook (image doesn't exist)
+        preUpgradeHook:
+          enabled: false
+
         # Enable only Mayastor engine
         engines:
           local:
