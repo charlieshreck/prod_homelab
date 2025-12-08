@@ -81,9 +81,9 @@ variable "proxmox_storage" {
 }
 
 variable "proxmox_mayastor_storage" {
-  description = "Proxmox storage pool for Mayastor disks (Taranaki LVM VG)"
+  description = "Proxmox storage pool for Mayastor disks (Taranaki ZFS pool)"
   type        = string
-  default     = "taranaki-vg"
+  default     = "Taranaki"
 }
 
 variable "proxmox_iso_storage" {

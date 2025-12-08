@@ -63,11 +63,11 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
     discard      = "on"
   }
 
-  # Mayastor Disk (SCSI1) - from Taranaki LVM VG
-  # This will be a pre-created LVM logical volume
+  # Mayastor Disk (SCSI1) - from Taranaki ZFS pool
+  # This will be a pre-created ZFS zvol
   disk {
-    datastore_id = "local-lvm"
-    file_id      = var.mayastor_lv_path
+    datastore_id = "Taranaki"
+    file_id      = var.mayastor_zvol_path
     interface    = "scsi1"
     size         = var.mayastor_disk_size
     file_format  = "raw"

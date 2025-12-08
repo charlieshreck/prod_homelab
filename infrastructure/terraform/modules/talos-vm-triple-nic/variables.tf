@@ -60,8 +60,8 @@ variable "boot_disk_size" {
   default     = 50
 }
 
-variable "mayastor_lv_path" {
-  description = "Path to Mayastor LVM logical volume (e.g., /dev/taranaki-vg/worker01-mayastor)"
+variable "mayastor_zvol_path" {
+  description = "Path to Mayastor ZFS zvol (e.g., /dev/zvol/Taranaki/worker01-mayastor)"
   type        = string
 }
 

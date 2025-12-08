@@ -25,7 +25,7 @@ kubernetes_version = "v1.34.1"
 
 # Storage Configuration
 proxmox_storage          = "Ranginui"
-proxmox_mayastor_storage = "taranaki-vg"
+proxmox_mayastor_storage = "Taranaki"
 proxmox_iso_storage      = "local"
 
 # VM IDs

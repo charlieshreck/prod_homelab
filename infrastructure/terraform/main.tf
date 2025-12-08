@@ -115,10 +115,13 @@ module "workers" {
   boot_disk_datastore = var.proxmox_storage
   boot_disk_size      = each.value.disk
 
-  mayastor_lv_path    = each.value.mayastor_lv
+  mayastor_zvol_path  = each.value.mayastor_zvol
   mayastor_disk_size  = each.value.mayastor_disk
 
   talos_iso_file_id = proxmox_virtual_environment_download_file.talos_nocloud_image.id
+
+  # Ensure zvols are created before VMs
+  depends_on = [null_resource.mayastor_zvols]
 }
 
 # ============================================================================

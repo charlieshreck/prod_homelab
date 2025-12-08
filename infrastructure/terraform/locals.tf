@@ -19,7 +19,7 @@ locals {
     for key, worker in var.workers : key => merge(worker, {
       mac_address    = local.worker_macs[key]
       vm_id          = var.vm_id_start + index(keys(var.workers), key) + 1
-      mayastor_lv    = "/dev/${var.proxmox_mayastor_storage}/${key}-mayastor"
+      mayastor_zvol  = "/dev/zvol/${var.proxmox_mayastor_storage}/${key}-mayastor"
     })
   }
 
