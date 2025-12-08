@@ -5,5 +5,4 @@ namespace: infisical-operator-system
 
 resources:
   - namespace.yaml
-  - https://raw.githubusercontent.com/Infisical/infisical/main/k8-operator/kubectl/install.yaml
   - universal-auth-secret.yaml
