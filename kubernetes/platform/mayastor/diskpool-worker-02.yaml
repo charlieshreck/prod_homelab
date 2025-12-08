@@ -2,7 +2,7 @@ apiVersion: openebs.io/v1alpha1
 kind: DiskPool
 metadata:
   name: talos-worker-02-pool
-  namespace: mayastor
+  namespace: openebs
 spec:
   node: talos-worker-02
   disks:
