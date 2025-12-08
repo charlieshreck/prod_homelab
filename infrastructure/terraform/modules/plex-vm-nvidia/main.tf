@@ -12,14 +12,12 @@ resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   datastore_id = "local"
   node_name    = var.proxmox_node
 
-  # Debian 13 (Trixie) stable cloud image - automatically gets latest
+  # Debian 13 (Trixie) stable cloud image - qcow2 format
   url = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
 
   file_name               = "debian-13-generic-amd64.qcow2"
   overwrite               = false
   overwrite_unmanaged     = true
-  checksum                = null
-  checksum_algorithm      = null
 }
 
 resource "proxmox_virtual_environment_vm" "plex" {
@@ -84,7 +82,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
 
   # Initialization (cloud-init for Debian/Ubuntu)
   initialization {
-    datastore_id = var.disk_datastore
+    datastore_id = "local"
 
     ip_config {
       ipv4 {
@@ -128,7 +126,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
 # Cloud-init configuration
 resource "proxmox_virtual_environment_file" "cloud_init" {
   content_type = "snippets"
-  datastore_id = var.disk_datastore
+  datastore_id = "local"
   node_name    = var.proxmox_node
 
   source_raw {

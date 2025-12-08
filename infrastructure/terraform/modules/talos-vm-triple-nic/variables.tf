@@ -60,13 +60,8 @@ variable "boot_disk_size" {
   default     = 50
 }
 
-variable "mayastor_zvol_path" {
-  description = "Path to Mayastor ZFS zvol (e.g., /dev/zvol/Taranaki/worker01-mayastor)"
-  type        = string
-}
-
 variable "mayastor_disk_size" {
-  description = "Mayastor disk size in GB"
+  description = "Mayastor disk size in GB (zvol pre-created with Proxmox naming)"
   type        = number
   default     = 1200
 }

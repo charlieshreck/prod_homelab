@@ -63,10 +63,10 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
   }
 
   # Mayastor Disk (SCSI1) - from Taranaki ZFS pool
-  # This will be a pre-created ZFS zvol
+  # Pre-created zvol with Proxmox naming: vm-<vmid>-disk-1
+  # Proxmox will use existing zvol instead of creating new one
   disk {
     datastore_id = "Taranaki"
-    file_id      = var.mayastor_zvol_path
     interface    = "scsi1"
     size         = var.mayastor_disk_size
     file_format  = "raw"

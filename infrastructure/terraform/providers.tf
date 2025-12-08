@@ -18,3 +18,14 @@ provider "infisical" {
   client_id     = var.infisical_client_id
   client_secret = var.infisical_client_secret
 }
+
+provider "helm" {
+  kubernetes {
+    config_path = "${path.module}/generated/kubeconfig"
+  }
+}
+
+provider "kubectl" {
+  config_path      = "${path.module}/generated/kubeconfig"
+  load_config_file = true
+}

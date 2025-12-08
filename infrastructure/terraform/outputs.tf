@@ -128,9 +128,6 @@ output "quick_start_commands" {
     # Check Talos cluster health
     talosctl --talosconfig ${local_file.talosconfig.filename} health
 
-    # Access Plex VM
-    ssh root@${module.plex.management_ip}
-
     # ArgoCD bootstrap (after platform is ready)
     kubectl apply -k ../kubernetes/platform/argocd/
     kubectl apply -f ../kubernetes/bootstrap/app-of-apps.yaml

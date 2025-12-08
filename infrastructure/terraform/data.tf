@@ -2,7 +2,8 @@
 data "proxmox_virtual_environment_nodes" "available" {}
 
 # Generate Talos machine secrets
-resource "talos_machine_secrets" "cluster" {}
+resource "talos_machine_secrets" "cluster" {
+}
 
 # Talos Control Plane Configuration
 data "talos_machine_configuration" "control_plane" {
@@ -20,6 +21,9 @@ data "talos_machine_configuration" "control_plane" {
   config_patches = [
     yamlencode({
       machine = {
+        install = {
+          image = "ghcr.io/siderolabs/installer:${var.talos_version}"
+        }
         network = {
           hostname = var.control_plane.name
           interfaces = [
@@ -75,6 +79,9 @@ data "talos_machine_configuration" "workers" {
   config_patches = [
     yamlencode({
       machine = {
+        install = {
+          image = "ghcr.io/siderolabs/installer:${var.talos_version}"
+        }
         network = {
           hostname = each.value.name
           interfaces = [
@@ -90,13 +97,13 @@ data "talos_machine_configuration" "workers" {
               ]
             },
             {
-              interface = "eth1"
+              interface = "ens19"
               dhcp      = false
               addresses = ["${each.value.truenas_ip}/24"]
               mtu       = 9000
             },
             {
-              interface = "eth2"
+              interface = "ens20"
               dhcp      = false
               addresses = ["${each.value.storage_ip}/24"]
             }

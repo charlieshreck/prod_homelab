@@ -22,30 +22,23 @@ resource "null_resource" "taranaki_zfs_pool" {
       "# Check if Taranaki pool already exists",
       "if ! zpool list Taranaki &>/dev/null; then",
       "  echo 'Creating Taranaki ZFS pool...'",
-      "  ",
       "  # Find the 4TB NVMe device (CT4000P3PSSD8)",
       "  NVME_DEVICE=$(lsblk -o NAME,SIZE,MODEL -d -n | grep -i 'CT4000P3PSSD8\\|3.6T\\|3.7T' | awk '{print \"/dev/\" $1}' | head -1)",
-      "  ",
       "  if [ -z \"$NVME_DEVICE\" ]; then",
       "    echo 'ERROR: Could not find 4TB NVMe device. Is it unbound from vfio-pci?'",
       "    exit 1",
       "  fi",
-      "  ",
       "  echo \"Found NVMe device: $NVME_DEVICE\"",
-      "  ",
       "  # Create ZFS pool",
       "  zpool create -f Taranaki $NVME_DEVICE",
-      "  ",
       "  # Set pool properties for optimal Mayastor performance",
       "  zfs set compression=off Taranaki",
       "  zfs set sync=disabled Taranaki",
       "  zfs set atime=off Taranaki",
-      "  ",
       "  echo 'Taranaki ZFS pool created successfully'",
       "else",
       "  echo 'Taranaki pool already exists, skipping creation'",
       "fi",
-      "",
       "# Verify pool status",
       "zpool status Taranaki",
       "zpool list Taranaki"
@@ -53,40 +46,44 @@ resource "null_resource" "taranaki_zfs_pool" {
   }
 }
 
-# Create zvols for each worker
-resource "null_resource" "mayastor_zvols" {
-  for_each = var.workers
-
-  depends_on = [null_resource.taranaki_zfs_pool]
-
-  connection {
-    type     = "ssh"
-    host     = var.proxmox_host
-    user     = "root"
-    password = var.proxmox_password
-  }
-
-  # Create zvol if it doesn't exist
-  provisioner "remote-exec" {
-    inline = [
-      "# Check if zvol exists",
-      "if ! zfs list Taranaki/${each.key}-mayastor &>/dev/null; then",
-      "  echo 'Creating zvol Taranaki/${each.key}-mayastor...'",
-      "  zfs create -V ${each.value.mayastor_disk}G Taranaki/${each.key}-mayastor",
-      "  echo 'zvol created successfully'",
-      "else",
-      "  echo 'zvol Taranaki/${each.key}-mayastor already exists, skipping creation'",
-      "fi",
-      "",
-      "# Verify zvol",
-      "ls -lh /dev/zvol/Taranaki/${each.key}-mayastor"
-    ]
-  }
-
-  # Note: No destroy provisioner for safety
-  # zvols should be manually destroyed to prevent accidental data loss
-  # To manually destroy: ssh root@10.10.0.10 "zfs destroy Taranaki/worker01-mayastor"
-}
+# ZVOL PRE-CREATION COMMENTED OUT - Let Proxmox create zvols automatically
+# Proxmox will create zvols when VMs are created with datastore_id="Taranaki"
+#
+# Create zvols for each worker with Proxmox naming convention
+# Proxmox expects zvols named: vm-<vmid>-disk-<disk_number>
+# Mayastor disk is SCSI1 (second disk), so disk number is 1
+# resource "null_resource" "mayastor_zvols" {
+#   for_each = local.workers_config
+#
+#   depends_on = [null_resource.taranaki_zfs_pool]
+#
+#   connection {
+#     type     = "ssh"
+#     host     = var.proxmox_host
+#     user     = "root"
+#     password = var.proxmox_password
+#   }
+#
+#   # Create zvol if it doesn't exist
+#   provisioner "remote-exec" {
+#     inline = [
+#       "# Check if zvol exists (Proxmox naming: vm-<vmid>-disk-1)",
+#       "if ! zfs list Taranaki/vm-${each.value.vm_id}-disk-1 &>/dev/null; then",
+#       "  echo 'Creating zvol Taranaki/vm-${each.value.vm_id}-disk-1 for ${each.key}...'",
+#       "  zfs create -V ${each.value.mayastor_disk}G Taranaki/vm-${each.value.vm_id}-disk-1",
+#       "  echo 'zvol created successfully'",
+#       "else",
+#       "  echo 'zvol Taranaki/vm-${each.value.vm_id}-disk-1 already exists, skipping creation'",
+#       "fi",
+#       "# Verify zvol",
+#       "ls -lh /dev/zvol/Taranaki/vm-${each.value.vm_id}-disk-1"
+#     ]
+#   }
+#
+#   # Note: No destroy provisioner for safety
+#   # zvols should be manually destroyed to prevent accidental data loss
+#   # To manually destroy: ssh root@10.10.0.10 "zfs destroy Taranaki/vm-401-disk-1"
+# }
 
 # Output ZFS pool information
 output "taranaki_pool_status" {
@@ -95,11 +92,12 @@ output "taranaki_pool_status" {
   depends_on  = [null_resource.taranaki_zfs_pool]
 }
 
-output "mayastor_zvol_paths" {
-  description = "Paths to Mayastor zvols"
-  value = {
-    for key, worker in var.workers :
-    key => "/dev/zvol/Taranaki/${key}-mayastor"
-  }
-  depends_on = [null_resource.mayastor_zvols]
-}
+# Commented out - zvols created automatically by Proxmox now
+# output "mayastor_zvol_paths" {
+#   description = "Paths to Mayastor zvols (Proxmox naming convention)"
+#   value = {
+#     for key, worker in local.workers_config :
+#     key => "/dev/zvol/Taranaki/vm-${worker.vm_id}-disk-1"
+#   }
+#   depends_on = [null_resource.mayastor_zvols]
+# }

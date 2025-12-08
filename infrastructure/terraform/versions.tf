@@ -26,5 +26,13 @@ terraform {
       source  = "infisical/infisical"
       version = "~> 0.15"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.16"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "~> 1.19"
+    }
   }
 }

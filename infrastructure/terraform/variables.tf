@@ -140,7 +140,7 @@ variable "workers" {
       cores         = 4
       memory        = 12288  # 12GB
       disk          = 50
-      mayastor_disk = 1200
+      mayastor_disk = 1100
     }
     "worker-02" = {
       name          = "talos-worker-02"
@@ -150,7 +150,7 @@ variable "workers" {
       cores         = 4
       memory        = 12288  # 12GB
       disk          = 50
-      mayastor_disk = 1200
+      mayastor_disk = 1100
     }
     "worker-03" = {
       name          = "talos-worker-03"
@@ -160,7 +160,7 @@ variable "workers" {
       cores         = 4
       memory        = 12288  # 12GB
       disk          = 50
-      mayastor_disk = 1200
+      mayastor_disk = 1100
     }
   }
 }
@@ -206,8 +206,16 @@ variable "gitops_repo_branch" {
 # Cilium LoadBalancer Configuration
 variable "cilium_lb_ip_pool" {
   description = "IP pool for Cilium LoadBalancer"
-  type        = list(string)
-  default     = ["10.10.0.90-10.10.0.99"]
+  type = list(object({
+    start = string
+    stop  = string
+  }))
+  default = [
+    {
+      start = "10.10.0.90"
+      stop  = "10.10.0.99"
+    }
+  ]
 }
 
 # Cloudflare Configuration

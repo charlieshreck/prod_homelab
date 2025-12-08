@@ -17,9 +17,10 @@ locals {
   # eth2 (vmbr4): Mayastor replication network (10.50.0.x)
   workers_config = {
     for key, worker in var.workers : key => merge(worker, {
-      mac_address    = local.worker_macs[key]
-      vm_id          = var.vm_id_start + index(keys(var.workers), key) + 1
-      mayastor_zvol  = "/dev/zvol/${var.proxmox_mayastor_storage}/${key}-mayastor"
+      mac_address = local.worker_macs[key]
+      vm_id       = var.vm_id_start + index(keys(var.workers), key) + 1
+      # Proxmox zvol naming: vm-<vmid>-disk-1 (SCSI1 disk for Mayastor)
+      mayastor_zvol = "/dev/zvol/${var.proxmox_mayastor_storage}/vm-${var.vm_id_start + index(keys(var.workers), key) + 1}-disk-1"
     })
   }
 
