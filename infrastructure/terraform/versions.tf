@@ -1,14 +1,30 @@
 terraform {
-  required_version = ">= 1.6.0"
+  required_version = ">= 1.9"
 
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "~> 0.50.0"
+      version = "~> 0.89"
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "~> 0.7.0"
+      version = "~> 0.9"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.5"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "~> 0.9"
+    }
+    infisical = {
+      source  = "infisical/infisical"
+      version = "~> 0.15"
     }
   }
 }

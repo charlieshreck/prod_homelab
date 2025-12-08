@@ -7,14 +7,25 @@
 # - Talos Linux bootstrap
 # ============================================================================
 
-# Download and upload Talos ISO to Proxmox
+# Generate custom Talos image schematic ID with extensions
+data "external" "talos_image" {
+  program = ["bash", "${path.module}/../scripts/generate-talos-image.sh"]
+
+  query = {
+    talos_version = var.talos_version
+  }
+}
+
+# Download and upload custom Talos ISO to Proxmox
 resource "proxmox_virtual_environment_download_file" "talos_nocloud_image" {
   content_type = "iso"
   datastore_id = var.proxmox_iso_storage
   node_name    = var.proxmox_node
-  url          = "https://factory.talos.dev/image/${var.talos_version}/nocloud-amd64.iso"
 
-  file_name               = local.talos_iso
+  # Use custom factory image with extensions (intel-ucode, i915-ucode, iscsi-tools, util-linux-tools)
+  url = "https://factory.talos.dev/image/${data.external.talos_image.result.schematic_id}/${data.external.talos_image.result.version}/nocloud-amd64.iso"
+
+  file_name               = "talos-${data.external.talos_image.result.version}-${substr(data.external.talos_image.result.schematic_id, 0, 8)}-nocloud-amd64.iso"
   overwrite               = false
   overwrite_unmanaged     = true
   checksum                = null

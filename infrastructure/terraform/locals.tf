@@ -67,9 +67,6 @@ locals {
     }
   }
 
-  # Talos Linux configuration
-  talos_iso = "talos-${var.talos_version}-nocloud-amd64.iso"
-
   # GitOps repository configuration
   gitops = {
     repo_url = var.gitops_repo_url
