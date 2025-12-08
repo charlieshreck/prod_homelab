@@ -7,10 +7,22 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
-  source:
-    repoURL: https://github.com/charlieshreck/prod_homelab.git
-    targetRevision: main
-    path: kubernetes/platform/cert-manager
+  sources:
+    # Helm chart for cert-manager
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: v1.16.2
+      helm:
+        releaseName: cert-manager
+        parameters:
+          - name: crds.enabled
+            value: "true"
+          - name: crds.keep
+            value: "true"
+    # Git repository for additional resources (ClusterIssuer, Certificate, etc.)
+    - repoURL: https://github.com/charlieshreck/prod_homelab.git
+      targetRevision: main
+      path: kubernetes/platform/cert-manager/resources
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

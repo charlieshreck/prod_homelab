@@ -4,8 +4,6 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  - namespace.yaml
-  - https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
   - cloudflare-api-token-secret.yaml
   - clusterissuer-letsencrypt.yaml
   - certificate-kernow-io.yaml
