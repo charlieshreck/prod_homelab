@@ -11,7 +11,6 @@ spec:
     solvers:
       - dns01:
           cloudflare:
-            email: charlieshreck@gmail.com
             apiTokenSecretRef:
               name: cloudflare-api-token
               key: CLOUDFLARE_API_TOKEN
