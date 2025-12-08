@@ -1,0 +1,24 @@
+---
+# Ansible Inventory for Plex Media Server VM
+all:
+  hosts:
+    plex:
+      ansible_host: 10.10.0.50
+      ansible_user: root
+      ansible_password: H4ckwh1z
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+  vars:
+    # NFS Configuration (TrueNAS on vmbr3 network)
+    plex_nfs_server: 10.40.0.10
+    plex_nfs_path: /mnt/Tongariro/Plexopathy
+    plex_mount_point: /mnt/media
+
+    # Plex Configuration
+    plex_timezone: Europe/London
+    plex_uid: 1000
+    plex_gid: 1000
+
+    # Nvidia GPU
+    gpu_pci_id: "0000:0d:00"

@@ -1,0 +1,114 @@
+# ============================================================================
+# Terraform Variables Template
+# ============================================================================
+# Copy this file to terraform.tfvars and fill in your actual values
+# terraform.tfvars is in .gitignore and will never be committed
+# ============================================================================
+
+# Proxmox Connection
+proxmox_host     = "10.10.0.10"
+proxmox_user     = "root@pam"
+proxmox_password = "YOUR_PROXMOX_PASSWORD"
+proxmox_node     = "Ruapehu"
+
+# Network Configuration
+network_bridge = "vmbr0"
+truenas_bridge = "vmbr3"
+storage_bridge = "vmbr4"
+prod_gateway   = "10.10.0.1"
+dns_servers    = ["1.1.1.1", "8.8.8.8"]
+
+# Cluster Configuration
+cluster_name       = "homelab-prod"
+talos_version      = "v1.11.3"
+kubernetes_version = "v1.34.1"
+
+# Storage Configuration
+proxmox_storage          = "Ranginui"
+proxmox_mayastor_storage = "taranaki-vg"
+proxmox_iso_storage      = "local"
+
+# VM IDs
+vm_id_start = 400
+
+# Control Plane Configuration
+control_plane = {
+  name   = "talos-cp-01"
+  ip     = "10.10.0.40"
+  cores  = 4
+  memory = 6144  # 6GB
+  disk   = 50
+}
+
+# Worker Configuration (Triple-NIC)
+workers = {
+  "worker-01" = {
+    name          = "talos-worker-01"
+    ip            = "10.10.0.41"
+    truenas_ip    = "10.40.0.41"
+    storage_ip    = "10.50.0.41"
+    cores         = 4
+    memory        = 12288  # 12GB
+    disk          = 50
+    mayastor_disk = 1200   # 1.2TB from Taranaki LVM
+  }
+  "worker-02" = {
+    name          = "talos-worker-02"
+    ip            = "10.10.0.42"
+    truenas_ip    = "10.40.0.42"
+    storage_ip    = "10.50.0.42"
+    cores         = 4
+    memory        = 12288
+    disk          = 50
+    mayastor_disk = 1200
+  }
+  "worker-03" = {
+    name          = "talos-worker-03"
+    ip            = "10.10.0.43"
+    truenas_ip    = "10.40.0.43"
+    storage_ip    = "10.50.0.43"
+    cores         = 4
+    memory        = 12288
+    disk          = 50
+    mayastor_disk = 1200
+  }
+}
+
+# Plex VM Configuration
+plex_vm = {
+  vmid       = 450
+  name       = "plex"
+  ip         = "10.10.0.50"
+  truenas_ip = "10.40.0.50"
+  cores      = 4
+  memory     = 8192  # 8GB
+  disk       = 100
+  gpu_pci_id = "0000:0d:00"  # Nvidia P4000
+}
+
+# GitOps Configuration
+gitops_repo_url    = "https://github.com/charlieshreck/prod_homelab.git"
+gitops_repo_branch = "main"
+
+# Cilium LoadBalancer IP Pool
+cilium_lb_ip_pool = ["10.10.0.90-10.10.0.99"]
+
+# Cloudflare Configuration
+cloudflare_email  = "charlieshreck@gmail.com"
+cloudflare_domain = "kernow.io"
+
+# Infisical Configuration
+infisical_project_id   = "9383e039-68ca-4bab-bc3c-aa06fdb82627"
+infisical_project_slug = "prod-homelab-y-nij"
+infisical_env_slug     = "prod"
+infisical_client_id     = "YOUR_INFISICAL_CLIENT_ID"
+infisical_client_secret = "YOUR_INFISICAL_CLIENT_SECRET"
+
+# Docker Hub Configuration
+dockerhub_username = "mrlong67"
+dockerhub_password = "YOUR_DOCKERHUB_PASSWORD"
+
+# SSH Keys (optional)
+ssh_public_keys = [
+  # "ssh-ed25519 AAAAC3... user@host"
+]

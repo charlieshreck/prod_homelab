@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kernow-io-wildcard
+  namespace: cert-manager
+spec:
+  secretName: kernow-io-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - "kernow.io"
+    - "*.kernow.io"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "media,monitoring,default"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"

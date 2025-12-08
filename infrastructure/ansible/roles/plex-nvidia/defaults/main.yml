@@ -1,0 +1,24 @@
+---
+# Default variables for plex-nvidia role
+
+# Plex Configuration
+plex_claim_token: "{{ lookup('env', 'PLEX_CLAIM_TOKEN') }}"
+plex_uid: 1000
+plex_gid: 1000
+plex_timezone: Europe/London
+
+# Directories
+plex_config_dir: /opt/plex/config
+plex_compose_dir: /opt/plex/compose
+plex_mount_point: /mnt/media
+
+# NFS Configuration
+plex_nfs_server: 10.40.0.10
+plex_nfs_path: /mnt/Tongariro/Plexopathy
+plex_nfs_options: "nfsvers=4,rw,hard,intr,rsize=131072,wsize=131072"
+
+# Docker Configuration
+docker_compose_version: "2.24.0"
+
+# Nvidia Configuration
+nvidia_driver_version: "535"  # Latest stable version

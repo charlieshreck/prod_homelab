@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transmission
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission
+    spec:
+      containers:
+        - name: transmission
+          image: lscr.io/linuxserver/transmission:latest
+          ports:
+            - containerPort: 9091
+              name: web
+            - containerPort: 51413
+              name: torrent-tcp
+              protocol: TCP
+            - containerPort: 51413
+              name: torrent-udp
+              protocol: UDP
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: Europe/London
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-credentials
+                  key: username
+            - name: PASS
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-credentials
+                  key: password
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: transmission-config
+        - name: media
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Tongariro/Plexopathy
+        - name: downloads
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Tongariro/Plexopathy/downloads

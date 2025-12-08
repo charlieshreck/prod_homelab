@@ -1,0 +1,131 @@
+---
+# Main tasks for plex-nvidia role
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install prerequisites
+  apt:
+    name:
+      - curl
+      - gnupg
+      - ca-certificates
+      - software-properties-common
+      - apt-transport-https
+      - nfs-common
+    state: present
+
+- name: Add Nvidia GPG key
+  apt_key:
+    url: https://nvidia.github.io/libnvidia-container/gpgkey
+    state: present
+
+- name: Get distribution
+  command: . /etc/os-release && echo $ID$VERSION_ID
+  register: distribution
+  changed_when: false
+  args:
+    executable: /bin/bash
+
+- name: Add Nvidia container toolkit repository
+  apt_repository:
+    repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /"
+    filename: nvidia-container-toolkit
+    state: present
+    update_cache: yes
+
+- name: Install Nvidia drivers and Docker
+  apt:
+    name:
+      - nvidia-driver-{{ nvidia_driver_version }}
+      - nvidia-container-toolkit
+      - docker.io
+      - docker-compose
+    state: present
+  notify:
+    - Reboot system
+
+- name: Ensure Docker service is running
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Configure Nvidia container runtime for Docker
+  command: nvidia-ctk runtime configure --runtime=docker
+  register: nvidia_runtime_config
+  changed_when: nvidia_runtime_config.rc == 0
+  notify:
+    - Restart Docker
+
+- name: Flush handlers to restart Docker
+  meta: flush_handlers
+
+- name: Verify Nvidia GPU is available
+  command: nvidia-smi
+  register: nvidia_smi_output
+  changed_when: false
+  failed_when: nvidia_smi_output.rc != 0
+
+- name: Display GPU information
+  debug:
+    msg: "{{ nvidia_smi_output.stdout_lines }}"
+
+- name: Create Plex directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ plex_config_dir }}"
+    - "{{ plex_compose_dir }}"
+    - "{{ plex_mount_point }}"
+
+- name: Mount TrueNAS NFS share
+  mount:
+    src: "{{ plex_nfs_server }}:{{ plex_nfs_path }}"
+    path: "{{ plex_mount_point }}"
+    fstype: nfs
+    opts: "{{ plex_nfs_options }}"
+    state: mounted
+
+- name: Verify NFS mount
+  command: "ls -la {{ plex_mount_point }}"
+  register: nfs_mount_check
+  changed_when: false
+
+- name: Display NFS mount contents
+  debug:
+    msg: "{{ nfs_mount_check.stdout_lines }}"
+
+- name: Deploy docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ plex_compose_dir }}/docker-compose.yml"
+    mode: '0644'
+  notify:
+    - Restart Plex
+
+- name: Start Plex container
+  community.docker.docker_compose:
+    project_src: "{{ plex_compose_dir }}"
+    state: present
+  register: plex_compose_output
+
+- name: Wait for Plex to be ready
+  wait_for:
+    host: localhost
+    port: 32400
+    delay: 10
+    timeout: 120
+
+- name: Display Plex container status
+  command: docker ps --filter name=plex
+  register: plex_status
+  changed_when: false
+
+- name: Show Plex container info
+  debug:
+    msg: "{{ plex_status.stdout_lines }}"

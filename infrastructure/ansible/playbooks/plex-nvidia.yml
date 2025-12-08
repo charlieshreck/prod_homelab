@@ -1,0 +1,52 @@
+---
+# Ansible Playbook: Configure Plex Media Server with Nvidia GPU
+#
+# This playbook configures a Debian/Ubuntu VM with:
+# - Nvidia drivers and container toolkit
+# - Docker with Nvidia runtime
+# - NFS mount for media from TrueNAS
+# - Plex Media Server container with GPU transcoding
+#
+# Usage:
+#   ansible-playbook -i inventory/plex.yml playbooks/plex-nvidia.yml
+#
+# Requirements:
+#   - PLEX_CLAIM_TOKEN environment variable (get from https://plex.tv/claim)
+#   - VM must be accessible via SSH
+#   - TrueNAS NFS export must be configured
+
+- name: Configure Plex VM with Nvidia GPU
+  hosts: plex
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Check for PLEX_CLAIM_TOKEN
+      fail:
+        msg: "PLEX_CLAIM_TOKEN environment variable is required. Get it from https://plex.tv/claim"
+      when: lookup('env', 'PLEX_CLAIM_TOKEN') == ''
+
+    - name: Wait for system to be ready
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+
+    - name: Gather facts after waiting
+      setup:
+
+  roles:
+    - role: plex-nvidia
+
+  post_tasks:
+    - name: Display Plex access information
+      debug:
+        msg:
+          - "Plex Media Server is now running!"
+          - "Access Plex at: http://{{ ansible_host }}:32400/web"
+          - "or https://{{ ansible_host }}:32400/web"
+          - ""
+          - "Media is mounted from: {{ plex_nfs_server }}:{{ plex_nfs_path }}"
+          - "GPU: Nvidia P4000 ({{ gpu_pci_id }})"
+          - ""
+          - "Check GPU usage: ssh root@{{ ansible_host }} 'nvidia-smi'"
+          - "Check container: ssh root@{{ ansible_host }} 'docker ps | grep plex'"
