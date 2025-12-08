@@ -1,0 +1,29 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+.terraform/
+.terraform.lock.hcl
+generated/
+
+# Secrets
+*.env
+*.key
+*.pem
+secrets/
+credentials/
+
+# Kubeconfig
+kubeconfig*
+
+# OS
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
