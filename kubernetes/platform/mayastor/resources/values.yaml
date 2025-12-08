@@ -46,7 +46,7 @@ csi:
 # ETCD: hostPath persistence to prevent bootstrap conflicts
 # =============================================================================
 etcd:
-  replicaCount: 1
+  replicaCount: 3
 
   # Disable default PVC-based persistence
   persistence:

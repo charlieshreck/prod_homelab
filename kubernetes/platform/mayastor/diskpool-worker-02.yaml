@@ -6,4 +6,4 @@ metadata:
 spec:
   node: talos-worker-02
   disks:
-    - /dev/sdb
+    - /dev/disk/by-path/pci-0000:00:05.0-scsi-0:0:0:1
