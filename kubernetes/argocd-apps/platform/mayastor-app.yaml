@@ -74,12 +74,20 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true  # Allow deployment even with missing CRDs
+      - Replace=false  # Prevent volume attachment conflicts (RWO volumes)
 
   ignoreDifferences:
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
       jsonPointers:
         - /spec/conversion/webhook/clientConfig/caBundle
+    # Ignore pre-upgrade hook job to prevent blocking on failed hook
+    - group: batch
+      kind: Job
+      name: openebs-pre-upgrade-hook
+      jsonPointers:
+        - /status
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -105,3 +113,5 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true  # Allow DiskPool deployment even if CRD validation pending
+      - Replace=false  # Prevent storage conflicts
