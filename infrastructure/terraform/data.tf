@@ -114,10 +114,23 @@ data "talos_machine_configuration" "workers" {
           nodeIP = {
             validSubnets = ["${each.value.ip}/32"]
           }
+          # Mount /var/local for OpenEBS LocalPV (etcd, loki storage)
+          extraMounts = [
+            {
+              destination = "/var/local"
+              type        = "bind"
+              source      = "/var/local"
+              options     = ["rbind", "rshared", "rw"]
+            }
+          ]
         }
         # Mayastor requires hugepages
         sysctls = {
           "vm.nr_hugepages" = "1024"
+        }
+        # Label nodes for Mayastor io-engine daemonset
+        nodeLabels = {
+          "openebs.io/engine" = "mayastor"
         }
       }
       cluster = {

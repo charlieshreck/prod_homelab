@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: openebs-operator
+  name: mayastor-operator
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
@@ -28,11 +28,25 @@ spec:
 
         # Mayastor configuration for Talos Linux
         mayastor:
+          # Node selector for io-engine daemonset
+          io_engine:
+            nodeSelector:
+              openebs.io/engine: mayastor
+            resources:
+              limits:
+                cpu: "2000m"
+                memory: "2Gi"
+                hugepages-2Mi: "2Gi"
+              requests:
+                cpu: "1000m"
+                memory: "1Gi"
+                hugepages-2Mi: "2Gi"
+
           csi:
             node:
               kubeletDir: /var/lib/kubelet
 
-          # Resource limits
+          # Resource limits for agents
           agents:
             core:
               resources:
@@ -52,20 +66,20 @@ spec:
                     cpu: "500m"
                     memory: "512Mi"
 
-          io_engine:
-            resources:
-              limits:
-                cpu: "2000m"
-                memory: "2Gi"
-                hugepages-2Mi: "2Gi"
-              requests:
-                cpu: "1000m"
-                memory: "1Gi"
-                hugepages-2Mi: "2Gi"
+          # etcd uses LocalPV (default storage class: mayastor-etcd-localpv)
+          etcd:
+            persistence:
+              storageClass: mayastor-etcd-localpv
+
+          # loki uses LocalPV (default storage class: mayastor-loki-localpv)
+          loki-stack:
+            loki:
+              persistence:
+                storageClassName: mayastor-loki-localpv
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: openebs
+    namespace: mayastor
 
   syncPolicy:
     automated:
@@ -105,7 +119,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: openebs
+    namespace: mayastor
 
   syncPolicy:
     automated:
