@@ -83,19 +83,9 @@ resource "null_resource" "mayastor_zvols" {
     ]
   }
 
-  # If zvol needs to be destroyed, remove it
-  provisioner "remote-exec" {
-    when = destroy
-    inline = [
-      "# Only destroy if zvol exists and has no dependent VMs",
-      "if zfs list Taranaki/${each.key}-mayastor &>/dev/null; then",
-      "  echo 'WARNING: Destroying zvol Taranaki/${each.key}-mayastor'",
-      "  echo 'Ensure no VMs are using this zvol before proceeding'",
-      "  # Uncomment the next line to actually destroy (safety check)",
-      "  # zfs destroy Taranaki/${each.key}-mayastor",
-      "fi"
-    ]
-  }
+  # Note: No destroy provisioner for safety
+  # zvols should be manually destroyed to prevent accidental data loss
+  # To manually destroy: ssh root@10.10.0.10 "zfs destroy Taranaki/worker01-mayastor"
 }
 
 # Output ZFS pool information
