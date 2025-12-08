@@ -1,0 +1,127 @@
+# Mayastor configuration for 3-node Talos cluster
+# Mayastor replication network: 10.50.0.0/24 (vmbr4/ens20)
+
+# Disable observability components (loki, minio, metrics)
+# Core storage functionality doesn't require these
+obs:
+  callhome:
+    enabled: false
+loki:
+  enabled: false
+
+# IO Engine configuration (data plane)
+io_engine:
+  hugepages:
+    enabled: true
+  nodeSelector:
+    openebs.io/engine: mayastor
+  resources:
+    limits:
+      cpu: "2"
+      memory: "2Gi"
+      hugepages-2Mi: "2Gi"
+    requests:
+      cpu: "1"
+      memory: "2Gi"
+      hugepages-2Mi: "2Gi"
+
+agents:
+  core:
+    nodeSelector:
+      openebs.io/engine: mayastor
+
+csi:
+  node:
+    # Talos Linux kubelet path
+    kubeletDir: /var/lib/kubelet
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+
+# =============================================================================
+# ETCD: hostPath persistence to prevent bootstrap conflicts
+# =============================================================================
+etcd:
+  replicaCount: 1
+
+  # Disable default PVC-based persistence
+  persistence:
+    enabled: false
+
+  # Use hostPath via extraVolumes (survives pod restarts, no StorageClass needed)
+  extraVolumes:
+    - name: etcd-data-hostpath
+      hostPath:
+        path: /var/lib/mayastor-etcd
+        type: DirectoryOrCreate
+
+  extraVolumeMounts:
+    - name: etcd-data-hostpath
+      mountPath: /bitnami/etcd/data
+
+  # Init container to fix hostPath permissions for etcd user (UID 1001)
+  initContainers:
+    - name: fix-permissions
+      image: busybox:latest
+      command:
+        - sh
+        - -c
+        - |
+          chown -R 1001:1001 /bitnami/etcd/data
+          chmod 700 /bitnami/etcd/data
+      volumeMounts:
+        - name: etcd-data-hostpath
+          mountPath: /bitnami/etcd/data
+      securityContext:
+        runAsUser: 0
+
+  # Stability tuning
+  extraEnvVars:
+    - name: ETCD_HEARTBEAT_INTERVAL
+      value: "500"
+    - name: ETCD_ELECTION_TIMEOUT
+      value: "2500"
+    - name: ETCD_QUOTA_BACKEND_BYTES
+      value: "2147483648"
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 15
+    successThreshold: 1
+    failureThreshold: 5
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 15
+    successThreshold: 1
+    failureThreshold: 5
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - etcd
+          topologyKey: kubernetes.io/hostname
+
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+
+  pdb:
+    create: false
