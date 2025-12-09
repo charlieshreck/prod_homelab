@@ -16,64 +16,79 @@ spec:
         app: transmission
     spec:
       containers:
-        - name: transmission
-          image: lscr.io/linuxserver/transmission:latest
-          ports:
-            - containerPort: 9091
-              name: web
-            - containerPort: 51413
-              name: torrent-tcp
-              protocol: TCP
-            - containerPort: 51413
-              name: torrent-udp
-              protocol: UDP
-          livenessProbe:
-            tcpSocket:
-              port: 9091
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
-            tcpSocket:
-              port: 9091
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
-          env:
-            - name: PUID
-              value: "3000"
-            - name: PGID
-              value: "3000"
-            - name: TZ
-              value: Europe/London
-            - name: USER
-              valueFrom:
-                secretKeyRef:
-                  name: transmission-credentials
-                  key: TRANSMISSION_RPC_USERNAME
-            - name: PASS
-              valueFrom:
-                secretKeyRef:
-                  name: transmission-credentials
-                  key: TRANSMISSION_RPC_PASSWORD
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /media
-            - name: downloads
-              mountPath: /downloads
-      volumes:
+      - name: transmission
+        image: lscr.io/linuxserver/transmission:4.0.6-r4-ls320
+        ports:
+        - name: web
+          containerPort: 9091
+        - name: peer-tcp
+          containerPort: 51413
+        - name: peer-udp
+          containerPort: 51413
+          protocol: UDP
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        - name: TRANSMISSION_RPC_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: transmission-credentials
+              key: TRANSMISSION_RPC_USERNAME
+        - name: TRANSMISSION_RPC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: transmission-credentials
+              key: TRANSMISSION_RPC_PASSWORD
+        - name: TRANSMISSION_RPC_AUTHENTICATION_REQUIRED
+          value: "true"
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: transmission-config
-        - name: media
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Tongariro/Plexopathy
+          mountPath: /config
         - name: downloads
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: transmission-config
+      - name: downloads
+        nfs:
+          server: 10.40.0.10
+          path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 9091
+    targetPort: 9091
+  selector:
+    app: transmission
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: transmission-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 1Gi

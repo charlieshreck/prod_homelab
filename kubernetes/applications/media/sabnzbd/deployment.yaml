@@ -15,50 +15,89 @@ spec:
       labels:
         app: sabnzbd
     spec:
-      containers:
-        - name: sabnzbd
-          image: lscr.io/linuxserver/sabnzbd:latest
-          ports:
-            - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
-          env:
-            - name: PUID
-              value: "3000"
-            - name: PGID
-              value: "3000"
-            - name: TZ
-              value: Europe/London
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /media
-            - name: downloads
-              mountPath: /downloads
-      volumes:
+      initContainers:
+      - name: config-host-whitelist
+        image: busybox:latest
+        command:
+          - sh
+          - -c
+          - |
+            CONFIG_FILE="/config/sabnzbd.ini"
+            if [ -f "$CONFIG_FILE" ]; then
+              # Update existing host_whitelist setting
+              if grep -q "^host_whitelist" "$CONFIG_FILE"; then
+                sed -i 's/^host_whitelist.*/host_whitelist = sabnzbd.kernow.io, sabnzbd/' "$CONFIG_FILE"
+                echo "Updated host_whitelist in existing config"
+              else
+                # Add host_whitelist to [misc] section if it doesn't exist
+                if grep -q "^\[misc\]" "$CONFIG_FILE"; then
+                  sed -i '/^\[misc\]/a host_whitelist = sabnzbd.kernow.io, sabnzbd' "$CONFIG_FILE"
+                  echo "Added host_whitelist to [misc] section"
+                fi
+              fi
+            else
+              echo "Config file not found, sabnzbd will create it on first run"
+            fi
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: sabnzbd-config
-        - name: media
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Tongariro/Plexopathy
+          mountPath: /config
+      containers:
+      - name: sabnzbd
+        image: lscr.io/linuxserver/sabnzbd:latest
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
+        - name: config
+          mountPath: /config
         - name: downloads
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: sabnzbd-config
+      - name: downloads
+        nfs:
+          server: 10.40.0.10
+          path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sabnzbd
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: sabnzbd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 2Gi

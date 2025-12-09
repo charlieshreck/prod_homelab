@@ -16,43 +16,56 @@ spec:
         app: prowlarr
     spec:
       containers:
-        - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest
-          ports:
-            - containerPort: 9696
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 9696
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /ping
-              port: 9696
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
-          env:
-            - name: PUID
-              value: "3000"
-            - name: PGID
-              value: "3000"
-            - name: TZ
-              value: Europe/London
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /media
-      volumes:
+      - name: prowlarr
+        image: lscr.io/linuxserver/prowlarr:2.3.0.5236-ls133
+        ports:
+        - name: http
+          containerPort: 9696
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: prowlarr-config
-        - name: media
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Tongariro/Plexopathy
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: prowlarr-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 9696
+    targetPort: 9696
+  selector:
+    app: prowlarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 2Gi

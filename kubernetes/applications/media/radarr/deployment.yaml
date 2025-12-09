@@ -16,49 +16,68 @@ spec:
         app: radarr
     spec:
       containers:
-        - name: radarr
-          image: lscr.io/linuxserver/radarr:latest
-          ports:
-            - containerPort: 7878
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 7878
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /ping
-              port: 7878
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 3
-          env:
-            - name: PUID
-              value: "3000"
-            - name: PGID
-              value: "3000"
-            - name: TZ
-              value: Europe/London
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /media
-            - name: downloads
-              mountPath: /downloads
-      volumes:
+      - name: radarr
+        image: linuxserver/radarr:6.0.4
+        ports:
+        - name: http
+          containerPort: 7878
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
         - name: config
-          persistentVolumeClaim:
-            claimName: radarr-config
-        - name: media
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Tongariro/Plexopathy
+          mountPath: /config
         - name: downloads
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+          mountPath: /downloads
+        - name: media
+          mountPath: /film
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: radarr-config
+      - name: downloads
+        nfs:
+          server: 10.40.0.10
+          path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+      - name: media
+        nfs:
+          server: 10.40.0.10
+          path: /mnt/Tongariro/Plexopathy/Film
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 7878
+    targetPort: 7878
+  selector:
+    app: radarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 10Gi
