@@ -89,7 +89,7 @@ metadata:
   name: mosquitto
   namespace: apps
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: mqtt
     port: 1883
