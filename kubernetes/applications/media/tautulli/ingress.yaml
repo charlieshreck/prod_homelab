@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tautulli
+  namespace: media
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Tautulli"
+    gethomepage.dev/description: "Plex statistics"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "tautulli.png"
+    gethomepage.dev/pod-selector: "app=tautulli"
+    gethomepage.dev/widget.type: "tautulli"
+    gethomepage.dev/widget.url: "http://tautulli.media.svc.cluster.local:8181"
+    gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}"
+    gethomepage.dev/widget.enableUser: "true"
+    gethomepage.dev/widget.showEpisodeNumber: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - tautulli.kernow.io
+    secretName: tautulli-tls
+  rules:
+  - host: tautulli.kernow.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tautulli
+            port:
+              number: 8181

@@ -4,3 +4,4 @@ metadata:
   name: media
   labels:
     name: media
+    pod-security.kubernetes.io/enforce: baseline

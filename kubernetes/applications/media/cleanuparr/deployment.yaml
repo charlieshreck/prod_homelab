@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: overseerr
+  name: cleanuparr
   namespace: media
 spec:
   replicas: 1
@@ -9,58 +9,60 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: overseerr
+      app: cleanuparr
   template:
     metadata:
       labels:
-        app: overseerr
+        app: cleanuparr
     spec:
       containers:
-      - name: overseerr
-        image: ghcr.io/fallenbagel/jellyseerr:latest
+      - name: cleanuparr
+        image: ghcr.io/cleanuparr/cleanuparr:latest
         ports:
         - name: http
-          containerPort: 5055
+          containerPort: 11011
         env:
-        - name: LOG_LEVEL
-          value: "info"
+        - name: PORT
+          value: "11011"
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
         - name: TZ
           value: "Europe/London"
-        - name: PORT
-          value: "5055"
         volumeMounts:
         - name: config
-          mountPath: /app/config
+          mountPath: /config
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            cpu: 50m
+            memory: 128Mi
           limits:
-            cpu: 1000m
-            memory: 1Gi
+            cpu: 500m
+            memory: 512Mi
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: overseerr-config
+          claimName: cleanuparr-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: overseerr
+  name: cleanuparr
   namespace: media
 spec:
   type: ClusterIP
   ports:
   - name: http
-    port: 5055
-    targetPort: 5055
+    port: 11011
+    targetPort: 11011
   selector:
-    app: overseerr
+    app: cleanuparr
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: overseerr-config
+  name: cleanuparr-config
   namespace: media
 spec:
   accessModes:
@@ -68,4 +70,4 @@ spec:
   storageClassName: mayastor-3-replica
   resources:
     requests:
-      storage: 2Gi
+      storage: 1Gi
