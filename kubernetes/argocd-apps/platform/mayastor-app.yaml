@@ -40,6 +40,18 @@ spec:
       kind: CustomResourceDefinition
       jsonPointers:
         - /spec/conversion/webhook/clientConfig/caBundle
+    # Ignore Helm-generated JWT token (auto-generated on each Helm release)
+    - group: ""
+      kind: Secret
+      name: mayastor-etcd-jwt-token
+      jsonPointers:
+        - /data
+    # Ignore etcd StatefulSet template changes from Helm
+    - group: apps
+      kind: StatefulSet
+      name: mayastor-etcd
+      jsonPointers:
+        - /spec/template
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
