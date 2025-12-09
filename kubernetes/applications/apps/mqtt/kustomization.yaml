@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - infisical-secret.yaml
-  - passwd-generator.yaml
