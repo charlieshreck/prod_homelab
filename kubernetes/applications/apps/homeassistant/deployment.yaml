@@ -24,13 +24,12 @@ spec:
         env:
         - name: TZ
           value: "Europe/London"
-        - name: HASS_HTTP_TRUSTED_PROXY_1
-          value: "10.244.0.0/16"
-        - name: HASS_HTTP_USE_X_FORWARDED_FOR
-          value: "true"
         volumeMounts:
         - name: config
           mountPath: /config
+        - name: configuration
+          mountPath: /config/configuration.yaml
+          subPath: configuration.yaml
         - name: lovelace-config
           mountPath: /config/ui-lovelace.yaml
           subPath: ui-lovelace.yaml
@@ -47,6 +46,9 @@ spec:
       - name: config
         persistentVolumeClaim:
           claimName: homeassistant-config
+      - name: configuration
+        configMap:
+          name: homeassistant-configuration
       - name: lovelace-config
         configMap:
           name: homeassistant-lovelace
