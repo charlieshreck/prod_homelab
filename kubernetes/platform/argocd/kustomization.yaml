@@ -6,3 +6,9 @@ namespace: argocd
 resources:
   - resources/ingress.yaml
   - resources/argocd-cm.yaml
+
+patches:
+  - path: argocd-server-service-patch.yaml
+    target:
+      kind: Service
+      name: argocd-server
