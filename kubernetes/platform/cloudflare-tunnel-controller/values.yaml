@@ -1,0 +1,48 @@
+# Cloudflare Tunnel Ingress Controller
+# Chart: strrl/cloudflare-tunnel-ingress-controller
+# Automatically manages Cloudflare Tunnel routes from Kubernetes Ingresses
+
+cloudflare:
+  # Credentials are managed via external secret (cloudflare-api-secret.yaml)
+  # Helm chart expects these values but we provide empty strings
+  # The actual secret is created from our manifest
+  accountId: ""
+  tunnelName: ""
+  apiToken: ""
+
+# Ingress class configuration
+ingressClass:
+  # Name of the ingress class this controller manages
+  name: cloudflare-tunnel
+
+  # Set as default ingress class (false - keep Traefik as default)
+  default: false
+
+# Controller configuration
+controller:
+  # Watch all namespaces for ingresses
+  watchNamespaces: []
+
+  # Log level
+  logLevel: info
+
+  # Resources
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+# Service account
+serviceAccount:
+  create: true
+  name: cloudflare-tunnel-controller
+
+# RBAC
+rbac:
+  create: true
+
+# Number of replicas
+replicaCount: 1

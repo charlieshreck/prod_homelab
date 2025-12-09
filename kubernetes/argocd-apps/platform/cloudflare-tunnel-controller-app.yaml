@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudflare-tunnel-controller
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    # Helm chart from STRRL repository
+    - repoURL: https://helm.strrl.dev
+      chart: cloudflare-tunnel-ingress-controller
+      targetRevision: 0.0.21
+      helm:
+        valueFiles:
+          - $values/kubernetes/platform/cloudflare-tunnel-controller/values.yaml
+
+    # Values and additional resources from Git
+    - repoURL: https://github.com/charlieshreck/prod_homelab.git
+      targetRevision: main
+      ref: values
+      path: kubernetes/platform/cloudflare-tunnel-controller
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cloudflare-tunnel-controller
+
+  # Ignore dynamically-created resources
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: controlled-cloudflared-connector
+      jsonPointers:
+        - /spec
+    - group: ""
+      kind: Secret
+      name: cloudflare-api
+      jqPathExpressions:
+        - .data
+        - .stringData
+        - .type
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
