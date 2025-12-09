@@ -6,5 +6,6 @@ namespace: traefik
 resources:
   - namespace.yaml
   - crds-all.yaml
+  - ingressclass.yaml
   - deployment.yaml
   - service.yaml
