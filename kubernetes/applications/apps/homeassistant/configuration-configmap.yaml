@@ -5,16 +5,18 @@ metadata:
   namespace: apps
 data:
   configuration.yaml: |
-    # HTTP Configuration - Must be first
+    # Loads default set of integrations. Do not remove.
+    default_config:
+
+    # External and internal URLs
+    external_url: https://homeassistant.kernow.io
+    internal_url: http://homeassistant.apps.svc.cluster.local:8123
+
+    # HTTP Configuration
     http:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.244.0.0/16
-      external_url: https://homeassistant.kernow.io
-      internal_url: http://homeassistant.apps.svc.cluster.local:8123
-
-    # Loads default set of integrations. Do not remove.
-    default_config:
 
     # Text to speech
     tts:
