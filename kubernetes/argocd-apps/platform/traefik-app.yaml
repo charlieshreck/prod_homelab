@@ -41,8 +41,8 @@ spec:
             port: 443
             exposedPort: 443
           metrics:
-            port: 8080
-            exposedPort: 8080
+            port: 9100
+            exposedPort: 9100
         deployment:
           replicas: 2
         resources:
