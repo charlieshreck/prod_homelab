@@ -51,7 +51,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: mayastor-3
+  storageClassName: mayastor-3-replica
   resources:
     requests:
       storage: 2Gi
