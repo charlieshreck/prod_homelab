@@ -36,12 +36,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: transmission-credentials
-                  key: username
+                  key: TRANSMISSION_RPC_USERNAME
             - name: PASS
               valueFrom:
                 secretKeyRef:
                   name: transmission-credentials
-                  key: password
+                  key: TRANSMISSION_RPC_PASSWORD
           volumeMounts:
             - name: config
               mountPath: /config
