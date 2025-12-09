@@ -33,7 +33,7 @@ spec:
           runAsUser: 0
       containers:
       - name: filebrowser
-        image: gtstef/filebrowser:v1.0.3-stable
+        image: gtstef/filebrowser:stable
         securityContext:
           runAsUser: 3000
           runAsGroup: 3000
@@ -75,15 +75,15 @@ spec:
           claimName: filebrowser-data
       - name: downloads
         nfs:
-          server: 10.40.0.100
+          server: 10.40.0.10
           path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
       - name: tv
         nfs:
-          server: 10.40.0.100
+          server: 10.40.0.10
           path: /mnt/Tongariro/Plexopathy/Television
       - name: movies
         nfs:
-          server: 10.40.0.100
+          server: 10.40.0.10
           path: /mnt/Tongariro/Plexopathy/Film
 ---
 apiVersion: v1
