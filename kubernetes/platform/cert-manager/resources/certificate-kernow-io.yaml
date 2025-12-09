@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: kernow-io-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
     - "kernow.io"
