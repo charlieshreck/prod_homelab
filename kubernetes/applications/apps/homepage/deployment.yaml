@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: homepage
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homepage
+    spec:
+      serviceAccountName: homepage
+      automountServiceAccountToken: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: copy-config
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              cp -rL /tmp/config/* /app/config/ && \
+              chmod -R 755 /app/config && \
+              chown -R 1000:1000 /app/config
+          volumeMounts:
+            - name: homepage-config-source
+              mountPath: /tmp/config
+            - name: homepage-config
+              mountPath: /app/config
+          securityContext:
+            runAsUser: 0
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "homepage.kernow.io"
+            - name: HOMEPAGE_VAR_RADARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-radarr
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_SONARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-sonarr
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_OVERSEERR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-overseerr
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_PROWLARR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-prowlarr
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_SABNZBD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-sabnzbd
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_TRANSMISSION_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-transmission
+                  key: PASSWORD
+                  optional: true
+            - name: HOMEPAGE_VAR_PROXMOX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-proxmox
+                  key: API_TOKEN
+          volumeMounts:
+            - name: homepage-config
+              mountPath: /app/config
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: homepage-config-source
+          configMap:
+            name: homepage
+        - name: homepage-config
+          emptyDir: {}
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: homepage
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: homepage

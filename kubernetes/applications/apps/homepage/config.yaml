@@ -1,0 +1,145 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+
+  settings.yaml: |
+    title: Prod Homelab Dashboard
+    background:
+      image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+      blur: sm
+      saturate: 50
+      brightness: 50
+      opacity: 50
+    cardBlur: md
+    theme: dark
+    color: slate
+    headerStyle: boxed
+    layout:
+      Infrastructure:
+        style: row
+        columns: 3
+      Kubernetes:
+        style: row
+        columns: 4
+      Media:
+        style: row
+        columns: 3
+
+  bookmarks.yaml: |
+    - Developer:
+        - Github:
+            - abbr: GH
+              icon: github.png
+              href: https://github.com/charlieshreck/prod_homelab
+        - ArgoCD:
+            - abbr: CD
+              icon: si-argo
+              href: https://argocd.kernow.io/
+
+    - Management:
+        - Traefik:
+            - abbr: TF
+              icon: traefik.png
+              href: https://traefik.kernow.io/dashboard/
+        - Cloudflare:
+            - abbr: CF
+              icon: cloudflare.png
+              href: https://dash.cloudflare.com/
+        - Infisical:
+            - abbr: IS
+              icon: infisical.png
+              href: https://app.infisical.com/
+
+  services.yaml: |
+    # Services are now automatically discovered via ingress annotations
+    # See gethomepage.dev/enabled annotations on ingress resources
+
+    - Infrastructure:
+        - Proxmox (Ruapehu):
+            icon: proxmox.png
+            description: Proxmox VE Host
+            widget:
+              type: proxmox
+              url: https://10.10.0.10:8006
+              username: api@pam!homepage
+              password: {{HOMEPAGE_VAR_PROXMOX_TOKEN}}
+              node: Ruapehu
+
+        - Plex VM:
+            icon: plex.png
+            description: Plex Media Server VM
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 450
+            proxmoxType: qemu
+
+    - Kubernetes:
+        - Talos Control Plane:
+            icon: talos.png
+            description: K8s Control Plane Node
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 400
+
+        - Talos Worker 01:
+            icon: kubernetes.png
+            description: K8s Worker Node 1
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 401
+
+        - Talos Worker 02:
+            icon: kubernetes.png
+            description: K8s Worker Node 2
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 402
+
+        - Talos Worker 03:
+            icon: kubernetes.png
+            description: K8s Worker Node 3
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 403
+
+  widgets.yaml: |
+    - logo:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
+
+    - search:
+        provider: google
+        target: _blank
+
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+
+    - resources:
+        label: "Homepage Node"
+        cpu: true
+        memory: true
+        disk: /
+        expanded: true
+
+  docker.yaml: ""
+
+  proxmox.yaml: |
+    Ruapehu:
+      url: https://10.10.0.10:8006
+      token: api@pam!homepage
+      secret: {{HOMEPAGE_VAR_PROXMOX_TOKEN}}
+
+  custom.css: ""
+
+  custom.js: ""

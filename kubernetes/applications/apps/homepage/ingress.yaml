@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Homepage"
+    gethomepage.dev/description: "Homelab Dashboard"
+    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/icon: "homepage.png"
+  labels:
+    app.kubernetes.io/name: homepage
+spec:
+  ingressClassName: cloudflare-tunnel
+  tls:
+    - hosts:
+        - homepage.kernow.io
+      secretName: homepage-tls
+  rules:
+    - host: homepage.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage
+                port:
+                  number: 3000
