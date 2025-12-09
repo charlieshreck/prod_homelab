@@ -25,6 +25,22 @@ spec:
             - containerPort: 51413
               name: torrent-udp
               protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /transmission/web/
+              port: 9091
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /transmission/web/
+              port: 9091
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
           env:
             - name: PUID
               value: "3000"
