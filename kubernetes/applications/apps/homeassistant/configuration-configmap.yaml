@@ -5,6 +5,14 @@ metadata:
   namespace: apps
 data:
   configuration.yaml: |
+    # HTTP Configuration - Must be first
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 10.244.0.0/16
+      external_url: https://homeassistant.kernow.io
+      internal_url: http://homeassistant.apps.svc.cluster.local:8123
+
     # Loads default set of integrations. Do not remove.
     default_config:
 
@@ -12,18 +20,6 @@ data:
     tts:
       - platform: google_translate
 
-    # Load frontend themes from the themes folder
-    frontend:
-      themes: !include_dir_merge_named themes
-
-    automation: !include automations.yaml
-    script: !include scripts.yaml
-    scene: !include scenes.yaml
-
-    # HTTP Configuration
-    http:
-      use_x_forwarded_for: true
-      trusted_proxies:
-        - 10.244.0.0/16
-      external_url: https://homeassistant.kernow.io
-      internal_url: http://homeassistant.apps.svc.cluster.local:8123
+    automation: []
+    script: {}
+    scene: []
