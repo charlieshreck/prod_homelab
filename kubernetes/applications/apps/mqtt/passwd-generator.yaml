@@ -1,0 +1,75 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mosquitto-passwd-generator
+  namespace: apps
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: generate-passwd
+        image: eclipse-mosquitto:2.0.22
+        command:
+        - /bin/sh
+        - -c
+        - |
+          #!/bin/sh
+          set -e
+
+          # Get credentials from Infisical secret
+          MQTT_USER=$(cat /secrets/mqtt_user)
+          MQTT_SECRET=$(cat /secrets/mqtt_secret)
+
+          # Generate password file
+          mosquitto_passwd -b -c /tmp/passwd "$MQTT_USER" "$MQTT_SECRET"
+
+          # Create Kubernetes secret with the password file
+          kubectl create secret generic mosquitto-passwd \
+            --from-file=passwd=/tmp/passwd \
+            --namespace=apps \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+          echo "Password file secret created successfully"
+        volumeMounts:
+        - name: credentials
+          mountPath: /secrets
+          readOnly: true
+      serviceAccountName: mosquitto-passwd-generator
+      volumes:
+      - name: credentials
+        secret:
+          secretName: mosquitto-credentials
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mosquitto-passwd-generator
+  namespace: apps
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: mosquitto-passwd-generator
+  namespace: apps
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mosquitto-passwd-generator
+  namespace: apps
+subjects:
+- kind: ServiceAccount
+  name: mosquitto-passwd-generator
+  namespace: apps
+roleRef:
+  kind: Role
+  name: mosquitto-passwd-generator
+  apiGroup: rbac.authorization.k8s.io

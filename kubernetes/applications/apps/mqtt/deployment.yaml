@@ -27,6 +27,9 @@ spec:
         - name: config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
+        - name: passwd
+          mountPath: /mosquitto/config/passwd
+          subPath: passwd
         - name: data
           mountPath: /mosquitto/data
         - name: log
@@ -42,6 +45,9 @@ spec:
       - name: config
         configMap:
           name: mosquitto-config
+      - name: passwd
+        secret:
+          secretName: mosquitto-passwd
       - name: data
         persistentVolumeClaim:
           claimName: mosquitto-data
@@ -100,7 +106,8 @@ metadata:
 data:
   mosquitto.conf: |
     listener 1883
-    allow_anonymous true
+    allow_anonymous false
+    password_file /mosquitto/config/passwd
 
     listener 9001
     protocol websockets
