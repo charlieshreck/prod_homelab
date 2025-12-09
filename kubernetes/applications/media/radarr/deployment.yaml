@@ -30,6 +30,8 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /media
+            - name: downloads
+              mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -38,3 +40,7 @@ spec:
           nfs:
             server: 10.40.0.10
             path: /mnt/Tongariro/Plexopathy
+        - name: downloads
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Taranaki/Tarriance/hopuhopu_katoa

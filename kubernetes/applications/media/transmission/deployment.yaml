@@ -60,4 +60,4 @@ spec:
         - name: downloads
           nfs:
             server: 10.40.0.10
-            path: /mnt/Tongariro/Plexopathy/downloads
+            path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
