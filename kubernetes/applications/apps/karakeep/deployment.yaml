@@ -24,11 +24,6 @@ spec:
         env:
         - name: NEXTAUTH_URL
           value: "https://karakeep.kernow.io"
-        - name: NEXTAUTH_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: karakeep-secrets
-              key: NEXTAUTH_SECRET
         - name: DATA_DIR
           value: "/data"
         volumeMounts:
