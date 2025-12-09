@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: karakeep
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Karakeep"
+    gethomepage.dev/description: "Bookmark manager"
+    gethomepage.dev/group: "Home Services"
+    gethomepage.dev/icon: "karakeep.png"
+    gethomepage.dev/pod-selector: "app=karakeep"
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - karakeep.kernow.io
+    secretName: karakeep-tls
+  rules:
+  - host: karakeep.kernow.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: karakeep
+            port:
+              number: 3000

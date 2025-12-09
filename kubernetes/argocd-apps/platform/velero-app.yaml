@@ -1,0 +1,162 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  source:
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    chart: velero
+    targetRevision: 11.2.0
+    helm:
+      valuesObject:
+        # Deploy node agent for file-level backups (Restic)
+        deployNodeAgent: true
+
+        # Use Restic for file-level backups (Mayastor doesn't support snapshots)
+        configuration:
+          defaultVolumesToFsBackup: true
+
+          # Disable VolumeSnapshotLocation (not needed for file-level backups)
+          defaultVolumeSnapshotLocations: null
+          volumeSnapshotLocation: []
+
+          # Backup Storage Location configuration
+          backupStorageLocation:
+            - name: minio
+              provider: aws
+              bucket: velero-backups
+              default: true
+              accessMode: ReadWrite
+              config:
+                region: us-east-1
+                s3Url: http://10.20.0.103:9000
+                s3ForcePathStyle: "true"
+              credential:
+                name: velero-minio-credentials
+                key: cloud
+
+
+        # AWS plugin for S3/MinIO backup support (Velero server)
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.13.1
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+
+        # Velero server resources
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+        # Node agent (Restic) resources and scheduling
+        nodeAgent:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          # Schedule node agent on Mayastor nodes
+          nodeSelector:
+            openebs.io/engine: mayastor
+          # AWS plugin for S3/MinIO backup support
+          initContainers:
+            - name: velero-plugin-for-aws
+              image: velero/velero-plugin-for-aws:v1.13.1
+              volumeMounts:
+                - mountPath: /target
+                  name: plugins
+          # Remove default affinity to allow scheduling on all worker nodes
+          affinity: {}
+
+        # Prometheus metrics
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: false
+
+        # Disable upgrade-crds hook due to shell compatibility issues
+        # CRDs will be installed by Helm directly
+        upgradeCRDs: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+
+---
+# Velero custom resources for scheduled backups
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero-schedules
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    targetRevision: main
+    path: kubernetes/platform/velero/schedules
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# Velero secret management via Infisical
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero-secrets
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    targetRevision: main
+    path: kubernetes/platform/velero
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

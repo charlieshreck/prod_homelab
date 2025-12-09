@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser
+  namespace: apps
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: filebrowser
+  template:
+    metadata:
+      labels:
+        app: filebrowser
+    spec:
+      securityContext:
+        fsGroup: 3000
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command:
+        - sh
+        - -c
+        - |
+          chown -R 3000:3000 /home/filebrowser/data
+          chmod -R 755 /home/filebrowser/data
+        volumeMounts:
+        - name: data
+          mountPath: /home/filebrowser/data
+        securityContext:
+          runAsUser: 0
+      containers:
+      - name: filebrowser
+        image: gtstef/filebrowser:stable
+        securityContext:
+          runAsUser: 3000
+          runAsGroup: 3000
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: TZ
+          value: "Europe/London"
+        - name: FILEBROWSER_CONFIG
+          value: "data/config.yaml"
+        - name: FILEBROWSER_ADMIN_PASSWORD
+          value: "admin"
+        volumeMounts:
+        - name: config-file
+          mountPath: /home/filebrowser/data/config.yaml
+          subPath: config.yaml
+        - name: data
+          mountPath: /home/filebrowser/data
+        - name: downloads
+          mountPath: /folder/downloads
+        - name: tv
+          mountPath: /folder/tv
+        - name: movies
+          mountPath: /folder/movies
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config-file
+        configMap:
+          name: filebrowser-config
+      - name: data
+        persistentVolumeClaim:
+          claimName: filebrowser-data
+      - name: downloads
+        nfs:
+          server: 10.40.0.100
+          path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+      - name: tv
+        nfs:
+          server: 10.40.0.100
+          path: /mnt/Tongariro/Plexopathy/Television
+      - name: movies
+        nfs:
+          server: 10.40.0.100
+          path: /mnt/Tongariro/Plexopathy/Film
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: filebrowser-data
+  namespace: apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: filebrowser
+  namespace: apps
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: filebrowser
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebrowser-config
+  namespace: apps
+data:
+  config.yaml: |
+    server:
+      port: 80
+      database: /home/filebrowser/data/database.db
+      cacheDir: /home/filebrowser/data/tmp
+      sources:
+        - path: "/folder/downloads"
+          config:
+            defaultEnabled: true
+        - path: "/folder/tv"
+          config:
+            defaultEnabled: true
+        - path: "/folder/movies"
+          config:
+            defaultEnabled: true
+    auth:
+      adminUsername: admin
+      adminPassword: admin

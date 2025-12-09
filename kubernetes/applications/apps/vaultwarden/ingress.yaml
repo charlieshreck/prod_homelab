@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vaultwarden
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Vaultwarden"
+    gethomepage.dev/description: "Password manager"
+    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/icon: "vaultwarden.png"
+    gethomepage.dev/pod-selector: "app=vaultwarden"
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - vaultwarden.kernow.io
+    secretName: vaultwarden-tls
+  rules:
+  - host: vaultwarden.kernow.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: vaultwarden
+            port:
+              number: 80

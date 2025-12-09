@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "ArgoCD"
+    gethomepage.dev/description: "GitOps continuous delivery"
+    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/icon: "si-argo"
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=argocd-server"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - argocd.shreck.co.uk
+      secretName: shreck-co-uk-tls
+  rules:
+    - host: argocd.shreck.co.uk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik-dashboard
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Traefik"
+    gethomepage.dev/description: "Ingress Controller Dashboard"
+    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/icon: "traefik.png"
+    gethomepage.dev/href: "https://traefik.kernow.io/dashboard/"
+    gethomepage.dev/widget.type: "traefik"
+    gethomepage.dev/widget.url: "http://traefik-dashboard:9000"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: traefik
+  ports:
+    - name: traefik
+      port: 9000
+      targetPort: traefik
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik-dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`traefik.kernow.io`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      services:
+        - kind: TraefikService
+          name: api@internal
+  tls:
+    secretName: shreck-co-uk-tls
