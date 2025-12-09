@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: renovate
-  namespace: platform
+  namespace: renovate
 spec:
   schedule: "0 */6 * * *"  # Run every 6 hours
   concurrencyPolicy: Forbid
@@ -27,7 +27,7 @@ spec:
             - name: RENOVATE_AUTODISCOVER
               value: "false"
             - name: RENOVATE_REPOSITORIES
-              value: "charlieshreck/homelab-test"
+              value: "charlieshreck/prod_homelab"
             - name: RENOVATE_GIT_AUTHOR
               value: "Renovate Bot <bot@renovateapp.com>"
             - name: LOG_LEVEL
