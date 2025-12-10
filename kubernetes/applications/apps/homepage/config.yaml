@@ -69,7 +69,7 @@ data:
               type: proxmox
               url: https://10.10.0.10:8006
               username: root@pam!homepage
-              password: d6608a9f-04dd-4604-9949-0cc762621bca
+              password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
 
         - Plex VM:
@@ -137,7 +137,7 @@ data:
   proxmox.yaml: |
     Ruapehu:
       url: https://10.10.0.10:8006
-      token: api@pam!homepage
+      token: root@pam!homepage
       secret: {{HOMEPAGE_VAR_API_TOKEN}}
 
   custom.css: ""
