@@ -135,7 +135,7 @@ data:
   proxmox.yaml: |
     Ruapehu:
       url: https://10.10.0.10:8006
-      token: {{HOMEPAGE_VAR_TOKEN_ID}}
+      token: api@pam!homepage
       secret: {{HOMEPAGE_VAR_API_TOKEN}}
 
   custom.css: ""
