@@ -80,6 +80,12 @@ spec:
                   name: homepage-sabnzbd
                   key: API_KEY
                   optional: true
+            - name: HOMEPAGE_VAR_TAUTULLI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-tautulli
+                  key: API_KEY
+                  optional: true
             - name: HOMEPAGE_VAR_TRANSMISSION_PASSWORD
               valueFrom:
                 secretKeyRef:
