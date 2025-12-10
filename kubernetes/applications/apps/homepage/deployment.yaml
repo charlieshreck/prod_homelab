@@ -86,7 +86,12 @@ spec:
                   name: homepage-transmission
                   key: PASSWORD
                   optional: true
-            - name: HOMEPAGE_VAR_PROXMOX_TOKEN
+            - name: HOMEPAGE_VAR_TOKEN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-proxmox
+                  key: TOKEN_ID
+            - name: HOMEPAGE_VAR_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: homepage-proxmox
