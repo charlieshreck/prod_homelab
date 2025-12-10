@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage-cloudflare
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: homepage
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: homepage.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage
+                port:
+                  number: 3000
