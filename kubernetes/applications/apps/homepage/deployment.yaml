@@ -24,24 +24,14 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: copy-config
-          image: alpine:latest
+          image: busybox:latest
           command:
             - sh
             - -c
             - |
-              apk add --no-cache gettext
-              cp -rL /tmp/config/* /app/config/
-              # Substitute environment variables in config files
-              envsubst < /tmp/config/proxmox.yaml > /app/config/proxmox.yaml
-              envsubst < /tmp/config/services.yaml > /app/config/services.yaml
-              chmod -R 755 /app/config
+              cp -rL /tmp/config/* /app/config/ && \
+              chmod -R 755 /app/config && \
               chown -R 1000:1000 /app/config
-          env:
-            - name: HOMEPAGE_VAR_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: homepage-proxmox
-                  key: API_TOKEN
           volumeMounts:
             - name: homepage-config-source
               mountPath: /tmp/config
