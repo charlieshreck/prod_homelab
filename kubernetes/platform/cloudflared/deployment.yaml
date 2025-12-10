@@ -25,7 +25,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: cloudflared-tunnel-credentials
-                  key: TUNNEL_TOKEN
+                  key: CLOUDFLARE_TUNNEL_TOKEN
           resources:
             limits:
               cpu: 200m
