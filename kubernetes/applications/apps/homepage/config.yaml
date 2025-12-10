@@ -199,7 +199,7 @@ data:
             href: https://10.10.0.10:8006
 
         - Local (Dir):
-            icon: nvme.png
+            icon: disk.png
             description: "Local Storage - 220GB (17% used)"
             href: https://10.10.0.10:8006
 
