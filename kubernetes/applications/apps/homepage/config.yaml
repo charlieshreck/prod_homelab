@@ -72,6 +72,13 @@ data:
               password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
 
+        - Plex VM:
+            icon: plex.png
+            description: Plex Media Server VM
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 450
+            proxmoxType: qemu
+
         - TrueNAS:
             icon: truenas.png
             description: TrueNAS Storage Server
