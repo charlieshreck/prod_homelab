@@ -72,11 +72,25 @@ data:
               password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
 
-        - Plex VM:
-            icon: plex.png
-            description: Plex Media Server VM
+        - TrueNAS:
+            icon: truenas.png
+            description: TrueNAS Storage Server
             proxmoxNode: Ruapehu
-            proxmoxVMID: 450
+            proxmoxVMID: 109
+            proxmoxType: qemu
+
+        - UnifiOS:
+            icon: unifi.png
+            description: Ubiquiti Network Controller
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 104
+            proxmoxType: qemu
+
+        - Proxmox Backup Server:
+            icon: proxmox.png
+            description: Backup Server (Stopped)
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 101
             proxmoxType: qemu
 
     - Kubernetes:
@@ -85,24 +99,120 @@ data:
             description: K8s Control Plane Node
             proxmoxNode: Ruapehu
             proxmoxVMID: 400
+            proxmoxType: qemu
 
         - Talos Worker 01:
             icon: kubernetes.png
             description: K8s Worker Node 1
             proxmoxNode: Ruapehu
             proxmoxVMID: 401
+            proxmoxType: qemu
 
         - Talos Worker 02:
             icon: kubernetes.png
             description: K8s Worker Node 2
             proxmoxNode: Ruapehu
             proxmoxVMID: 402
+            proxmoxType: qemu
 
         - Talos Worker 03:
             icon: kubernetes.png
             description: K8s Worker Node 3
             proxmoxNode: Ruapehu
             proxmoxVMID: 403
+            proxmoxType: qemu
+
+    - LXC Containers:
+        - IAC (LXC):
+            icon: linux-server.png
+            description: Infrastructure as Code
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 100
+            proxmoxType: lxc
+
+        - Home Assistant (LXC):
+            icon: home-assistant.png
+            description: Home Automation
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 102
+            proxmoxType: lxc
+
+        - K3s Plexia (LXC):
+            icon: kubernetes.png
+            description: K3s Cluster
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 103
+            proxmoxType: lxc
+
+        - MQTT (LXC):
+            icon: mqtt.png
+            description: Message Broker
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 105
+            proxmoxType: lxc
+
+        - Vaultwarden (LXC):
+            icon: vaultwarden.png
+            description: Password Manager (Stopped)
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 139
+            proxmoxType: lxc
+
+    - Legacy Suites (Stopped):
+        - Arr Suite:
+            icon: docker.png
+            description: Media Management Suite
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 330
+            proxmoxType: qemu
+
+        - Management Suite:
+            icon: docker.png
+            description: Management Tools
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 331
+            proxmoxType: qemu
+
+        - Monitoring Suite:
+            icon: docker.png
+            description: Monitoring Stack
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 332
+            proxmoxType: qemu
+
+    - Proxmox Storage:
+        - Ranginui (ZFS):
+            icon: database.png
+            description: ZFS Pool - 1.8TB
+            href: https://10.10.0.10:8006/#v1:0:=storage%2FRanginui:4:5:::::
+            widget:
+              type: proxmox
+              url: https://10.10.0.10:8006
+              username: root@pam!homepage
+              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              node: Ruapehu
+
+        - Taranaki (ZFS):
+            icon: database.png
+            description: ZFS Pool - 3.6TB (93% full)
+            href: https://10.10.0.10:8006/#v1:0:=storage%2FTaranaki:4:5:::::
+            widget:
+              type: proxmox
+              url: https://10.10.0.10:8006
+              username: root@pam!homepage
+              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              node: Ruapehu
+
+        - Local (Dir):
+            icon: folder.png
+            description: Local Storage - 220GB
+            href: https://10.10.0.10:8006/#v1:0:=storage%2Flocal:4:5:::::
+            widget:
+              type: proxmox
+              url: https://10.10.0.10:8006
+              username: root@pam!homepage
+              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              node: Ruapehu
 
   widgets.yaml: |
     - logo:
