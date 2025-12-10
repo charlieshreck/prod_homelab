@@ -4,6 +4,8 @@ metadata:
   name: argocd
   namespace: argocd
   annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: "ArgoCD"
     gethomepage.dev/description: "GitOps continuous delivery"
@@ -14,10 +16,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - argocd.shreck.co.uk
-      secretName: shreck-co-uk-tls
+        - argocd.kernow.io
+      secretName: argocd-tls
   rules:
-    - host: argocd.shreck.co.uk
+    - host: argocd.kernow.io
       http:
         paths:
           - path: /
