@@ -69,7 +69,7 @@ data:
               type: proxmox
               url: https://10.10.0.10:8006
               username: root@pam!homepage
-              password: d6608a9f-04dd-4604-9949-0cc762621bca
+              password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
 
         - TrueNAS:
@@ -124,7 +124,7 @@ data:
 
     - LXC Containers:
         - IAC (LXC):
-            icon: linux-server.png
+            icon: terraform.png
             description: Infrastructure as Code
             proxmoxNode: Ruapehu
             proxmoxVMID: 100
@@ -138,7 +138,7 @@ data:
             proxmoxType: lxc
 
         - K3s Plexia (LXC):
-            icon: kubernetes.png
+            icon: plex.png
             description: K3s Cluster
             proxmoxNode: Ruapehu
             proxmoxVMID: 103
@@ -182,17 +182,17 @@ data:
 
     - Proxmox Storage:
         - Ranginui (ZFS):
-            icon: database.png
+            icon: openzfs.png
             description: "ZFS Pool - 1.8TB (25% used)"
             href: https://10.10.0.10:8006
 
         - Taranaki (ZFS):
-            icon: database.png
+            icon: openzfs.png
             description: "ZFS Pool - 3.6TB (93% full - WARNING)"
             href: https://10.10.0.10:8006
 
         - Local (Dir):
-            icon: folder.png
+            icon: nvme.png
             description: "Local Storage - 220GB (17% used)"
             href: https://10.10.0.10:8006
 
@@ -230,7 +230,7 @@ data:
     Ruapehu:
       url: https://10.10.0.10:8006
       username: root@pam!homepage
-      password: d6608a9f-04dd-4604-9949-0cc762621bca
+      password: {{HOMEPAGE_VAR_API_TOKEN}}
 
   custom.css: ""
 
