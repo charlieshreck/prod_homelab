@@ -15,19 +15,17 @@ spec:
     spec:
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest
+          image: cloudflare/cloudflared:2025.11.1
           args:
             - tunnel
             - --no-autoupdate
             - run
-            - --token
-            - $(TUNNEL_TOKEN)
           env:
             - name: TUNNEL_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: cloudflare-tunnel-token
-                  key: CLOUDFLARE_TUNNEL_TOKEN
+                  name: cloudflared-tunnel-credentials
+                  key: TUNNEL_TOKEN
           resources:
             limits:
               cpu: 200m

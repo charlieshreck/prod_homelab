@@ -5,5 +5,5 @@ namespace: cloudflared
 
 resources:
   - namespace.yaml
-  - tunnel-token-secret.yaml
+  - resources/infisical-secret.yaml
   - deployment.yaml
