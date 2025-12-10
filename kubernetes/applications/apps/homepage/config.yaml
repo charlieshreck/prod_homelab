@@ -189,12 +189,12 @@ data:
 
     - Proxmox Storage:
         - Ranginui (ZFS):
-            icon: openzfs.png
+            icon: truenas.png
             description: "ZFS Pool - 1.8TB (25% used)"
             href: https://10.10.0.10:8006
 
         - Taranaki (ZFS):
-            icon: openzfs.png
+            icon: truenas.png
             description: "ZFS Pool - 3.6TB (93% full - WARNING)"
             href: https://10.10.0.10:8006
 
