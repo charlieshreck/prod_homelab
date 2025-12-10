@@ -68,8 +68,8 @@ data:
             widget:
               type: proxmox
               url: https://10.10.0.10:8006
-              username: {{HOMEPAGE_VAR_TOKEN_ID}}
-              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              username: "root@pam!homepage"
+              password: "{{HOMEPAGE_VAR_API_TOKEN}}"
               node: Ruapehu
 
         - Plex VM:
@@ -236,8 +236,8 @@ data:
   proxmox.yaml: |
     Ruapehu:
       url: https://10.10.0.10:8006
-      username: {{HOMEPAGE_VAR_TOKEN_ID}}
-      password: {{HOMEPAGE_VAR_API_TOKEN}}
+      username: "root@pam!homepage"
+      password: "{{HOMEPAGE_VAR_API_TOKEN}}"
 
   custom.css: ""
 
