@@ -26,6 +26,11 @@ spec:
           value: "https://karakeep.kernow.io"
         - name: DATA_DIR
           value: "/data"
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: karakeep-secrets
+              key: NEXTAUTH_SECRET
         volumeMounts:
         - name: data
           mountPath: /data
