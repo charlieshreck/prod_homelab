@@ -31,8 +31,9 @@ spec:
             - |
               apk add --no-cache gettext
               cp -rL /tmp/config/* /app/config/
-              # Substitute environment variables in proxmox.yaml
+              # Substitute environment variables in config files
               envsubst < /tmp/config/proxmox.yaml > /app/config/proxmox.yaml
+              envsubst < /tmp/config/services.yaml > /app/config/services.yaml
               chmod -R 755 /app/config
               chown -R 1000:1000 /app/config
           env:
