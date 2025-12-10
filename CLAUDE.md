@@ -10,8 +10,11 @@ This is a production Kubernetes homelab deployment on Proxmox using GitOps princ
 - **GitOps** via ArgoCD for all Kubernetes resources
 - **Secrets management** via Infisical
 - **Multi-network architecture** with dedicated 40GbE internal networks for storage
+- **Dual-ingress pattern** for internal (Traefik) and external (Cloudflare Tunnel) access
 
 **Critical principle**: NEVER make manual infrastructure changes. Everything must be defined in code (Terraform, Ansible, Kubernetes manifests), version controlled, and automated.
+
+**IMPORTANT**: All applications MUST use the dual-ingress pattern. See `docs/DUAL-INGRESS-PATTERN.md` for complete documentation.
 
 ## Architecture
 
@@ -41,6 +44,17 @@ Nvidia Quadro P4000 (PCI 0d:00.0) passed to Plex VM:
 - IOMMU enabled on Proxmox host (`intel_iommu=on iommu=pt`)
 - GPU bound to vfio-pci driver (IDs: `10de:1bb1,10de:10f0`)
 - Plex uses nvidia-container-toolkit for hardware transcoding
+
+### Application Access Pattern
+All applications use a **dual-ingress pattern** for both internal and external access:
+- **Internal (LAN)**: Unbound DNS (`*.kernow.io` → `10.10.0.90`) → Traefik LoadBalancer → Service
+- **External (Internet)**: Cloudflare DNS (CNAME to tunnel) → Cloudflare Tunnel → Service
+
+Each application has TWO ingress resources:
+1. `ingress.yaml` - Traefik ingress class for internal access
+2. `cloudflare-tunnel-ingress.yaml` - Cloudflare-tunnel ingress class for external access
+
+See `docs/DUAL-INGRESS-PATTERN.md` for complete documentation and templates.
 
 ## Repository Structure
 
