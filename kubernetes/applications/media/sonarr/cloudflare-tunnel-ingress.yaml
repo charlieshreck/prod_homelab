@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sonarr-cloudflare
+  namespace: media
+  labels:
+    app: sonarr
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: sonarr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarr
+                port:
+                  number: 8989

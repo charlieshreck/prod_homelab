@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tautulli-cloudflare
+  namespace: media
+  labels:
+    app: tautulli
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: tautulli.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tautulli
+                port:
+                  number: 8181
