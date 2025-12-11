@@ -107,8 +107,8 @@ data:
 
     - proxmox:
         url: https://proxmox.kernow.io
-        username: "{{HOMEPAGE_VAR_TOKEN_ID}}"
-        password: "{{HOMEPAGE_VAR_API_TOKEN}}"
+        username: {{HOMEPAGE_VAR_TOKEN_ID}}
+        password: {{HOMEPAGE_VAR_API_TOKEN}}
         node: ruapehu
 
   docker.yaml: ""
