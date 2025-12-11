@@ -102,7 +102,7 @@ data:
   proxmox.yaml: |
     ruapehu:
       url: https://10.10.0.10:8006
-      token: api@pam!homepage
+      token: root@pam!homepage
       secret: d6608a9f-04dd-4604-9949-0cc762621bca
 
   docker.yaml: ""
