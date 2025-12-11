@@ -117,6 +117,12 @@ data:
         disk: /
         expanded: true
 
+  proxmox.yaml: |
+    ruapehu:
+      url: https://10.10.0.10:8006
+      token: root@pam!homepage
+      secret: {{HOMEPAGE_VAR_API_TOKEN}}
+
   docker.yaml: ""
 
   custom.css: ""
