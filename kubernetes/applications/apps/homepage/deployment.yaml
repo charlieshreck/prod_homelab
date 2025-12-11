@@ -21,7 +21,7 @@ spec:
       dnsPolicy: ClusterFirst
       enableServiceLinks: true
       securityContext:
-        fsGroup: 1000
+        fsGroup: 3000
       initContainers:
         - name: copy-config
           image: busybox:latest
@@ -31,7 +31,7 @@ spec:
             - |
               cp -rL /tmp/config/* /app/config/ && \
               chmod -R 755 /app/config && \
-              chown -R 1000:1000 /app/config
+              chown -R 3000:3000 /app/config
           volumeMounts:
             - name: homepage-config-source
               mountPath: /tmp/config
@@ -117,12 +117,9 @@ spec:
             - name: tarriance
               mountPath: /mnt/tarriance
               readOnly: true
-            - name: pleximetry
-              mountPath: /mnt/pleximetry
-              readOnly: true
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 3000
+            runAsGroup: 3000
           resources:
             requests:
               cpu: 100m
@@ -146,10 +143,6 @@ spec:
           nfs:
             server: 10.40.0.10
             path: /mnt/Taranaki/Tarriance
-        - name: pleximetry
-          nfs:
-            server: 10.40.0.10
-            path: /mnt/Pleximetry/Pleximetry
 ---
 apiVersion: v1
 kind: Service
