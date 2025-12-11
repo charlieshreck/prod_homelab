@@ -82,6 +82,7 @@ data:
               url: https://10.10.0.1:8443
               username: {{HOMEPAGE_VAR_OPNSENSE_API_KEY}}
               password: {{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}
+              wan: Vodafone_WAN
               fields:
                 - cpu
                 - memory
