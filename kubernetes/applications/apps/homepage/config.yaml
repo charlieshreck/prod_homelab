@@ -69,8 +69,8 @@ data:
             widget:
               type: proxmox
               url: https://10.10.0.10:8006
-              username: root@pam!homepage
-              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              username: api@pam!homepage
+              password: 3ebf8192-fa07-4923-9950-d89278580595
               node: ruapehu
 
   widgets.yaml: |
@@ -104,8 +104,8 @@ data:
   proxmox.yaml: |
     ruapehu:
       url: https://10.10.0.10:8006
-      token: root@pam!homepage
-      secret: {{HOMEPAGE_VAR_API_TOKEN}}
+      token: api@pam!homepage
+      secret: 3ebf8192-fa07-4923-9950-d89278580595
 
   docker.yaml: ""
 
