@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: filebrowser
+      annotations:
+        backup.velero.io/backup-volumes-excludes: downloads,tv,movies
     spec:
       securityContext:
         fsGroup: 3000

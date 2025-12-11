@@ -1,0 +1,54 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard - Homelab Infrastructure",
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "description": "Auto-merge all updates (patch, minor, and major)",
+      "matchUpdateTypes": ["patch", "minor", "major"],
+      "automerge": true
+    },
+    {
+      "description": "Group Kubernetes platform updates",
+      "matchManagers": ["kubernetes"],
+      "matchPaths": ["kubernetes/platform/**"],
+      "groupName": "kubernetes-platform"
+    },
+    {
+      "description": "Group application updates",
+      "matchManagers": ["kubernetes"],
+      "matchPaths": ["kubernetes/applications/**"],
+      "groupName": "kubernetes-apps"
+    },
+    {
+      "description": "Group Terraform updates",
+      "matchManagers": ["terraform"],
+      "groupName": "terraform"
+    },
+    {
+      "description": "Group Docker image updates",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "groupName": "docker-images"
+    }
+  ],
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
+  "timezone": "UTC",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 0,
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):",
+  "rebaseWhen": "behind-base-branch",
+  "labels": ["dependencies", "renovate"],
+  "assignees": ["@charlieshreck"]
+}
