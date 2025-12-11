@@ -73,6 +73,88 @@ data:
               password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
 
+        - OPNsense:
+            icon: opnsense.png
+            href: https://opnsense.kernow.io
+            description: Firewall & Router
+            # widget:
+            #   type: opnsense
+            #   url: https://opnsense.kernow.io
+            #   username: {{HOMEPAGE_VAR_OPNSENSE_USER}}
+            #   password: {{HOMEPAGE_VAR_OPNSENSE_PASS}}
+
+        - AdGuard Home:
+            icon: adguardhome.png
+            href: https://adguard.kernow.io
+            description: DNS & Ad Blocker
+            # widget:
+            #   type: adguard
+            #   url: https://adguard.kernow.io
+            #   username: {{HOMEPAGE_VAR_ADGUARD_USER}}
+            #   password: {{HOMEPAGE_VAR_ADGUARD_PASS}}
+
+    - Kubernetes:
+        - Talos Control Plane:
+            icon: talos.png
+            description: Control Plane Node
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 400
+
+        - Talos Worker 01:
+            icon: talos.png
+            description: Worker Node 1
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 401
+
+        - Talos Worker 02:
+            icon: talos.png
+            description: Worker Node 2
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 402
+
+        - Talos Worker 03:
+            icon: talos.png
+            description: Worker Node 3
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 403
+
+    - Storage:
+        - TrueNAS (VM):
+            icon: truenas.png
+            href: https://truenas.kernow.io
+            description: NAS VM
+            proxmoxNode: Ruapehu
+            proxmoxVMID: 109
+            # widget:
+            #   type: truenas
+            #   url: https://truenas.kernow.io
+            #   key: {{HOMEPAGE_VAR_TRUENAS_API_KEY}}
+
+        - Ranginui (ZFS):
+            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bsd_daemon.svg/64px-Bsd_daemon.svg.png
+            description: ZFS Pool - 1.8TB (25% used)
+            href: https://truenas.kernow.io
+
+        - Taranaki (ZFS):
+            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bsd_daemon.svg/64px-Bsd_daemon.svg.png
+            description: ZFS Pool - 3.6TB (93% full)
+            href: https://truenas.kernow.io
+
+        - Plexopathy (NFS):
+            icon: si-plex
+            description: Media Library (NFS Share)
+            href: https://truenas.kernow.io
+
+        - Tarriance (NFS):
+            icon: mdi-folder-network
+            description: Downloads (NFS Share)
+            href: https://truenas.kernow.io
+
+        - Pleximetry (NFS):
+            icon: mdi-harddisk
+            description: HDD Storage (NFS Share)
+            href: https://truenas.hdd.kernow.io
+
   widgets.yaml: |
     - logo:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
