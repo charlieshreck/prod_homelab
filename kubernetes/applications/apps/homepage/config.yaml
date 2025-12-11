@@ -68,9 +68,7 @@ data:
             description: Hypervisor Host
             widget:
               type: proxmox
-              url: https://10.10.0.10:8006
-              username: api@pam!homepage
-              password: 3ebf8192-fa07-4923-9950-d89278580595
+              server: ruapehu
               node: ruapehu
 
   widgets.yaml: |
@@ -105,7 +103,7 @@ data:
     ruapehu:
       url: https://10.10.0.10:8006
       token: api@pam!homepage
-      secret: 3ebf8192-fa07-4923-9950-d89278580595
+      secret: d6608a9f-04dd-4604-9949-0cc762621bca
 
   docker.yaml: ""
 
