@@ -102,13 +102,13 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-opnsense
-                  key: KEY
+                  key: key
                   optional: true
             - name: HOMEPAGE_VAR_OPNSENSE_API_SECRET
               valueFrom:
                 secretKeyRef:
                   name: homepage-opnsense
-                  key: SECRET
+                  key: secret
                   optional: true
             - name: HOMEPAGE_VAR_TOKEN_ID
               valueFrom:
