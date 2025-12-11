@@ -84,7 +84,7 @@ data:
             #   password: {{HOMEPAGE_VAR_OPNSENSE_PASS}}
 
         - AdGuard Home:
-            icon: adguardhome.png
+            icon: mdi-shield-check
             href: https://adguard.kernow.io
             description: DNS & Ad Blocker
             # widget:
@@ -132,12 +132,12 @@ data:
 
         - Ranginui (ZFS):
             icon: mdi-database
-            description: ZFS Pool - 1.8TB NVMe
+            description: VM Storage - 1.8TB NVMe
             href: https://truenas.kernow.io
 
         - Taranaki (ZFS):
             icon: mdi-database
-            description: ZFS Pool - 3.6TB NVMe
+            description: Mayastor Storage - 3.6TB NVMe
             href: https://truenas.kernow.io
 
         - Plexopathy (NFS):
