@@ -50,6 +50,8 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "homepage.kernow.io"
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
             - name: HOMEPAGE_VAR_RADARR_API_KEY
               valueFrom:
                 secretKeyRef:
