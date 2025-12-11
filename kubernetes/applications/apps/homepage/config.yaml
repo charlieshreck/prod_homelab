@@ -127,7 +127,7 @@ data:
             description: NVMe Media Storage
             widget:
               type: truenas
-              url: https://truenas.kernow.io
+              url: https://10.20.0.100
               key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
 
         - Ranginui (ZFS):
@@ -156,7 +156,7 @@ data:
             description: HDD Storage
             widget:
               type: truenas
-              url: https://truenas.hdd.kernow.io
+              url: https://10.20.0.103
               key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
 
   widgets.yaml: |
