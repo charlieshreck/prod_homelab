@@ -8,9 +8,10 @@ data:
     # Loads default set of integrations. Do not remove.
     default_config:
 
-    # External and internal URLs
-    external_url: https://homeassistant.kernow.io
-    internal_url: http://homeassistant.apps.svc.cluster.local:8123
+    # Home Assistant configuration
+    homeassistant:
+      external_url: https://homeassistant.kernow.io
+      internal_url: http://homeassistant.apps.svc.cluster.local:8123
 
     # HTTP Configuration
     http:
