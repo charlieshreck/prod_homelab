@@ -87,11 +87,11 @@ data:
             icon: mdi-shield-check
             href: https://adguard.kernow.io
             description: DNS & Ad Blocker
-            # widget:
-            #   type: adguard
-            #   url: https://adguard.kernow.io
-            #   username: {{HOMEPAGE_VAR_ADGUARD_USER}}
-            #   password: {{HOMEPAGE_VAR_ADGUARD_PASS}}
+            widget:
+              type: adguard
+              url: https://adguard.kernow.io
+              username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+              password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
 
     - Kubernetes:
         - Talos Control Plane:

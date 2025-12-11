@@ -112,6 +112,18 @@ spec:
                   name: homepage-opnsense
                   key: secret
                   optional: true
+            - name: HOMEPAGE_VAR_ADGUARD_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-adguard
+                  key: username
+                  optional: true
+            - name: HOMEPAGE_VAR_ADGUARD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-adguard
+                  key: password
+                  optional: true
             - name: HOMEPAGE_VAR_TOKEN_ID
               valueFrom:
                 secretKeyRef:
