@@ -111,6 +111,15 @@ spec:
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
+            - name: plexopathy
+              mountPath: /mnt/plexopathy
+              readOnly: true
+            - name: tarriance
+              mountPath: /mnt/tarriance
+              readOnly: true
+            - name: pleximetry
+              mountPath: /mnt/pleximetry
+              readOnly: true
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -129,6 +138,18 @@ spec:
           emptyDir: {}
         - name: logs
           emptyDir: {}
+        - name: plexopathy
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Tongariro/Plexopathy
+        - name: tarriance
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Taranaki/Tarriance
+        - name: pleximetry
+          nfs:
+            server: 10.40.0.10
+            path: /mnt/Pleximetry/Pleximetry
 ---
 apiVersion: v1
 kind: Service

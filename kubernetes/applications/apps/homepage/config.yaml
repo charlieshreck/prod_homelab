@@ -132,27 +132,27 @@ data:
 
         - Ranginui (ZFS):
             icon: mdi-database
-            description: ZFS Pool - 1.8TB NVMe (25% used)
+            description: ZFS Pool - 1.8TB NVMe
             href: https://truenas.kernow.io
 
         - Taranaki (ZFS):
             icon: mdi-database
-            description: ZFS Pool - 3.6TB NVMe (93% full)
+            description: ZFS Pool - 3.6TB NVMe
             href: https://truenas.kernow.io
 
         - Plexopathy (NFS):
             icon: si-plex
-            description: Media Library (NFS Share)
+            description: Media Library Share
             href: https://truenas.kernow.io
 
         - Tarriance (NFS):
             icon: mdi-folder-network
-            description: Downloads (NFS Share)
+            description: Downloads Share
             href: https://truenas.kernow.io
 
         - Pleximetry (NFS):
             icon: mdi-harddisk
-            description: HDD Storage (NFS Share)
+            description: HDD Storage Share
             href: https://truenas.hdd.kernow.io
 
   widgets.yaml: |
@@ -181,6 +181,21 @@ data:
         cpu: true
         memory: true
         disk: /
+        expanded: true
+
+    - resources:
+        label: "Plexopathy (Media)"
+        disk: /mnt/plexopathy
+        expanded: true
+
+    - resources:
+        label: "Tarriance (Downloads)"
+        disk: /mnt/tarriance
+        expanded: true
+
+    - resources:
+        label: "Pleximetry (HDD)"
+        disk: /mnt/pleximetry
         expanded: true
 
   proxmox.yaml: |
