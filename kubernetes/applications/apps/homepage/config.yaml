@@ -121,16 +121,14 @@ data:
             proxmoxVMID: 403
 
     - Storage:
-        - TrueNAS (VM):
+        - TrueNAS Media:
             icon: truenas.png
             href: https://truenas.kernow.io
-            description: NAS VM
-            proxmoxNode: Ruapehu
-            proxmoxVMID: 109
-            # widget:
-            #   type: truenas
-            #   url: https://truenas.kernow.io
-            #   key: {{HOMEPAGE_VAR_TRUENAS_API_KEY}}
+            description: NVMe Media Storage
+            widget:
+              type: truenas
+              url: https://truenas.kernow.io
+              key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
 
         - Ranginui (ZFS):
             icon: mdi-database
@@ -152,10 +150,14 @@ data:
             description: Downloads Share
             href: https://truenas.kernow.io
 
-        - Pleximetry (NFS):
-            icon: mdi-harddisk
-            description: HDD Storage Share
+        - TrueNAS HDD:
+            icon: truenas.png
             href: https://truenas.hdd.kernow.io
+            description: HDD Storage
+            widget:
+              type: truenas
+              url: https://truenas.hdd.kernow.io
+              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
 
   widgets.yaml: |
     - logo:

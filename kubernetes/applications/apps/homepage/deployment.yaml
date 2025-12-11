@@ -124,6 +124,18 @@ spec:
                   name: homepage-adguard
                   key: password
                   optional: true
+            - name: HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-truenas-media
+                  key: API_KEY
+                  optional: true
+            - name: HOMEPAGE_VAR_TRUENAS_HDD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-truenas-hdd
+                  key: API_KEY
+                  optional: true
             - name: HOMEPAGE_VAR_TOKEN_ID
               valueFrom:
                 secretKeyRef:
