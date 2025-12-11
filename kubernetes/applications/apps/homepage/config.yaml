@@ -77,11 +77,11 @@ data:
             icon: opnsense.png
             href: https://opnsense.kernow.io
             description: Firewall & Router
-            # widget:
-            #   type: opnsense
-            #   url: https://opnsense.kernow.io
-            #   username: {{HOMEPAGE_VAR_OPNSENSE_USER}}
-            #   password: {{HOMEPAGE_VAR_OPNSENSE_PASS}}
+            widget:
+              type: opnsense
+              url: https://opnsense.kernow.io
+              username: {{HOMEPAGE_VAR_OPNSENSE_API_KEY}}
+              password: {{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}
 
         - AdGuard Home:
             icon: mdi-shield-check
