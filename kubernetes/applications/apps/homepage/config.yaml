@@ -61,6 +61,15 @@ data:
     # Services are now automatically discovered via ingress annotations
     # See gethomepage.dev/enabled annotations on ingress resources
 
+    - Infrastructure:
+        - Proxmox (Ruapehu):
+            icon: proxmox.png
+            href: https://proxmox.kernow.io
+            description: Hypervisor Host
+            widget:
+              type: proxmox
+              fields: ["vms", "lxcs", "resources"]
+
     - Storage:
         - Ranginui (ZFS):
             icon: truenas.png
@@ -105,11 +114,11 @@ data:
         disk: /
         expanded: true
 
-    - proxmox:
-        url: https://proxmox.kernow.io
-        username: {{HOMEPAGE_VAR_TOKEN_ID}}
-        password: {{HOMEPAGE_VAR_API_TOKEN}}
-        node: ruapehu
+  proxmox.yaml: |
+    ruapehu:
+      url: https://proxmox.kernow.io
+      token: {{HOMEPAGE_VAR_TOKEN_ID}}
+      secret: {{HOMEPAGE_VAR_API_TOKEN}}
 
   docker.yaml: ""
 
