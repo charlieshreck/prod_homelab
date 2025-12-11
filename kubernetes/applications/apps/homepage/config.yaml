@@ -90,7 +90,7 @@ data:
             description: DNS & Ad Blocker
             widget:
               type: adguard
-              url: https://adguard.kernow.io
+              url: http://10.10.0.1:3000
               username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
               password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
               fields: ["queries", "blocked", "filtered", "latency"]
