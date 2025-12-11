@@ -131,13 +131,13 @@ data:
             #   key: {{HOMEPAGE_VAR_TRUENAS_API_KEY}}
 
         - Ranginui (ZFS):
-            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bsd_daemon.svg/64px-Bsd_daemon.svg.png
-            description: ZFS Pool - 1.8TB (25% used)
+            icon: mdi-database
+            description: ZFS Pool - 1.8TB NVMe (25% used)
             href: https://truenas.kernow.io
 
         - Taranaki (ZFS):
-            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Bsd_daemon.svg/64px-Bsd_daemon.svg.png
-            description: ZFS Pool - 3.6TB (93% full)
+            icon: mdi-database
+            description: ZFS Pool - 3.6TB NVMe (93% full)
             href: https://truenas.kernow.io
 
         - Plexopathy (NFS):
