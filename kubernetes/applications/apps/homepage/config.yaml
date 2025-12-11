@@ -82,6 +82,7 @@ data:
               url: https://10.10.0.1:8443
               username: {{HOMEPAGE_VAR_OPNSENSE_API_KEY}}
               password: {{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}
+              fields: ["cpu", "memory", "wanUpload", "wanDownload"]
 
         - AdGuard Home:
             icon: mdi-shield-check
@@ -92,6 +93,7 @@ data:
               url: https://adguard.kernow.io
               username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
               password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+              fields: ["queries", "blocked", "filtered", "latency"]
 
     - Kubernetes:
         - Talos Control Plane:
