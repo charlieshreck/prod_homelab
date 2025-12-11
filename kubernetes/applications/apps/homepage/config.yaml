@@ -68,7 +68,7 @@ data:
             description: Hypervisor Host
             widget:
               type: proxmox
-              url: http://10.10.0.10:8006
+              url: https://10.10.0.10:8006
               username: {{HOMEPAGE_VAR_TOKEN_ID}}
               password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: ruapehu
