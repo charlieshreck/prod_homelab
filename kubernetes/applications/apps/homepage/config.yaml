@@ -116,9 +116,9 @@ data:
 
   proxmox.yaml: |
     ruapehu:
-      url: https://proxmox.kernow.io
-      token: {{HOMEPAGE_VAR_TOKEN_ID}}
-      secret: {{HOMEPAGE_VAR_API_TOKEN}}
+      url: http://10.10.0.10:8006
+      token: "{{HOMEPAGE_VAR_TOKEN_ID}}"
+      secret: "{{HOMEPAGE_VAR_API_TOKEN}}"
 
   docker.yaml: ""
 
