@@ -23,6 +23,6 @@ data:
     tts:
       - platform: google_translate
 
-    automation: []
-    script: {}
-    scene: []
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
