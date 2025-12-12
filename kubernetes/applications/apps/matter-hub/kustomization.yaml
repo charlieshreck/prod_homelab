@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - infisical-secret.yaml
   - deployment.yaml
+  - ingress.yaml
+  - cloudflare-tunnel-ingress.yaml

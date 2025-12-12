@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matter-hub
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Matter Hub"
+    gethomepage.dev/description: "Matter bridge for Google Home"
+    gethomepage.dev/group: "Home Services"
+    gethomepage.dev/icon: "mdi-google-home"
+    gethomepage.dev/pod-selector: "app=matter-hub"
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - matter-hub.kernow.io
+    secretName: matter-hub-tls
+  rules:
+  - host: matter-hub.kernow.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: matter-hub
+            port:
+              number: 8482

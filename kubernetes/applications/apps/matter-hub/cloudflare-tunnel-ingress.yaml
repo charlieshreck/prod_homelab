@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matter-hub-cloudflare
+  namespace: apps
+  labels:
+    app: matter-hub
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: matter-hub.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: matter-hub
+                port:
+                  number: 8482
