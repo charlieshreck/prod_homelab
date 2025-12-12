@@ -20,27 +20,10 @@ data:
         - 10.244.0.0/16
 
     # Matter Server Integration
-    matter:
-      url: ws://matter-server.apps.svc.cluster.local:5580/ws
-      # Enable bridge mode - exposes ALL HA entities as Matter devices to Google Home
-      filter:
-        include_domains:
-          - light
-          - switch
-          - climate
-          - lock
-          - cover
-          - fan
-          - binary_sensor
-          - sensor
-          - media_player
-          - camera
-          - vacuum
-          - humidifier
-          - alarm_control_panel
-          - number
-          - select
-          - button
+    # NOTE: Matter integration must be configured via UI (Settings -> Devices & Services)
+    # Add integration: Matter (BETA)
+    # WebSocket URL: ws://matter-server.apps.svc.cluster.local:5580/ws
+    # Bridge mode and filters are configured in the UI after setup
 
     # Text to speech
     tts:
