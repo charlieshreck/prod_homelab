@@ -19,6 +19,29 @@ data:
       trusted_proxies:
         - 10.244.0.0/16
 
+    # Matter Server Integration
+    matter:
+      url: ws://matter-server.apps.svc.cluster.local:5580/ws
+      # Enable bridge mode - exposes ALL HA entities as Matter devices to Google Home
+      filter:
+        include_domains:
+          - light
+          - switch
+          - climate
+          - lock
+          - cover
+          - fan
+          - binary_sensor
+          - sensor
+          - media_player
+          - camera
+          - vacuum
+          - humidifier
+          - alarm_control_panel
+          - number
+          - select
+          - button
+
     # Text to speech
     tts:
       - platform: google_translate
