@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter-hub
+  namespace: apps
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: matter-hub
+  template:
+    metadata:
+      labels:
+        app: matter-hub
+    spec:
+      # hostNetwork required for mDNS discovery by Google Home
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: matter-hub
+        image: ghcr.io/t0bst4r/home-assistant-matter-hub:latest
+        ports:
+        - name: http
+          containerPort: 8482
+          protocol: TCP
+        env:
+        - name: TZ
+          value: "Europe/London"
+        - name: HAMH_HOME_ASSISTANT_URL
+          value: "http://homeassistant.apps.svc.cluster.local:8123"
+        - name: HAMH_HOME_ASSISTANT_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: matter-hub-secrets
+              key: MH_API_KEY
+        - name: HAMH_LOG_LEVEL
+          value: "info"
+        - name: HAMH_HTTP_PORT
+          value: "8482"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        securityContext:
+          privileged: false
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8482
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8482
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: matter-hub-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: matter-hub-data
+  namespace: apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matter-hub
+  namespace: apps
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8482
+    targetPort: 8482
+  selector:
+    app: matter-hub
