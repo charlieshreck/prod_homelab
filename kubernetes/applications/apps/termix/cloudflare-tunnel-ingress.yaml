@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: termix-cloudflare
+  namespace: apps
+  labels:
+    app: termix
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: termix.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: termix
+                port:
+                  number: 80

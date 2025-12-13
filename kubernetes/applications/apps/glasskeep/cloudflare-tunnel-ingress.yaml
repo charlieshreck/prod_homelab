@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: glasskeep-cloudflare
+  namespace: apps
+  labels:
+    app: glasskeep
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: glasskeep.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: glasskeep
+                port:
+                  number: 80
