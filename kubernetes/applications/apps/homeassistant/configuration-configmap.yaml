@@ -19,6 +19,27 @@ data:
       trusted_proxies:
         - 10.244.0.0/16
 
+    # MQTT Binary Sensors - Motion Sensors
+    mqtt:
+      binary_sensor:
+        - name: "Front Door Motion Sensor"
+          state_topic: 'tele/rfbridge/RESULT'
+          value_template: '{{value_json.RfReceived.Data}}'
+          payload_on: "B5ED66"
+          payload_off: "B5ED66off"
+          device_class: motion
+          qos: 1
+          off_delay: 10
+
+        - name: "Garage Motion Sensor"
+          state_topic: 'tele/rfbridge/RESULT'
+          value_template: '{{value_json.RfReceived.Data}}'
+          payload_on: "FCF566"
+          payload_off: "FCF566off"
+          device_class: motion
+          qos: 1
+          off_delay: 10
+
     # Matter Server Integration
     # NOTE: Matter integration must be configured via UI (Settings -> Devices & Services)
     # Add integration: Matter (BETA)
