@@ -27,12 +27,6 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
-        - name: configuration
-          mountPath: /config/configuration.yaml
-          subPath: configuration.yaml
-        - name: lovelace-config
-          mountPath: /config/ui-lovelace.yaml
-          subPath: ui-lovelace.yaml
         resources:
           requests:
             cpu: 200m
@@ -46,12 +40,6 @@ spec:
       - name: config
         persistentVolumeClaim:
           claimName: homeassistant-config
-      - name: configuration
-        configMap:
-          name: homeassistant-configuration
-      - name: lovelace-config
-        configMap:
-          name: homeassistant-lovelace
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
