@@ -36,8 +36,7 @@ data:
         type: remap
         inputs: [parse_logs]
         source: |
-          # Ensure we have stream fields for Victoria Logs
-          .stream = .stream ?? "stdout"
+          # Add stream fields for Victoria Logs from kubernetes metadata
           .namespace = .kubernetes.pod_namespace
           .pod = .kubernetes.pod_name
           .container = .kubernetes.container_name
