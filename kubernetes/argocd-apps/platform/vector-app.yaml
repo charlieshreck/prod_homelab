@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/charlieshreck/homelab-prod.git
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
     path: kubernetes/platform/vector
     targetRevision: main
   destination:
