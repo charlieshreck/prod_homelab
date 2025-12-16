@@ -104,6 +104,21 @@ data:
                 - filtered
                 - latency
 
+        - UniFi Network:
+            icon: unifi.png
+            href: https://unifi.kernow.io
+            description: Network Controller
+            widget:
+              type: unifi
+              url: https://10.10.0.10:8443
+              username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+              password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+              fields:
+                - uptime
+                - wan
+                - lan
+                - wlan
+
     - Kubernetes:
         - Talos Control Plane:
             icon: talos.png
