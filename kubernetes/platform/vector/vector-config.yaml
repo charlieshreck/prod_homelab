@@ -38,10 +38,10 @@ data:
         source: |
           # Ensure we have stream fields for Victoria Logs
           .stream = .stream ?? "stdout"
-          .namespace = .kubernetes.pod_namespace ?? "unknown"
-          .pod = .kubernetes.pod_name ?? "unknown"
-          .container = .kubernetes.container_name ?? "unknown"
-          .node = .kubernetes.pod_node_name ?? "unknown"
+          .namespace = .kubernetes.pod_namespace
+          .pod = .kubernetes.pod_name
+          .container = .kubernetes.container_name
+          .node = .kubernetes.pod_node_name
 
     sinks:
       victoria_logs:
