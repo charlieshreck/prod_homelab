@@ -214,6 +214,158 @@ data:
 
   docker.yaml: ""
 
-  custom.css: ""
+  custom.css: |
+    /* Glassmorphism Theme for Homepage */
+
+    /* Service and Bookmark Cards - Glass Effect */
+    .service-card,
+    .bookmark-card {
+      background: rgba(15, 23, 42, 0.65) !important;
+      backdrop-filter: blur(16px) saturate(180%);
+      border: 1px solid rgba(148, 163, 184, 0.15) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Card Hover State */
+    .service-card:hover,
+    .bookmark-card:hover {
+      background: rgba(30, 41, 59, 0.75) !important;
+      border-color: rgba(148, 163, 184, 0.3) !important;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Widget Cards - Enhanced Glass */
+    .widget-card {
+      background: rgba(15, 23, 42, 0.7) !important;
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148, 163, 184, 0.2) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Search Bar - Glass Effect */
+    .search-container,
+    input[type="text"],
+    input[type="search"] {
+      background: rgba(15, 23, 42, 0.6) !important;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.2) !important;
+      border-radius: 10px !important;
+      color: rgba(241, 245, 249, 0.95) !important;
+    }
+
+    input[type="text"]:focus,
+    input[type="search"]:focus {
+      background: rgba(30, 41, 59, 0.7) !important;
+      border-color: rgba(148, 163, 184, 0.4) !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+    }
+
+    /* Group Headers - Frosted Glass */
+    .service-group-header,
+    .bookmark-group-header {
+      background: rgba(15, 23, 42, 0.5) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15) !important;
+      padding: 12px 16px !important;
+      border-radius: 10px 10px 0 0 !important;
+    }
+
+    /* Sidebar - Glass Panel */
+    .sidebar {
+      background: rgba(15, 23, 42, 0.75) !important;
+      backdrop-filter: blur(24px) saturate(180%);
+      border-right: 1px solid rgba(148, 163, 184, 0.15) !important;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* Status Indicators - Subtle Glow */
+    .status-up {
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.4) !important;
+    }
+
+    .status-down {
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.4) !important;
+    }
+
+    /* Links - Enhanced Readability */
+    a {
+      transition: all 0.2s ease-in-out;
+    }
+
+    a:hover {
+      text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Resource Widgets - Refined Glass */
+    .resource-widget {
+      background: rgba(15, 23, 42, 0.65) !important;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(148, 163, 184, 0.18) !important;
+      border-radius: 12px !important;
+    }
+
+    /* Progress Bars - Glass Accent */
+    .progress-bar {
+      background: rgba(71, 85, 105, 0.3) !important;
+      backdrop-filter: blur(8px);
+      border-radius: 6px !important;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg,
+        rgba(59, 130, 246, 0.8),
+        rgba(37, 99, 235, 0.9)) !important;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Text Contrast Enhancement */
+    h1, h2, h3, h4, h5, h6 {
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    p, span, div {
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Scrollbar - Glass Style */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.3);
+      backdrop-filter: blur(8px);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(71, 85, 105, 0.6);
+      backdrop-filter: blur(4px);
+      border-radius: 5px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.8);
+    }
+
+    /* Smooth Animations */
+    * {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Footer - Keep Hidden for Clean Look */
+    footer {
+      display: none;
+    }
 
   custom.js: ""
