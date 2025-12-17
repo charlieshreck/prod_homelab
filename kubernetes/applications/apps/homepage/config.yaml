@@ -203,6 +203,10 @@ data:
           memory: true
           showLabel: true
 
+    - unifi_controller:
+        url: https://10.10.0.154:11443
+        key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
+
     - resources:
         label: "Homepage Node"
         cpu: true
