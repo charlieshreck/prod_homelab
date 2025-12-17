@@ -28,8 +28,8 @@ data:
       Kubernetes:
         style: row
         columns: 4
-      Storage & Platform:
-        style: row
+      Storage:
+        style: column
         columns: 4
       Media:
         style: row
