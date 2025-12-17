@@ -112,10 +112,9 @@ data:
               type: unifi
               url: https://10.10.0.154:11443
               key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
+              site: default
               fields:
-                - uptime
-                - wan
-                - lan_devices
+                - wlan_users
                 - wlan_devices
 
     - Kubernetes:
@@ -206,6 +205,7 @@ data:
     - unifi_controller:
         url: https://10.10.0.154:11443
         key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
+        site: default
 
     - resources:
         label: "Homepage Node"
