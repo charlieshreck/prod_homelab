@@ -28,7 +28,7 @@ data:
       Kubernetes:
         style: row
         columns: 4
-      Platform Services:
+      Monitoring:
         style: row
         columns: 4
       Media:
@@ -163,7 +163,7 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Platform Services:
+    - Monitoring:
         - Grafana:
             icon: grafana.png
             href: https://grafana.kernow.io
