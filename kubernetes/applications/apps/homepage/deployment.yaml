@@ -168,7 +168,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-grafana
-                  key: password
+                  key: key
                   optional: true
           volumeMounts:
             - name: homepage-config
