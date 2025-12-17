@@ -112,7 +112,6 @@ data:
               type: unifi
               url: https://10.10.0.154:11443
               key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
-              site: default
               fields:
                 - uptime
                 - wlan
@@ -207,7 +206,6 @@ data:
     - unifi_console:
         url: https://10.10.0.154:11443
         key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
-        site: default
 
     - resources:
         label: "Homepage Node"
