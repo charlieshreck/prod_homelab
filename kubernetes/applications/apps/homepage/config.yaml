@@ -115,8 +115,8 @@ data:
               fields:
                 - uptime
                 - wan
-                - lan
-                - wlan
+                - lan_devices
+                - wlan_devices
 
     - Kubernetes:
         - Talos Control Plane:
