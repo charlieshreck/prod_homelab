@@ -28,15 +28,18 @@ data:
       Kubernetes:
         style: row
         columns: 4
-      Platform Services:
+      Storage:
         style: row
         columns: 3
-      Monitoring:
+      Platform Services:
         style: row
         columns: 4
       Media:
         style: row
         columns: 3
+      Monitoring:
+        style: row
+        columns: 4
 
   bookmarks.yaml: |
     - Developer:
@@ -166,80 +169,6 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Platform Services:
-        - ArgoCD:
-            icon: si-argo
-            href: https://argocd.kernow.io
-            description: GitOps Delivery
-            widget:
-              type: argocd
-              url: https://argocd.kernow.io
-              username: admin
-              password: {{HOMEPAGE_VAR_ARGOCD_PASSWORD}}
-
-        - Vaultwarden:
-            icon: vaultwarden.png
-            href: https://vaultwarden.kernow.io
-            description: Password Manager
-
-        - Traefik:
-            icon: traefik.png
-            href: https://traefik.kernow.io/dashboard/
-            description: Ingress Controller
-            widget:
-              type: traefik
-              url: https://traefik.kernow.io
-
-    - Monitoring:
-        - Grafana:
-            icon: grafana.png
-            href: https://grafana.kernow.io
-            description: Metrics Dashboards
-            ping: http://10.30.0.20:30081
-
-        - Prometheus:
-            icon: prometheus.png
-            href: https://prometheus.kernow.io
-            description: Metrics Collection
-            widget:
-              type: prometheus
-              url: http://10.30.0.20:30082
-
-        - VictoriaMetrics:
-            icon: si-prometheus
-            href: https://victoriametrics.kernow.io
-            description: Long-term Metrics Storage
-            ping: http://10.30.0.20:30084
-
-        - VictoriaLogs:
-            icon: mdi-math-log
-            href: https://victorialogs.kernow.io
-            description: Log Aggregation
-            ping: http://10.30.0.20:30085
-
-        - AlertManager:
-            icon: si-prometheus
-            href: https://alertmanager.kernow.io
-            description: Alert Routing
-            ping: http://10.30.0.20:30083
-
-        - Gatus:
-            icon: mdi-check-circle
-            href: https://gatus.kernow.io
-            description: Health Checks
-            widget:
-              type: gatus
-              url: http://10.30.0.20:30086
-
-        - Beszel:
-            icon: mdi-server
-            href: https://beszel.kernow.io
-            description: Host Monitoring
-            widget:
-              type: beszel
-              url: http://10.30.0.20:30087
-              key: {{HOMEPAGE_VAR_BESZEL_KEY}}
-
     - Storage:
         - TrueNAS Media:
             icon: truenas.png
@@ -278,6 +207,83 @@ data:
               type: truenas
               url: https://10.20.0.103
               key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
+
+    - Platform Services:
+        - ArgoCD:
+            icon: si-argo
+            href: https://argocd.kernow.io
+            description: GitOps Delivery
+            widget:
+              type: argocd
+              url: https://argocd.kernow.io
+              fields:
+                - apps
+                - synced
+                - healthy
+                - degraded
+
+        - Vaultwarden:
+            icon: vaultwarden.png
+            href: https://vaultwarden.kernow.io
+            description: Password Manager
+
+        - Traefik:
+            icon: traefik.png
+            href: https://traefik.kernow.io/dashboard/
+            description: Ingress Controller
+            widget:
+              type: traefik
+              url: https://traefik.kernow.io
+
+    - Monitoring:
+        - Grafana:
+            icon: grafana.png
+            href: https://grafana.kernow.io
+            description: Metrics Dashboards
+            ping: http://10.30.0.20:30081
+
+        - Prometheus:
+            icon: prometheus.png
+            href: https://prometheus.kernow.io
+            description: Metrics Collection
+            widget:
+              type: prometheus
+              url: http://10.30.0.20:30082
+
+        - VictoriaMetrics:
+            icon: victoriametrics.png
+            href: https://victoria-metrics.kernow.io
+            description: Time Series Database
+            ping: http://10.30.0.20:30084
+
+        - VictoriaLogs:
+            icon: victoriametrics.png
+            href: https://victoria-logs.kernow.io
+            description: Log Aggregation
+            ping: http://10.30.0.20:30085
+
+        - AlertManager:
+            icon: alertmanager.png
+            href: https://alertmanager.kernow.io
+            description: Alert Routing
+            ping: http://10.30.0.20:30083
+
+        - Gatus:
+            icon: mdi-check-circle
+            href: https://gatus.kernow.io
+            description: Health Checks
+            widget:
+              type: gatus
+              url: http://10.30.0.20:30086
+
+        - Beszel:
+            icon: mdi-server
+            href: https://beszel.kernow.io
+            description: Host Monitoring
+            widget:
+              type: beszel
+              url: http://10.30.0.20:30087
+              key: {{HOMEPAGE_VAR_BESZEL_KEY}}
 
   widgets.yaml: |
     - logo:
