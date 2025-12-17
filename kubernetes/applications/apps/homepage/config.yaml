@@ -30,7 +30,7 @@ data:
         columns: 5
       Storage:
         style: column
-        columns: 4
+        columns: 3
       Media:
         style: row
         columns: 4
@@ -200,27 +200,6 @@ data:
             icon: mdi-folder-network
             description: Downloads Share
             href: https://truenas.kernow.io
-
-        - ArgoCD:
-            icon: si-argo
-            href: https://argocd.kernow.io
-            description: GitOps Delivery
-            widget:
-              type: argocd
-              url: https://argocd.kernow.io
-              fields:
-                - apps
-                - synced
-                - healthy
-                - degraded
-
-        - Traefik:
-            icon: traefik.png
-            href: https://traefik.kernow.io/dashboard/
-            description: Ingress Controller
-            widget:
-              type: traefik
-              url: https://traefik.kernow.io
 
     - Monitoring:
         - Grafana:
