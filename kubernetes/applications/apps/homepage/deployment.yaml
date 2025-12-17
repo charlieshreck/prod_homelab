@@ -152,6 +152,24 @@ spec:
                 secretKeyRef:
                   name: homepage-proxmox
                   key: API_TOKEN
+            - name: HOMEPAGE_VAR_CARRICK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-proxmox-carrick
+                  key: user
+                  optional: true
+            - name: HOMEPAGE_VAR_CARRICK_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-proxmox-carrick
+                  key: token
+                  optional: true
+            - name: HOMEPAGE_VAR_GRAFANA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-grafana
+                  key: password
+                  optional: true
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config

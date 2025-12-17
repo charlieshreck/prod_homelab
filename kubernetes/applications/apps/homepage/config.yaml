@@ -28,6 +28,9 @@ data:
       Kubernetes:
         style: row
         columns: 4
+      Platform Services:
+        style: row
+        columns: 4
       Media:
         style: row
         columns: 3
@@ -72,6 +75,17 @@ data:
               username: root@pam!homepage
               password: {{HOMEPAGE_VAR_API_TOKEN}}
               node: Ruapehu
+
+        - Proxmox (Carrick):
+            icon: proxmox.png
+            href: https://proxmox-carrick.kernow.io
+            description: Monitoring Host
+            widget:
+              type: proxmox
+              url: https://10.30.0.10:8006
+              username: {{HOMEPAGE_VAR_CARRICK_USER}}
+              password: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
+              node: Carrick
 
         - OPNsense:
             icon: opnsense.png
@@ -143,6 +157,91 @@ data:
             proxmoxNode: Ruapehu
             proxmoxVMID: 403
 
+        - Talos Monitor:
+            icon: talos.png
+            description: Monitoring Cluster
+            proxmoxNode: Carrick
+            proxmoxVMID: 200
+
+    - Platform Services:
+        - Grafana:
+            icon: grafana.png
+            href: https://grafana.kernow.io
+            description: Metrics Dashboards
+            widget:
+              type: grafana
+              url: http://10.30.0.20:30081
+              username: admin
+              password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
+
+        - Prometheus:
+            icon: prometheus.png
+            href: https://prometheus.kernow.io
+            description: Metrics Collection
+            widget:
+              type: prometheus
+              url: http://10.30.0.20:30082
+
+        - VictoriaMetrics:
+            icon: si-prometheus
+            href: https://victoriametrics.kernow.io
+            description: Long-term Metrics Storage
+            widget:
+              type: customapi
+              url: http://10.30.0.20:30084/api/v1/status/tsdb
+              mappings:
+                - field:
+                    status: seriesCountByMetricName
+                  label: Series
+
+        - VictoriaLogs:
+            icon: mdi-math-log
+            href: https://victorialogs.kernow.io
+            description: Log Aggregation
+            widget:
+              type: customapi
+              url: http://10.30.0.20:30085/health
+              mappings:
+                - field:
+                    status: ok
+                  label: Status
+
+        - AlertManager:
+            icon: si-prometheus
+            href: https://alertmanager.kernow.io
+            description: Alert Routing
+            widget:
+              type: customapi
+              url: http://10.30.0.20:30083/api/v2/status
+              mappings:
+                - field:
+                    cluster: status
+                  label: Cluster
+
+        - Gatus:
+            icon: mdi-check-circle
+            href: https://gatus.kernow.io
+            description: Health Checks
+            widget:
+              type: customapi
+              url: http://10.30.0.20:30086/api/v1/endpoints/statuses
+              mappings:
+                - field:
+                    results: length
+                  label: Endpoints
+
+        - Beszel:
+            icon: mdi-server
+            href: https://beszel.kernow.io
+            description: Host Monitoring
+            widget:
+              type: customapi
+              url: http://10.30.0.20:30087/api/health
+              mappings:
+                - field:
+                    status: ok
+                  label: Status
+
     - Storage:
         - TrueNAS Media:
             icon: truenas.png
@@ -196,7 +295,20 @@ data:
           cpu: true
           memory: true
           showLabel: true
-          label: "cluster"
+          label: "Application Cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "Monitoring Cluster"
         nodes:
           show: true
           cpu: true
@@ -229,6 +341,11 @@ data:
       url: https://10.10.0.10:8006
       token: root@pam!homepage
       secret: {{HOMEPAGE_VAR_API_TOKEN}}
+
+    Carrick:
+      url: https://10.30.0.10:8006
+      token: {{HOMEPAGE_VAR_CARRICK_USER}}
+      secret: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
 
   docker.yaml: ""
 
