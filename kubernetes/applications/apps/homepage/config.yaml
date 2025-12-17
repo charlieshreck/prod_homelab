@@ -114,6 +114,8 @@ data:
               key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
               site: default
               fields:
+                - uptime
+                - wlan
                 - wlan_users
                 - wlan_devices
 
@@ -202,7 +204,7 @@ data:
           memory: true
           showLabel: true
 
-    - unifi_controller:
+    - unifi_console:
         url: https://10.10.0.154:11443
         key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
         site: default
