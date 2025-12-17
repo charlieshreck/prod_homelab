@@ -28,15 +28,15 @@ data:
       Kubernetes:
         style: row
         columns: 5
-      Storage:
-        style: column
-        columns: 3
       Media:
         style: row
         columns: 4
       Monitoring:
         style: row
         columns: 4
+      Storage:
+        style: column
+        columns: 3
 
   bookmarks.yaml: |
     - Developer:
@@ -162,45 +162,6 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Storage:
-        - TrueNAS Media:
-            icon: truenas.png
-            href: https://truenas.kernow.io
-            description: NVMe Media Storage
-            widget:
-              type: truenas
-              url: https://10.20.0.100
-              key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
-
-        - TrueNAS HDD:
-            icon: truenas.png
-            href: https://truenas.hdd.kernow.io
-            description: HDD Storage
-            widget:
-              type: truenas
-              url: https://10.20.0.103
-              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
-
-        - Ranginui (ZFS):
-            icon: mdi-database
-            description: VM Storage - 1.8TB NVMe
-            href: https://truenas.kernow.io
-
-        - Taranaki (ZFS):
-            icon: mdi-database
-            description: Mayastor Storage - 3.6TB NVMe
-            href: https://truenas.kernow.io
-
-        - Plexopathy (NFS):
-            icon: si-plex
-            description: Media Library Share
-            href: https://truenas.kernow.io
-
-        - Tarriance (NFS):
-            icon: mdi-folder-network
-            description: Downloads Share
-            href: https://truenas.kernow.io
-
     - Monitoring:
         - Grafana:
             icon: grafana.png
@@ -250,6 +211,45 @@ data:
               type: beszel
               url: http://10.30.0.20:30087
               key: {{HOMEPAGE_VAR_BESZEL_KEY}}
+
+    - Storage:
+        - TrueNAS Media:
+            icon: truenas.png
+            href: https://truenas.kernow.io
+            description: NVMe Media Storage
+            widget:
+              type: truenas
+              url: https://10.20.0.100
+              key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
+
+        - TrueNAS HDD:
+            icon: truenas.png
+            href: https://truenas.hdd.kernow.io
+            description: HDD Storage
+            widget:
+              type: truenas
+              url: https://10.20.0.103
+              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
+
+        - Ranginui (ZFS):
+            icon: mdi-database
+            description: VM Storage - 1.8TB NVMe
+            href: https://truenas.kernow.io
+
+        - Taranaki (ZFS):
+            icon: mdi-database
+            description: Mayastor Storage - 3.6TB NVMe
+            href: https://truenas.kernow.io
+
+        - Plexopathy (NFS):
+            icon: si-plex
+            description: Media Library Share
+            href: https://truenas.kernow.io
+
+        - Tarriance (NFS):
+            icon: mdi-folder-network
+            description: Downloads Share
+            href: https://truenas.kernow.io
 
   widgets.yaml: |
     - logo:
