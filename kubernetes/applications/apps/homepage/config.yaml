@@ -227,13 +227,18 @@ data:
             icon: mdi-check-circle
             href: https://gatus.kernow.io
             description: Health Checks
-            ping: http://10.30.0.20:30086
+            widget:
+              type: gatus
+              url: http://10.30.0.20:30086
 
         - Beszel:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
-            ping: http://10.30.0.20:30087
+            widget:
+              type: beszel
+              url: http://10.30.0.20:30087
+              key: {{HOMEPAGE_VAR_BESZEL_KEY}}
 
     - Storage:
         - TrueNAS Media:
