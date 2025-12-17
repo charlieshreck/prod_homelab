@@ -27,13 +27,13 @@ data:
         columns: 3
       Kubernetes:
         style: row
-        columns: 4
+        columns: 5
       Storage:
         style: column
         columns: 4
       Media:
         style: row
-        columns: 3
+        columns: 4
       Monitoring:
         style: row
         columns: 4
@@ -162,7 +162,7 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Storage & Platform:
+    - Storage:
         - TrueNAS Media:
             icon: truenas.png
             href: https://truenas.kernow.io
@@ -171,6 +171,15 @@ data:
               type: truenas
               url: https://10.20.0.100
               key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
+
+        - TrueNAS HDD:
+            icon: truenas.png
+            href: https://truenas.hdd.kernow.io
+            description: HDD Storage
+            widget:
+              type: truenas
+              url: https://10.20.0.103
+              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
 
         - Ranginui (ZFS):
             icon: mdi-database
@@ -192,15 +201,6 @@ data:
             description: Downloads Share
             href: https://truenas.kernow.io
 
-        - TrueNAS HDD:
-            icon: truenas.png
-            href: https://truenas.hdd.kernow.io
-            description: HDD Storage
-            widget:
-              type: truenas
-              url: https://10.20.0.103
-              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
-
         - ArgoCD:
             icon: si-argo
             href: https://argocd.kernow.io
@@ -213,11 +213,6 @@ data:
                 - synced
                 - healthy
                 - degraded
-
-        - Vaultwarden:
-            icon: vaultwarden.png
-            href: https://vaultwarden.kernow.io
-            description: Password Manager
 
         - Traefik:
             icon: traefik.png

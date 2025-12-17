@@ -84,7 +84,7 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Termix
     gethomepage.dev/description: Web SSH Terminal
-    gethomepage.dev/group: Home Services
+    gethomepage.dev/group: Platform Services
     gethomepage.dev/icon: terminal.png
     gethomepage.dev/pod-selector: app=termix
 spec:

@@ -170,6 +170,12 @@ spec:
                   name: homepage-beszel
                   key: key
                   optional: true
+            - name: HOMEPAGE_VAR_ARGOCD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-argocd
+                  key: password
+                  optional: true
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
