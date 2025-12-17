@@ -170,12 +170,6 @@ spec:
                   name: homepage-grafana
                   key: key
                   optional: true
-            - name: HOMEPAGE_VAR_ARGOCD_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: homepage-argocd
-                  key: password
-                  optional: true
             - name: HOMEPAGE_VAR_BESZEL_KEY
               valueFrom:
                 secretKeyRef:
