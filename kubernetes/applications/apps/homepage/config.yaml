@@ -28,10 +28,7 @@ data:
       Kubernetes:
         style: row
         columns: 4
-      Storage:
-        style: row
-        columns: 3
-      Platform Services:
+      Storage & Platform:
         style: row
         columns: 4
       Media:
@@ -47,10 +44,6 @@ data:
             - abbr: GH
               icon: github.png
               href: https://github.com/charlieshreck/prod_homelab
-        - ArgoCD:
-            - abbr: CD
-              icon: si-argo
-              href: https://argocd.kernow.io/
 
     - Management:
         - Traefik:
@@ -89,7 +82,7 @@ data:
             widget:
               type: proxmox
               url: https://10.30.0.10:8006
-              username: {{HOMEPAGE_VAR_CARRICK_USER}}
+              username: root@pam!homepage
               password: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
               node: Carrick
 
@@ -169,7 +162,7 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Storage:
+    - Storage & Platform:
         - TrueNAS Media:
             icon: truenas.png
             href: https://truenas.kernow.io
@@ -208,7 +201,6 @@ data:
               url: https://10.20.0.103
               key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
 
-    - Platform Services:
         - ArgoCD:
             icon: si-argo
             href: https://argocd.kernow.io
@@ -348,7 +340,7 @@ data:
 
     Carrick:
       url: https://10.30.0.10:8006
-      token: {{HOMEPAGE_VAR_CARRICK_USER}}
+      token: root@pam!homepage
       secret: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
 
   docker.yaml: ""
