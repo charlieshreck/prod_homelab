@@ -15,6 +15,8 @@ data:
 
       - name: monitoring
         url: https://10.30.0.20:6443
+        serviceAccountToken: /app/monitoring/token
+        certificate: /app/monitoring/ca
 
   settings.yaml: |
     title: Prod Homelab Dashboard

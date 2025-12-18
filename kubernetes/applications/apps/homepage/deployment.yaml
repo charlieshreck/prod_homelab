@@ -179,6 +179,9 @@ spec:
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
+            - name: monitoring-kubeconfig
+              mountPath: /app/monitoring
+              readOnly: true
             - name: plexopathy
               mountPath: /mnt/plexopathy
               readOnly: true
@@ -203,6 +206,9 @@ spec:
           emptyDir: {}
         - name: logs
           emptyDir: {}
+        - name: monitoring-kubeconfig
+          secret:
+            secretName: homepage-monitoring-kubeconfig
         - name: plexopathy
           nfs:
             server: 10.40.0.10
