@@ -257,6 +257,13 @@ data:
             description: Downloads Share
             href: https://truenas.kernow.io
 
+    - Platform Services:
+        - Coroot:
+            icon: mdi-chart-line
+            href: https://coroot.kernow.io
+            description: eBPF Observability
+            ping: http://10.30.0.20:32702
+
   widgets.yaml: |
     - logo:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
@@ -294,13 +301,6 @@ data:
     - unifi_console:
         url: https://10.10.0.154:11443
         key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
-
-    - resources:
-        label: "Homepage Node"
-        cpu: true
-        memory: true
-        disk: /
-        expanded: true
 
     - resources:
         label: "Plexopathy (Media)"
