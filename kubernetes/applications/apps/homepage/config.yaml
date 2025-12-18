@@ -9,6 +9,13 @@ data:
   kubernetes.yaml: |
     mode: cluster
 
+    clusters:
+      - name: production
+        url: https://10.10.0.40:6443
+
+      - name: monitoring
+        url: https://10.30.0.20:6443
+
   settings.yaml: |
     title: Prod Homelab Dashboard
     background:
