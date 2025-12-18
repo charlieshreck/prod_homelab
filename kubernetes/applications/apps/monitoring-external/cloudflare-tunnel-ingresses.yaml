@@ -206,7 +206,7 @@ metadata:
   annotations:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: "Coroot"
-    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "mdi-chart-line"
     gethomepage.dev/description: "eBPF Observability"
     gethomepage.dev/ping: "http://coroot-external"
