@@ -9,15 +9,6 @@ data:
   kubernetes.yaml: |
     mode: cluster
 
-    clusters:
-      - name: production
-        # In-cluster config - no explicit auth needed
-
-      - name: monitoring
-        url: https://10.30.0.20:6443
-        serviceAccountToken: /app/monitoring/token
-        certificate: /app/monitoring/ca
-
   settings.yaml: |
     title: Prod Homelab Dashboard
     background:
@@ -235,22 +226,7 @@ data:
           cpu: true
           memory: true
           showLabel: true
-          label: "Application Cluster"
-          clusterName: "production"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "Monitoring Cluster"
-          clusterName: "monitoring"
+          label: "Production Cluster"
         nodes:
           show: true
           cpu: true
