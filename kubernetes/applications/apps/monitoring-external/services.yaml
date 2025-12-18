@@ -13,10 +13,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30081
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -30,10 +27,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30082
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -47,10 +41,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30083
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -64,10 +55,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30084
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -81,10 +69,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30085
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -98,10 +83,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30086
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -115,10 +97,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 30087
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20
 ---
 apiVersion: v1
 kind: Service
@@ -132,7 +111,4 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 32702
       protocol: TCP
-  externalIPs:
-    - 10.30.0.20

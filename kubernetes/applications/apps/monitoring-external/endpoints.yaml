@@ -1,0 +1,106 @@
+# Manual endpoints for external services pointing to monitoring cluster NodePorts
+# Required because services with externalIPs but no selector don't auto-create endpoints
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: grafana-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30081
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: prometheus-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30082
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: alertmanager-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30083
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: victoriametrics-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30084
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: victorialogs-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30085
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: gatus-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30086
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: beszel-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 30087
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: coroot-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.30.0.20
+    ports:
+      - name: http
+        port: 32702
+        protocol: TCP
