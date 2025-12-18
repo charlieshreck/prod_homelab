@@ -1,0 +1,209 @@
+# Cloudflare Tunnel ingresses for external monitoring services
+# With Homepage auto-discovery annotations
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Grafana"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "grafana.png"
+    gethomepage.dev/description: "Metrics Dashboards"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: grafana.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Prometheus"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "prometheus.png"
+    gethomepage.dev/description: "Metrics Collection"
+    gethomepage.dev/widget.type: "prometheus"
+    gethomepage.dev/widget.url: "http://prometheus-external"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: prometheus.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: victoriametrics-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "VictoriaMetrics"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "victoriametrics.png"
+    gethomepage.dev/description: "Time Series Database"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: victoria-metrics.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: victoriametrics-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: victorialogs-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "VictoriaLogs"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "victoriametrics.png"
+    gethomepage.dev/description: "Log Aggregation"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: victoria-logs.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: victorialogs-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alertmanager-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "AlertManager"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "alertmanager.png"
+    gethomepage.dev/description: "Alert Routing"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: alertmanager.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: alertmanager-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gatus-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Gatus"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "mdi-check-circle"
+    gethomepage.dev/description: "Health Checks"
+    gethomepage.dev/widget.type: "gatus"
+    gethomepage.dev/widget.url: "http://gatus-external"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: gatus.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gatus-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: beszel-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Beszel"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: "mdi-server"
+    gethomepage.dev/description: "Host Monitoring"
+    gethomepage.dev/widget.type: "beszel"
+    gethomepage.dev/widget.url: "http://beszel-external"
+    gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_BESZEL_KEY}}"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: beszel.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: beszel-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: coroot-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Coroot"
+    gethomepage.dev/group: "Platform Services"
+    gethomepage.dev/icon: "mdi-chart-line"
+    gethomepage.dev/description: "eBPF Observability"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: coroot.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: coroot-external
+                port:
+                  number: 80

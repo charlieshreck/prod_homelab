@@ -177,55 +177,8 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
-    - Monitoring:
-        - Grafana:
-            icon: grafana.png
-            href: https://grafana.kernow.io
-            description: Metrics Dashboards
-            ping: http://10.30.0.20:30081
-
-        - Prometheus:
-            icon: prometheus.png
-            href: https://prometheus.kernow.io
-            description: Metrics Collection
-            widget:
-              type: prometheus
-              url: http://10.30.0.20:30082
-
-        - VictoriaMetrics:
-            icon: victoriametrics.png
-            href: https://victoria-metrics.kernow.io
-            description: Time Series Database
-            ping: http://10.30.0.20:30084
-
-        - VictoriaLogs:
-            icon: victoriametrics.png
-            href: https://victoria-logs.kernow.io
-            description: Log Aggregation
-            ping: http://10.30.0.20:30085
-
-        - AlertManager:
-            icon: alertmanager.png
-            href: https://alertmanager.kernow.io
-            description: Alert Routing
-            ping: http://10.30.0.20:30083
-
-        - Gatus:
-            icon: mdi-check-circle
-            href: https://gatus.kernow.io
-            description: Health Checks
-            widget:
-              type: gatus
-              url: http://10.30.0.20:30086
-
-        - Beszel:
-            icon: mdi-server
-            href: https://beszel.kernow.io
-            description: Host Monitoring
-            widget:
-              type: beszel
-              url: http://10.30.0.20:30087
-              key: {{HOMEPAGE_VAR_BESZEL_KEY}}
+    # Monitoring services auto-discovered via ingress annotations
+    # Widgets configured in ingress annotations
 
     - Storage:
         - TrueNAS Media:
@@ -266,12 +219,7 @@ data:
             description: Downloads Share
             href: https://truenas.kernow.io
 
-    - Platform Services:
-        - Coroot:
-            icon: mdi-chart-line
-            href: https://coroot.kernow.io
-            description: eBPF Observability
-            ping: http://10.30.0.20:32702
+    # Platform Services auto-discovered via ingress annotations
 
   widgets.yaml: |
     - logo:

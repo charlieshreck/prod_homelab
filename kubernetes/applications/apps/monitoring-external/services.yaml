@@ -1,0 +1,138 @@
+# External services pointing to monitoring cluster (10.30.0.20) NodePort services
+# Enables Cloudflare Tunnel routing and Homepage auto-discovery
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: grafana-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30081
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: prometheus-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30082
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: alertmanager-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30083
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: victoriametrics-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: victoriametrics-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30084
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: victorialogs-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: victorialogs-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30085
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gatus-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: gatus-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30086
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beszel-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: beszel-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 30087
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coroot-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: coroot-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 32702
+      protocol: TCP
+  externalIPs:
+    - 10.30.0.20
