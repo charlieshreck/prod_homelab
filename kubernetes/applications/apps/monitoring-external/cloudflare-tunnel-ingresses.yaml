@@ -12,6 +12,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "grafana.png"
     gethomepage.dev/description: "Metrics Dashboards"
+    gethomepage.dev/ping: "http://grafana-external"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -37,6 +38,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "prometheus.png"
     gethomepage.dev/description: "Metrics Collection"
+    gethomepage.dev/ping: "http://prometheus-external"
     gethomepage.dev/widget.type: "prometheus"
     gethomepage.dev/widget.url: "http://prometheus-external"
 spec:
@@ -64,6 +66,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "victoriametrics.png"
     gethomepage.dev/description: "Time Series Database"
+    gethomepage.dev/ping: "http://victoriametrics-external"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -89,6 +92,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "victoriametrics.png"
     gethomepage.dev/description: "Log Aggregation"
+    gethomepage.dev/ping: "http://victorialogs-external"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -114,6 +118,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "alertmanager.png"
     gethomepage.dev/description: "Alert Routing"
+    gethomepage.dev/ping: "http://alertmanager-external"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -139,6 +144,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "mdi-check-circle"
     gethomepage.dev/description: "Health Checks"
+    gethomepage.dev/ping: "http://gatus-external"
     gethomepage.dev/widget.type: "gatus"
     gethomepage.dev/widget.url: "http://gatus-external"
 spec:
@@ -166,6 +172,7 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "mdi-server"
     gethomepage.dev/description: "Host Monitoring"
+    gethomepage.dev/ping: "http://beszel-external"
     gethomepage.dev/widget.type: "beszel"
     gethomepage.dev/widget.url: "http://beszel-external"
     gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_BESZEL_KEY}}"
@@ -194,6 +201,7 @@ metadata:
     gethomepage.dev/group: "Platform Services"
     gethomepage.dev/icon: "mdi-chart-line"
     gethomepage.dev/description: "eBPF Observability"
+    gethomepage.dev/ping: "http://coroot-external"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
