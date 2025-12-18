@@ -284,6 +284,11 @@ data:
           cpu: true
           memory: true
           showLabel: true
+        resources:
+          show: true
+          cpu: true
+          memory: true
+          expanded: true
 
     - kubernetes:
         cluster:
@@ -297,6 +302,11 @@ data:
           cpu: true
           memory: true
           showLabel: true
+        resources:
+          show: true
+          cpu: true
+          memory: true
+          expanded: true
 
     - unifi_console:
         url: https://10.10.0.154:11443
