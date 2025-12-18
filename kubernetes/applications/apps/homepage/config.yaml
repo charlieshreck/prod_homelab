@@ -11,7 +11,7 @@ data:
 
     clusters:
       - name: production
-        # Use in-cluster authentication (Homepage runs in this cluster)
+        # In-cluster config - no explicit auth needed
 
       - name: monitoring
         url: https://10.30.0.20:6443
@@ -236,12 +236,12 @@ data:
           memory: true
           showLabel: true
           label: "Application Cluster"
+          clusterName: "production"
         nodes:
           show: true
           cpu: true
           memory: true
           showLabel: true
-        clusterName: "production"
 
     - kubernetes:
         cluster:
@@ -250,12 +250,12 @@ data:
           memory: true
           showLabel: true
           label: "Monitoring Cluster"
+          clusterName: "monitoring"
         nodes:
           show: true
           cpu: true
           memory: true
           showLabel: true
-        clusterName: "monitoring"
 
     - unifi_console:
         url: https://10.10.0.154:11443
