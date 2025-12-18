@@ -241,6 +241,7 @@ data:
           cpu: true
           memory: true
           showLabel: true
+        clusterName: "production"
 
     - kubernetes:
         cluster:
