@@ -8,3 +8,23 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   url: https://argocd.shreck.co.uk
+  resource.customizations.health.networking.k8s.io_Ingress: |
+    hs = {}
+    hs.status = "Progressing"
+    hs.message = "Waiting for Ingress"
+    if obj.status ~= nil then
+      if obj.status.loadBalancer ~= nil then
+        if obj.status.loadBalancer.ingress ~= nil then
+          hs.status = "Healthy"
+          hs.message = "Ingress has loadBalancer status"
+          return hs
+        end
+      end
+      -- Special case for cloudflare-tunnel ingress class
+      if obj.spec.ingressClassName == "cloudflare-tunnel" then
+        hs.status = "Healthy"
+        hs.message = "Cloudflare Tunnel ingress (no loadBalancer required)"
+        return hs
+      end
+    end
+    return hs
