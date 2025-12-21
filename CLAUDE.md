@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ CRITICAL: GitOps Workflow MANDATORY
+
+**READ THIS FIRST**: `/home/prod_homelab/GITOPS-WORKFLOW.md`
+
+**ALWAYS use GitOps workflow for ALL changes:**
+1. ✅ Commit to git FIRST
+2. ✅ Push to GitHub
+3. ✅ Deploy via Terraform/ArgoCD (automation)
+4. ❌ NEVER manual kubectl apply
+5. ❌ NEVER manual infrastructure changes
+
 ## Project Overview
 
 This is a production Kubernetes homelab deployment on Proxmox using GitOps principles. The infrastructure consists of:
@@ -12,7 +23,7 @@ This is a production Kubernetes homelab deployment on Proxmox using GitOps princ
 - **Multi-network architecture** with dedicated 40GbE internal networks for storage
 - **Dual-ingress pattern** for internal (Traefik) and external (Cloudflare Tunnel) access
 
-**Critical principle**: NEVER make manual infrastructure changes. Everything must be defined in code (Terraform, Ansible, Kubernetes manifests), version controlled, and automated.
+**Critical principle**: NEVER make manual infrastructure changes. Everything must be defined in code (Terraform, Ansible, Kubernetes manifests), version controlled, and automated. See `GITOPS-WORKFLOW.md` for detailed workflow.
 
 **IMPORTANT**: All applications MUST use the dual-ingress pattern. See `docs/DUAL-INGRESS-PATTERN.md` for complete documentation.
 
