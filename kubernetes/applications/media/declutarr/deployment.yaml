@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: declutarr
-        image: ghcr.io/manimatter/decluttarr:latest
+        image: ghcr.io/manimatter/decluttarr:v1.33.0
         env:
         - name: PUID
           value: "3000"
