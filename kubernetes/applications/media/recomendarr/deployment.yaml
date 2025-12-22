@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: recomendarr
-        image: tannermiddleton/recommendarr:1.4.4
+        image: tannermiddleton/recommendarr:latest
         ports:
         - name: http
           containerPort: 3000
