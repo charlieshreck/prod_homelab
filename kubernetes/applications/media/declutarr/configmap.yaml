@@ -38,19 +38,19 @@ data:
 
     instances:
       sonarr:
-        - base_url: "http://sonarr.media.svc.cluster.local:8989"
+        - base_url: "http://sonarr:8989"
           api_key: "9a264758fcd84b36a4321e43620049d4"
       radarr:
-        - base_url: "http://radarr.media.svc.cluster.local:7878"
+        - base_url: "http://radarr:7878"
           api_key: "15df11fd643a435b9b1f61593c10432f"
 
     download_clients:
       transmission:
-        - base_url: "http://transmission.media.svc.cluster.local:9091"
+        - base_url: "http://transmission:9091"
           username: ""
           password: "{1ddd3f1f6a71d655cde7767242a23a575b44c909n5YuRT.f"
           name: "Transmission"
       sabnzbd:
-        - base_url: "http://sabnzbd.media.svc.cluster.local:8080"
+        - base_url: "http://sabnzbd:8080"
           api_key: "7769a52e32cc457ca9c8fc736530ebfe"
           name: "SABnzbd"
