@@ -6,7 +6,7 @@ metadata:
 data:
   settings.yaml: |
     general:
-      log_level: INFO
+      log_level: DEBUG
       test_run: false
       timer: 600  # Run every 10 minutes
 
