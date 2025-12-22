@@ -47,20 +47,6 @@ spec:
           name: declutarr-config
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: declutarr
-  namespace: media
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 11011
-    targetPort: 11011
-  selector:
-    app: declutarr
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: declutarr-config

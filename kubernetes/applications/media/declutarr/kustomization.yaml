@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - configmap.yaml
   - deployment.yaml
-  - ingress.yaml
-  - cloudflare-tunnel-ingress.yaml
