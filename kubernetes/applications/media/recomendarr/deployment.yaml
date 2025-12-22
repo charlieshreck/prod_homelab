@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recomendarr
+  namespace: media
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: recomendarr
+  template:
+    metadata:
+      labels:
+        app: recomendarr
+    spec:
+      containers:
+      - name: recomendarr
+        image: ghcr.io/linuxserver/recomendarr:latest
+        ports:
+        - name: http
+          containerPort: 7979
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: recomendarr-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recomendarr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 7979
+    targetPort: 7979
+  selector:
+    app: recomendarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: recomendarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 1Gi

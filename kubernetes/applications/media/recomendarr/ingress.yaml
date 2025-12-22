@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: recomendarr
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Recomendarr"
+    gethomepage.dev/description: "Media recommendations"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "mdi-star-outline"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - recomendarr.kernow.io
+      secretName: kernow-io-tls
+  rules:
+    - host: recomendarr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: recomendarr
+                port:
+                  number: 7979
