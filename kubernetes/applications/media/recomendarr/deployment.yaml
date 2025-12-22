@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: recomendarr
-        image: ghcr.io/linuxserver/recomendarr:latest
+        image: ghcr.io/hotio/recomendarr:latest
         ports:
         - name: http
           containerPort: 7979
