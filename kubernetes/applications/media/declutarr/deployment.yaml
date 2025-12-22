@@ -68,7 +68,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: mayastor-3-replica
-  volumeName: pvc-f8123b69-f095-4c83-a5f4-593f2a89d304
   resources:
     requests:
       storage: 1Gi
