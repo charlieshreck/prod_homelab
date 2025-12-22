@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cleanuparr
+  name: declutarr
   namespace: media
 spec:
   replicas: 1
@@ -9,15 +9,15 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: cleanuparr
+      app: declutarr
   template:
     metadata:
       labels:
-        app: cleanuparr
+        app: declutarr
     spec:
       containers:
-      - name: cleanuparr
-        image: ghcr.io/cleanuparr/cleanuparr:latest
+      - name: declutarr
+        image: ghcr.io/manimatter/decluttarr:v2.0.0
         ports:
         - name: http
           containerPort: 11011
@@ -43,12 +43,12 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: cleanuparr-config
+          claimName: declutarr-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cleanuparr
+  name: declutarr
   namespace: media
 spec:
   type: ClusterIP
@@ -57,12 +57,12 @@ spec:
     port: 11011
     targetPort: 11011
   selector:
-    app: cleanuparr
+    app: declutarr
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cleanuparr-config
+  name: declutarr-config
   namespace: media
 spec:
   accessModes:

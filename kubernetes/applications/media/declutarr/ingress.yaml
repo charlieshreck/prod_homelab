@@ -1,30 +1,30 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cleanuparr
+  name: declutarr
   namespace: media
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Cleanuparr"
+    gethomepage.dev/name: "Declutarr"
     gethomepage.dev/description: "Media cleanup automation"
     gethomepage.dev/group: "Media"
     gethomepage.dev/icon: "si-sonarr"
-    gethomepage.dev/pod-selector: "app=cleanuparr"
+    gethomepage.dev/pod-selector: "app=declutarr"
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - cleanuparr.kernow.io
+        - declutarr.kernow.io
       secretName: kernow-io-tls
   rules:
-    - host: cleanuparr.kernow.io
+    - host: declutarr.kernow.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: cleanuparr
+                name: declutarr
                 port:
                   number: 11011

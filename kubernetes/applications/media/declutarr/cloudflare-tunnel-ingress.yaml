@@ -1,20 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cleanuparr-cloudflare
+  name: declutarr-cloudflare
   namespace: media
   labels:
-    app: cleanuparr
+    app: declutarr
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
-    - host: cleanuparr.kernow.io
+    - host: declutarr.kernow.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: cleanuparr
+                name: declutarr
                 port:
                   number: 11011
