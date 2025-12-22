@@ -18,12 +18,7 @@ spec:
       containers:
       - name: declutarr
         image: ghcr.io/manimatter/decluttarr:latest
-        ports:
-        - name: http
-          containerPort: 11011
         env:
-        - name: PORT
-          value: "11011"
         - name: PUID
           value: "3000"
         - name: PGID
