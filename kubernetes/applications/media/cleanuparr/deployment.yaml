@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: declutarr
+  name: cleanuparr
   namespace: media
 spec:
   replicas: 1
@@ -9,16 +9,21 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: declutarr
+      app: cleanuparr
   template:
     metadata:
       labels:
-        app: declutarr
+        app: cleanuparr
     spec:
       containers:
-      - name: declutarr
-        image: ghcr.io/manimatter/decluttarr:v1.33.0
+      - name: cleanuparr
+        image: ghcr.io/cleanuparr/cleanuparr:latest
+        ports:
+        - name: http
+          containerPort: 11011
         env:
+        - name: PORT
+          value: "11011"
         - name: PUID
           value: "3000"
         - name: PGID
@@ -28,9 +33,6 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
-        - name: settings
-          mountPath: /config/settings.yaml
-          subPath: settings.yaml
         resources:
           requests:
             cpu: 50m
@@ -41,15 +43,26 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: declutarr-config
-      - name: settings
-        configMap:
-          name: declutarr-config
+          claimName: cleanuparr-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cleanuparr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 11011
+    targetPort: 11011
+  selector:
+    app: cleanuparr
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: declutarr-config
+  name: cleanuparr-config
   namespace: media
 spec:
   accessModes:
