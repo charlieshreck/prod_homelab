@@ -17,10 +17,10 @@ spec:
     spec:
       containers:
       - name: recomendarr
-        image: ghcr.io/hotio/recomendarr:latest
+        image: tannermiddleton/recommendarr:1.4.4
         ports:
         - name: http
-          containerPort: 7979
+          containerPort: 3000
         env:
         - name: PUID
           value: "3000"
@@ -52,8 +52,8 @@ spec:
   type: ClusterIP
   ports:
   - name: http
-    port: 7979
-    targetPort: 7979
+    port: 3000
+    targetPort: 3000
   selector:
     app: recomendarr
 ---

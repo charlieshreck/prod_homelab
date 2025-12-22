@@ -17,4 +17,4 @@ spec:
               service:
                 name: recomendarr
                 port:
-                  number: 7979
+                  number: 3000
