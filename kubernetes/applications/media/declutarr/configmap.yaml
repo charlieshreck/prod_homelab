@@ -8,33 +8,7 @@ data:
     general:
       log_level: DEBUG
       test_run: false
-      timer: 600  # Run every 10 minutes
-
-    job_defaults:
-      max_strikes: 3
-      min_days_between_searches: 7
-      max_concurrent_searches: 3
-
-    jobs:
-      remove_bad_files:
-      remove_done_seeding:
-      remove_failed_downloads:
-      remove_failed_imports:
-        message_patterns:
-          - "Not a Custom Format upgrade for existing*"
-          - "Not an upgrade for existing*"
-          - "*Found potentially dangerous file with extension*"
-          - "Invalid video file*"
-          - "No files found are eligible for import*"
-          - "One or more episodes expected in this release were not imported or missing from the release"
-      remove_metadata_missing:
-      remove_missing_files:
-      remove_orphans:
-      remove_slow:
-      remove_stalled:
-      remove_unmonitored:
-      search_unmet_cutoff:
-      search_missing:
+      timer: 600
 
     instances:
       sonarr:
@@ -45,12 +19,5 @@ data:
           api_key: "15df11fd643a435b9b1f61593c10432f"
 
     download_clients:
-      transmission:
+      qbittorrent:
         - base_url: "http://transmission:9091"
-          username: ""
-          password: "{1ddd3f1f6a71d655cde7767242a23a575b44c909n5YuRT.f"
-          name: "Transmission"
-      sabnzbd:
-        - base_url: "http://sabnzbd:8080"
-          api_key: "7769a52e32cc457ca9c8fc736530ebfe"
-          name: "SABnzbd"
