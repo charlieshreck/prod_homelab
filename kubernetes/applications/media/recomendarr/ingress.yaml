@@ -10,6 +10,8 @@ metadata:
     gethomepage.dev/description: "Media recommendations"
     gethomepage.dev/group: "Media"
     gethomepage.dev/icon: "mdi-star-outline"
+    gethomepage.dev/pod-selector: "app=recomendarr"
+    gethomepage.dev/href: "https://recomendarr.kernow.io"
 spec:
   ingressClassName: traefik
   tls:

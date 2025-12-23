@@ -10,6 +10,8 @@ metadata:
     gethomepage.dev/description: "Media request and discovery"
     gethomepage.dev/group: "Media"
     gethomepage.dev/icon: "mdi-movie-search"
+    gethomepage.dev/pod-selector: "app=reiverr"
+    gethomepage.dev/href: "https://reiverr.kernow.io"
 spec:
   ingressClassName: traefik
   tls:
