@@ -34,38 +34,29 @@ spec:
         - name: DN_API_KEY
           valueFrom:
             secretKeyRef:
-              name: notifiarr-config
+              name: notifiarr-api
               key: DN_API_KEY
         - name: DN_RADARR_0_URL
-          valueFrom:
-            secretKeyRef:
-              name: notifiarr-config
-              key: DN_RADARR_0_URL
+          value: "http://radarr.media.svc.cluster.local:7878"
         - name: DN_RADARR_0_API_KEY
           valueFrom:
             secretKeyRef:
-              name: notifiarr-config
-              key: DN_RADARR_0_API_KEY
+              name: radarr-credentials
+              key: API_KEY
         - name: DN_SONARR_0_URL
-          valueFrom:
-            secretKeyRef:
-              name: notifiarr-config
-              key: DN_SONARR_0_URL
+          value: "http://sonarr.media.svc.cluster.local:8989"
         - name: DN_SONARR_0_API_KEY
           valueFrom:
             secretKeyRef:
-              name: notifiarr-config
-              key: DN_SONARR_0_API_KEY
+              name: sonarr-credentials
+              key: API_KEY
         - name: DN_PROWLARR_0_URL
-          valueFrom:
-            secretKeyRef:
-              name: notifiarr-config
-              key: DN_PROWLARR_0_URL
+          value: "http://prowlarr.media.svc.cluster.local:9696"
         - name: DN_PROWLARR_0_API_KEY
           valueFrom:
             secretKeyRef:
-              name: notifiarr-config
-              key: DN_PROWLARR_0_API_KEY
+              name: prowlarr-credentials
+              key: API_KEY
         volumeMounts:
         - name: config
           mountPath: /config

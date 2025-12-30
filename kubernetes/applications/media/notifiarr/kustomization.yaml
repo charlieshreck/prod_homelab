@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: media
 
 resources:
-  - infisical-secret.yaml
+  - infisical-secrets.yaml
   - deployment.yaml
   - ingress.yaml
   - cloudflare-tunnel-ingress.yaml
