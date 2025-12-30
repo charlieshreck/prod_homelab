@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: notifiarr
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Notifiarr"
+    gethomepage.dev/description: "Notification integration"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "notifiarr.png"
+    gethomepage.dev/pod-selector: "app=notifiarr"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - notifiarr.kernow.io
+      secretName: kernow-io-tls
+  rules:
+    - host: notifiarr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: notifiarr
+                port:
+                  number: 5454

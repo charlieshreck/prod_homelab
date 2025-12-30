@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifiarr
+  namespace: media
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: notifiarr
+  template:
+    metadata:
+      labels:
+        app: notifiarr
+      annotations:
+        backup.velero.io/backup-volumes: config
+    spec:
+      hostname: notifiarr
+      containers:
+      - name: notifiarr
+        image: golift/notifiarr:latest
+        ports:
+        - name: http
+          containerPort: 5454
+        env:
+        - name: PUID
+          value: "3000"
+        - name: PGID
+          value: "3000"
+        - name: TZ
+          value: "Europe/London"
+        - name: DN_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_API_KEY
+        - name: DN_RADARR_0_URL
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_RADARR_0_URL
+        - name: DN_RADARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_RADARR_0_API_KEY
+        - name: DN_SONARR_0_URL
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_SONARR_0_URL
+        - name: DN_SONARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_SONARR_0_API_KEY
+        - name: DN_PROWLARR_0_URL
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_PROWLARR_0_URL
+        - name: DN_PROWLARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-config
+              key: DN_PROWLARR_0_API_KEY
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: notifiarr-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifiarr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 5454
+    targetPort: 5454
+  selector:
+    app: notifiarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: notifiarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 2Gi
