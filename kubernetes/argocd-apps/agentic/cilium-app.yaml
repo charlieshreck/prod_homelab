@@ -10,11 +10,24 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/charlieshreck/agentic_lab.git
-    targetRevision: main
-    path: kubernetes/platform/cilium
+    chart: cilium
+    repoURL: https://helm.cilium.io/
+    targetRevision: 1.16.5
+    helm:
+      values: |
+        ipam:
+          mode: kubernetes
+        kubeProxyReplacement: true
+        k8sServiceHost: 10.20.0.40
+        k8sServicePort: 6443
+        hubble:
+          enabled: true
+          relay:
+            enabled: true
+          ui:
+            enabled: true
   destination:
-    server: https://10.20.0.40:6443  # Agentic cluster
+    server: https://10.20.0.40:6443
     namespace: kube-system
   syncPolicy:
     automated:
@@ -22,10 +35,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: cilium-config
-      jsonPointers:
-        - /data
