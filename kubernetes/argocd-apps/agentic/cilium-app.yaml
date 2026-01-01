@@ -18,14 +18,16 @@ spec:
         ipam:
           mode: kubernetes
         kubeProxyReplacement: true
-        k8sServiceHost: 10.20.0.40
-        k8sServicePort: 6443
+        k8sServiceHost: localhost
+        k8sServicePort: 7445
         hubble:
           enabled: true
           relay:
             enabled: true
           ui:
             enabled: true
+        securityContext:
+          privileged: true
   destination:
     server: https://10.20.0.40:6443
     namespace: kube-system
