@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium-agentic
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/charlieshreck/agentic_lab.git
+    targetRevision: main
+    path: kubernetes/platform/cilium
+    directory:
+      recurse: true
+  destination:
+    server: https://10.20.0.40:6443  # Agentic cluster
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: cilium-config
+      jsonPointers:
+        - /data
