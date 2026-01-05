@@ -1,22 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: qdrant-agentic
+  name: agentic-applications
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
     repoURL: https://github.com/charlieshreck/agentic_lab.git
     targetRevision: main
-    path: kubernetes/applications/qdrant
+    path: kubernetes/argocd-apps
   destination:
     server: https://10.20.0.40:6443
-    namespace: ai-platform
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
