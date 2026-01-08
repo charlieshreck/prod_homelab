@@ -12,29 +12,46 @@
   "packageRules": [
     {
       "description": "Auto-merge all updates (patch, minor, and major)",
-      "matchUpdateTypes": ["patch", "minor", "major"],
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "major"
+      ],
       "automerge": true
     },
     {
       "description": "Group Kubernetes platform updates",
-      "matchManagers": ["kubernetes"],
-      "matchPaths": ["kubernetes/platform/**"],
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "matchFileNames": [
+        "kubernetes/platform/**"
+      ],
       "groupName": "kubernetes-platform"
     },
     {
       "description": "Group application updates",
-      "matchManagers": ["kubernetes"],
-      "matchPaths": ["kubernetes/applications/**"],
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "matchFileNames": [
+        "kubernetes/applications/**"
+      ],
       "groupName": "kubernetes-apps"
     },
     {
       "description": "Group Terraform updates",
-      "matchManagers": ["terraform"],
+      "matchManagers": [
+        "terraform"
+      ],
       "groupName": "terraform"
     },
     {
       "description": "Group Docker image updates",
-      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchManagers": [
+        "dockerfile",
+        "docker-compose"
+      ],
       "groupName": "docker-images"
     }
   ],
@@ -49,6 +66,11 @@
   "semanticCommits": "enabled",
   "commitMessagePrefix": "chore(deps):",
   "rebaseWhen": "behind-base-branch",
-  "labels": ["dependencies", "renovate"],
-  "assignees": ["@charlieshreck"]
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "assignees": [
+    "@charlieshreck"
+  ]
 }
