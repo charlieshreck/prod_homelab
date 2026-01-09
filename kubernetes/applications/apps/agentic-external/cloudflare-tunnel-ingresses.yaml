@@ -1,0 +1,77 @@
+# Cloudflare Tunnel ingresses for agentic cluster services
+# With Homepage auto-discovery annotations
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matrix-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Matrix"
+    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/icon: "matrix.png"
+    gethomepage.dev/description: "Matrix/Conduit Server"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: matrix.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: matrix-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netbox-agentic-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "NetBox (Agentic)"
+    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/icon: "netbox.png"
+    gethomepage.dev/description: "Network DCIM"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: netbox-agentic.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: netbox-agentic-external
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: langgraph-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "LangGraph"
+    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/icon: "mdi-graph"
+    gethomepage.dev/description: "AI Orchestration"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: langgraph.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: langgraph-external
+                port:
+                  number: 80

@@ -1,0 +1,44 @@
+# External services pointing to agentic cluster (10.20.0.40) NodePort services
+# Enables Cloudflare Tunnel routing and Homepage auto-discovery
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: matrix-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbox-agentic-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: netbox-agentic-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: langgraph-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: langgraph-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP

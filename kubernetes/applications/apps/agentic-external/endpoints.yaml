@@ -1,0 +1,41 @@
+# Manual endpoints for external services pointing to agentic cluster NodePorts
+# Required because services with no selector don't auto-create endpoints
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: matrix-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 30167
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: netbox-agentic-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 30080
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: langgraph-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 30800
+        protocol: TCP
