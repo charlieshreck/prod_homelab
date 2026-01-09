@@ -12,6 +12,8 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "matrix.png"
     gethomepage.dev/description: "Matrix/Conduit Server"
+    gethomepage.dev/ping: "http://matrix-external"
+    gethomepage.dev/pod-selector: ""
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -37,6 +39,8 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "netbox.png"
     gethomepage.dev/description: "Network DCIM"
+    gethomepage.dev/ping: "http://netbox-agentic-external"
+    gethomepage.dev/pod-selector: ""
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -62,6 +66,8 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "mdi-graph"
     gethomepage.dev/description: "AI Orchestration"
+    gethomepage.dev/ping: "http://langgraph-external"
+    gethomepage.dev/pod-selector: ""
 spec:
   ingressClassName: cloudflare-tunnel
   rules:

@@ -8,6 +8,17 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
+    clusters:
+      - name: production
+        url: https://10.10.0.40:6443
+      - name: monitoring
+        url: https://10.30.0.20:6443
+        serviceAccountToken: /app/monitoring/token
+        certificate: /app/monitoring/ca
+      - name: agentic
+        url: https://10.20.0.40:6443
+        serviceAccountToken: /app/agentic/token
+        certificate: /app/agentic/ca
 
   settings.yaml: |
     title: Prod Homelab Dashboard
@@ -34,6 +45,9 @@ data:
       Monitoring:
         style: row
         columns: 4
+      Agentic:
+        style: row
+        columns: 3
       Home Services:
         style: column
         columns: 3
@@ -64,6 +78,10 @@ data:
             - abbr: IS
               icon: infisical.png
               href: https://app.infisical.com/
+        - Element Web:
+            - abbr: EL
+              icon: element.png
+              href: https://app.element.io/#/login
 
   services.yaml: |
     # Services are now automatically discovered via ingress annotations

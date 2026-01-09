@@ -182,6 +182,9 @@ spec:
             - name: monitoring-kubeconfig
               mountPath: /app/monitoring
               readOnly: true
+            - name: agentic-kubeconfig
+              mountPath: /app/agentic
+              readOnly: true
             - name: plexopathy
               mountPath: /mnt/plexopathy
               readOnly: true
@@ -209,6 +212,9 @@ spec:
         - name: monitoring-kubeconfig
           secret:
             secretName: homepage-monitoring-kubeconfig
+        - name: agentic-kubeconfig
+          secret:
+            secretName: homepage-agentic-kubeconfig
         - name: plexopathy
           nfs:
             server: 10.40.0.10
