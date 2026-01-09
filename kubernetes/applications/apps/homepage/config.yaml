@@ -186,6 +186,11 @@ data:
             proxmoxNode: Carrick
             proxmoxVMID: 200
 
+        - Talos Agentic:
+            icon: talos.png
+            description: Agentic AI Cluster
+            href: https://10.20.0.40:6443
+
     # Monitoring services auto-discovered via ingress annotations
     # Widgets configured in ingress annotations
 
