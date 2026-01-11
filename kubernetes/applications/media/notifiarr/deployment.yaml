@@ -70,10 +70,10 @@ spec:
             secretKeyRef:
               name: transmission-credentials
               key: TRANSMISSION_RPC_PASSWORD
-        # Tautulli integration
-        - name: DN_TAUTULLI_0_URL
+        # Tautulli integration (only 1 instance supported - no _0_ index)
+        - name: DN_TAUTULLI_URL
           value: "http://tautulli.media.svc.cluster.local:8181"
-        - name: DN_TAUTULLI_0_API_KEY
+        - name: DN_TAUTULLI_API_KEY
           valueFrom:
             secretKeyRef:
               name: tautulli-credentials
