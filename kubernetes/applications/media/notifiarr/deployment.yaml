@@ -57,6 +57,19 @@ spec:
             secretKeyRef:
               name: prowlarr-credentials
               key: API_KEY
+        # Transmission integration
+        - name: DN_TRANSMISSION_0_URL
+          value: "http://transmission.media.svc.cluster.local:9091"
+        - name: DN_TRANSMISSION_0_USER
+          valueFrom:
+            secretKeyRef:
+              name: transmission-credentials
+              key: TRANSMISSION_RPC_USERNAME
+        - name: DN_TRANSMISSION_0_PASS
+          valueFrom:
+            secretKeyRef:
+              name: transmission-credentials
+              key: TRANSMISSION_RPC_PASSWORD
         volumeMounts:
         - name: config
           mountPath: /config
