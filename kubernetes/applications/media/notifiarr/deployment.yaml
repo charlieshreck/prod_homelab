@@ -70,6 +70,14 @@ spec:
             secretKeyRef:
               name: transmission-credentials
               key: TRANSMISSION_RPC_PASSWORD
+        # Tautulli integration
+        - name: DN_TAUTULLI_0_URL
+          value: "http://tautulli.media.svc.cluster.local:8181"
+        - name: DN_TAUTULLI_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tautulli-credentials
+              key: API_KEY
         volumeMounts:
         - name: config
           mountPath: /config
