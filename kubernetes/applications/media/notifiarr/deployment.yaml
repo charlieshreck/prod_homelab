@@ -59,7 +59,7 @@ spec:
               key: API_KEY
         # Transmission integration
         - name: DN_TRANSMISSION_0_URL
-          value: "http://transmission.media.svc.cluster.local:9091"
+          value: "http://transmission.media.svc.cluster.local:9091/transmission/rpc"
         - name: DN_TRANSMISSION_0_USER
           valueFrom:
             secretKeyRef:
