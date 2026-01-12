@@ -1,0 +1,6 @@
+---
+# Handlers for unifi-os role
+
+- name: Restart UniFi OS
+  command: "{{ unifi_service_restart }}"
+  become: true

@@ -1,0 +1,28 @@
+---
+# Default variables for unifi-os role
+
+# UniFi OS Server Version
+# Get latest from: https://community.ui.com/releases
+unifi_version: "4.2.23"
+
+# System Configuration
+unifi_timezone: Europe/London
+
+# Swap Configuration (recommended for stability)
+unifi_swap_size: "2G"
+unifi_swap_enabled: true
+
+# Installer download URL
+# Note: Ubiquiti URLs require unique UUID identifiers per version
+# Get direct URL from: https://ui.com/download/software/unifi-os-server (right-click copy link)
+unifi_installer_url: "https://fw-download.ubnt.com/data/unifi-os-server/8b93-linux-x64-4.2.23-158fa00b-6b2c-4cd8-94ea-e92bc4a81369.23-x64"
+
+# Service management commands
+unifi_service_start: "uosserver start"
+unifi_service_stop: "uosserver stop"
+unifi_service_restart: "uosserver restart"
+
+# Ports (for reference)
+unifi_web_port: 11443
+unifi_inform_port: 8080
+unifi_stun_port: 3478

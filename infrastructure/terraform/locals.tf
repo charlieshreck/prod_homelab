@@ -11,6 +11,8 @@ locals {
 
   plex_mac = "52:54:00:10:10:50"
 
+  unifi_mac = "52:54:00:10:10:51"
+
   # Worker IP allocations (triple-NIC)
   # eth0 (vmbr0): Management network (10.10.0.x)
   # eth1 (vmbr3): TrueNAS NFS network (10.40.0.x)
@@ -33,6 +35,11 @@ locals {
   # Plex VM configuration
   plex_config = merge(var.plex_vm, {
     mac_address = local.plex_mac
+  })
+
+  # UniFi VM configuration
+  unifi_config = merge(var.unifi_vm, {
+    mac_address = local.unifi_mac
   })
 
   # Cluster endpoint (control plane IP)

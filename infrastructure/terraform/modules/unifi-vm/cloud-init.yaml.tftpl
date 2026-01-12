@@ -1,0 +1,41 @@
+#cloud-config
+hostname: ${hostname}
+manage_etc_hosts: true
+
+# Enable root login with password
+ssh_pwauth: true
+disable_root: false
+chpasswd:
+  expire: false
+
+users:
+  - name: ${username}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    lock_passwd: false
+    plain_text_passwd: ${password}
+%{ if length(ssh_keys) > 0 ~}
+    ssh_authorized_keys:
+%{ for key in ssh_keys ~}
+      - ${key}
+%{ endfor ~}
+%{ endif ~}
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - qemu-guest-agent
+  - curl
+  - wget
+  - vim
+  - net-tools
+
+runcmd:
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent
+  - echo "Cloud-init setup complete" > /var/log/cloud-init-done.log
+
+power_state:
+  mode: reboot
+  condition: True

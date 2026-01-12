@@ -1,0 +1,59 @@
+---
+# UniFi OS Server Installation Playbook
+# Installs UniFi OS Server on a Debian 13 VM using Podman
+#
+# Usage:
+#   ansible-playbook -i inventory/unifi.yml playbooks/unifi-os.yml
+#
+# Prerequisites:
+#   - VM provisioned via Terraform (10.10.0.51)
+#   - SSH access configured via cloud-init
+#   - Proxmox password available for ansible connection
+
+- name: Configure UniFi OS Server with Podman
+  hosts: unifi
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Wait for system to be ready
+      wait_for_connection:
+        delay: 10
+        timeout: 300
+
+    - name: Gather facts after waiting
+      setup:
+
+    - name: Display target information
+      debug:
+        msg:
+          - "Target host: {{ ansible_host }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+
+  roles:
+    - role: ../roles/unifi-os
+
+  post_tasks:
+    - name: Final status summary
+      debug:
+        msg:
+          - "=========================================="
+          - "UniFi OS Server deployment complete!"
+          - "=========================================="
+          - ""
+          - "Web UI: https://{{ ansible_host }}:11443"
+          - ""
+          - "Next steps:"
+          - "1. Complete UniFi setup wizard"
+          - "2. Add AdGuard DNS rewrite: unifi.kernow.io -> 10.10.0.1"
+          - "3. Add Caddy reverse proxy: unifi.kernow.io -> https://10.10.0.51:11443"
+          - "4. Generate API key for MCP/Homepage"
+          - "5. Update Infisical secret: /apps/unifi/UNIFI_API_KEY"
+          - "6. Re-adopt UniFi devices: set-inform http://10.10.0.51:8080/inform"
+          - "7. Update MCP deployment: UNIFI_HOST=https://10.10.0.51:11443"
+          - ""
+          - "DHCP Reservation (optional - VM has static IP):"
+          - "  MAC: 52:54:00:10:10:51"
+          - "  IP: 10.10.0.51"
+          - "  Hostname: unifi"

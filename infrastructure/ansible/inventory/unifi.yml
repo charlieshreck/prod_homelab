@@ -1,0 +1,15 @@
+---
+# UniFi OS Server inventory
+# Password stored in Infisical: /infrastructure/unifi-vm/root_password
+all:
+  hosts:
+    unifi:
+      ansible_host: 10.10.0.51
+      ansible_user: root
+      # ansible_password: Use --ask-pass or set ANSIBLE_PASSWORD env var
+      # Get from Infisical: /root/.config/infisical/secrets.sh get /infrastructure/unifi-vm root_password
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+  vars:
+    unifi_timezone: Europe/London

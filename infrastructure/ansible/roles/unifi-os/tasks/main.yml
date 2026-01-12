@@ -1,0 +1,120 @@
+---
+# Main tasks for unifi-os role
+# Installs UniFi OS Server on Debian 13 using official Ubiquiti installer
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install prerequisites
+  apt:
+    name:
+      - podman
+      - slirp4netns
+      - uidmap
+      - curl
+      - wget
+      - ca-certificates
+      - gnupg
+      - apt-transport-https
+    state: present
+
+- name: Verify Podman version
+  command: podman --version
+  register: podman_version
+  changed_when: false
+
+- name: Display Podman version
+  debug:
+    msg: "Podman version: {{ podman_version.stdout }}"
+
+# Configure swap for stability (recommended by Ubiquiti community)
+- name: Check if swap file exists
+  stat:
+    path: /swapfile
+  register: swap_file
+  when: unifi_swap_enabled
+
+- name: Create swap file
+  command: "fallocate -l {{ unifi_swap_size }} /swapfile"
+  when: unifi_swap_enabled and not swap_file.stat.exists
+
+- name: Set swap file permissions
+  file:
+    path: /swapfile
+    mode: '0600'
+  when: unifi_swap_enabled
+
+- name: Make swap file
+  command: mkswap /swapfile
+  when: unifi_swap_enabled and not swap_file.stat.exists
+
+- name: Enable swap
+  command: swapon /swapfile
+  when: unifi_swap_enabled and not swap_file.stat.exists
+  ignore_errors: yes
+
+- name: Add swap to fstab
+  lineinfile:
+    path: /etc/fstab
+    line: "/swapfile none swap sw 0 0"
+    state: present
+  when: unifi_swap_enabled
+
+# Download and install UniFi OS Server
+- name: Check if UniFi OS is already installed
+  command: which uosserver
+  register: uosserver_check
+  changed_when: false
+  failed_when: false
+
+- name: Download UniFi OS Server installer
+  get_url:
+    url: "{{ unifi_installer_url }}"
+    dest: /tmp/unifi-os-installer
+    mode: '0755'
+  when: uosserver_check.rc != 0
+
+- name: Install UniFi OS Server
+  command: /tmp/unifi-os-installer install
+  when: uosserver_check.rc != 0
+  register: install_result
+
+- name: Display installation output
+  debug:
+    msg: "{{ install_result.stdout_lines | default([]) }}"
+  when: install_result is defined and install_result.stdout_lines is defined
+
+- name: Wait for UniFi OS to start
+  wait_for:
+    port: "{{ unifi_web_port }}"
+    host: 0.0.0.0
+    delay: 30
+    timeout: 180
+
+- name: Check UniFi OS status
+  command: uosserver status
+  register: unifi_status
+  changed_when: false
+  failed_when: false
+
+- name: Display UniFi OS status
+  debug:
+    msg: "{{ unifi_status.stdout_lines | default(['Unable to get status']) }}"
+
+- name: Display access information
+  debug:
+    msg:
+      - "UniFi OS Server installation complete!"
+      - ""
+      - "Access the web UI at: https://{{ ansible_host }}:{{ unifi_web_port }}"
+      - ""
+      - "After setup, set device inform URL to:"
+      - "  http://{{ ansible_host }}:{{ unifi_inform_port }}/inform"
+      - ""
+      - "Next steps:"
+      - "1. Complete the setup wizard in the web UI"
+      - "2. Generate an API key for MCP integration"
+      - "3. Update Infisical with the new API key"
+      - "4. Re-adopt UniFi devices to the new controller"

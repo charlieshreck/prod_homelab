@@ -190,6 +190,27 @@ variable "plex_vm" {
   }
 }
 
+# UniFi OS Server VM Configuration
+variable "unifi_vm" {
+  description = "UniFi OS Server VM configuration with Podman"
+  type = object({
+    vmid   = number
+    name   = string
+    ip     = string
+    cores  = number
+    memory = number
+    disk   = number
+  })
+  default = {
+    vmid   = 451
+    name   = "unifi"
+    ip     = "10.10.0.51"
+    cores  = 2
+    memory = 4096  # 4GB
+    disk   = 50
+  }
+}
+
 # GitOps Configuration
 variable "gitops_repo_url" {
   description = "GitOps repository URL"
