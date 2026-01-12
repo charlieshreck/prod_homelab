@@ -261,13 +261,52 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+      - LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/nvidia/current  # CRITICAL for CUDA
     devices:
-      - /dev/nvidia0
-      - /dev/nvidiactl
-      - /dev/nvidia-uvm
+      - /dev/dri:/dev/dri
     volumes:
-      - /dev/shm:/transcode  # RAM disk for transcoding
-      - /mnt/media:/data:ro  # NFS mount via 10.40.0.10
+      - type: tmpfs
+        target: /transcode
+        tmpfs:
+          size: 8589934592  # 8GB RAM disk
+      - /mnt/media:/media:ro  # NFS mount via 10.40.0.10
+```
+
+**CRITICAL**: `LD_LIBRARY_PATH` is required for Plex's Transcoder to find CUDA libraries.
+Without it, hardware transcoding silently falls back to software.
+
+### GPU Hardware Transcoding (Quadro P4000)
+
+**Supported Codecs:**
+| Codec | NVDEC (Decode) | NVENC (Encode) |
+|-------|----------------|----------------|
+| H.264 | ✅ | ✅ |
+| HEVC/H.265 | ✅ | ✅ |
+| VP9 | ✅ | ❌ |
+| AV1 | ❌ | ❌ |
+
+**Verify hardware transcoding:**
+```bash
+# Check GPU utilization during playback
+ssh root@10.10.0.50 nvidia-smi --query-gpu=utilization.encoder,utilization.decoder --format=csv
+
+# Check transcoder is using NVENC/NVDEC
+ssh root@10.10.0.50 docker exec plex ps aux | grep "Plex Transcoder"
+# Look for: -hwaccel nvdec, -codec h264_nvenc
+```
+
+### Configarr - TRaSH Guides Sync
+
+Configarr (`kubernetes/applications/media/configarr/`) syncs TRaSH custom formats daily.
+
+**AV1 Penalty**: AV1 is penalized with -10000 score because P4000 cannot decode it.
+- Sonarr: WEB-1080p, WEB-2160p profiles
+- Radarr: HD Bluray + WEB, UHD Bluray + WEB profiles
+
+**Manual sync:**
+```bash
+kubectl create job --from=cronjob/configarr configarr-manual -n media
+kubectl logs -n media job/configarr-manual
 ```
 
 ## Deployment Order
