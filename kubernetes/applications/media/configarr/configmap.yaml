@@ -25,7 +25,16 @@ data:
           - template: sonarr-v4-quality-profile-web-2160p
           - template: sonarr-v4-custom-formats-web-2160p
 
-        custom_formats: []
+        # GPU Hardware Transcoding Compatibility (Quadro P4000)
+        # Penalize AV1 - P4000 cannot decode AV1 in hardware
+        custom_formats:
+          - trash_ids:
+              - 15a05bc7c1a36e2b57fd628f8977e2fc  # AV1
+            assign_scores_to:
+              - name: WEB-1080p
+                score: -10000
+              - name: WEB-2160p
+                score: -10000
 
     radarr:
       main:
@@ -44,4 +53,13 @@ data:
           - template: radarr-quality-profile-uhd-bluray-web
           - template: radarr-custom-formats-uhd-bluray-web
 
-        custom_formats: []
+        # GPU Hardware Transcoding Compatibility (Quadro P4000)
+        # Penalize AV1 - P4000 cannot decode AV1 in hardware
+        custom_formats:
+          - trash_ids:
+              - cae4ca30163749b891686f95532519bd  # AV1
+            assign_scores_to:
+              - name: HD Bluray + WEB
+                score: -10000
+              - name: UHD Bluray + WEB
+                score: -10000
