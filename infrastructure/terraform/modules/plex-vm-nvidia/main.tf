@@ -13,9 +13,10 @@ resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   node_name    = var.proxmox_node
 
   # Debian 13 (Trixie) stable cloud image - qcow2 format
+  # Use .img extension for Proxmox compatibility
   url = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
 
-  file_name               = "debian-13-generic-amd64.qcow2"
+  file_name               = "debian-13-generic-amd64.img"
   overwrite               = false
   overwrite_unmanaged     = true
 }
@@ -36,8 +37,9 @@ resource "proxmox_virtual_environment_vm" "plex" {
     dedicated = var.memory
   }
 
-  # BIOS settings
+  # BIOS settings for GPU passthrough
   bios = "ovmf"
+  machine = "q35"
 
   # EFI disk
   efi_disk {

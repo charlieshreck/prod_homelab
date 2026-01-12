@@ -12,7 +12,6 @@
     reboot_timeout: 600
 
 - name: Restart Plex
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: "{{ plex_compose_dir }}"
-    state: present
-    restarted: true
+    state: restarted

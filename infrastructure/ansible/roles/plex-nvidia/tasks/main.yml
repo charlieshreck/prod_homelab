@@ -12,40 +12,92 @@
       - curl
       - gnupg
       - ca-certificates
-      - software-properties-common
       - apt-transport-https
       - nfs-common
+      - dkms
+      - build-essential
     state: present
 
-- name: Add Nvidia GPG key
-  apt_key:
+# Install kernel headers before nvidia driver (required for DKMS to build modules)
+- name: Install kernel headers for current kernel
+  apt:
+    name: "linux-headers-{{ ansible_kernel }}"
+    state: present
+
+# Enable non-free repos for Nvidia drivers (Debian 13 deb822 format)
+- name: Enable non-free and non-free-firmware repos
+  copy:
+    content: |
+      Types: deb deb-src
+      URIs: http://deb.debian.org/debian
+      Suites: trixie trixie-updates trixie-backports
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: http://deb.debian.org/debian-security
+      Suites: trixie-security
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+    dest: /etc/apt/sources.list.d/debian.sources
+    mode: '0644'
+    backup: yes
+
+- name: Update apt cache after enabling non-free
+  apt:
+    update_cache: yes
+
+- name: Create keyrings directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download Nvidia GPG key
+  get_url:
     url: https://nvidia.github.io/libnvidia-container/gpgkey
-    state: present
+    dest: /etc/apt/keyrings/nvidia-container-toolkit.asc
+    mode: '0644'
 
-- name: Get distribution
-  command: . /etc/os-release && echo $ID$VERSION_ID
-  register: distribution
+- name: Get system architecture
+  command: dpkg --print-architecture
+  register: dpkg_arch
   changed_when: false
-  args:
-    executable: /bin/bash
 
 - name: Add Nvidia container toolkit repository
-  apt_repository:
-    repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /"
-    filename: nvidia-container-toolkit
-    state: present
+  copy:
+    content: |
+      deb [signed-by=/etc/apt/keyrings/nvidia-container-toolkit.asc] https://nvidia.github.io/libnvidia-container/stable/deb/{{ dpkg_arch.stdout }} /
+    dest: /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    mode: '0644'
+
+- name: Update apt cache after adding Nvidia repo
+  apt:
     update_cache: yes
 
 - name: Install Nvidia drivers and Docker
   apt:
     name:
-      - nvidia-driver-{{ nvidia_driver_version }}
+      - nvidia-driver
       - nvidia-container-toolkit
       - docker.io
       - docker-compose
     state: present
-  notify:
-    - Reboot system
+
+# Ensure nvidia module is loaded (may require reboot if first install, but DKMS should handle it)
+- name: Load nvidia kernel module
+  modprobe:
+    name: nvidia
+    state: present
+  ignore_errors: yes
+  register: nvidia_modprobe
+
+# Reboot only if nvidia module failed to load (first-time driver install)
+- name: Reboot if nvidia module not loaded
+  reboot:
+    msg: "Rebooting to load Nvidia drivers"
+    reboot_timeout: 600
+  when: nvidia_modprobe.failed | default(false)
 
 - name: Ensure Docker service is running
   systemd:
@@ -109,10 +161,24 @@
     - Restart Plex
 
 - name: Start Plex container
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: "{{ plex_compose_dir }}"
     state: present
   register: plex_compose_output
+
+# Watchtower for automatic container updates
+- name: Deploy Watchtower for auto-updates
+  community.docker.docker_container:
+    name: watchtower
+    image: containrrr/watchtower:latest
+    restart_policy: unless-stopped
+    env:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_SCHEDULE: "0 0 4 * * *"
+      WATCHTOWER_INCLUDE_STOPPED: "true"
+      DOCKER_API_VERSION: "1.44"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 - name: Wait for Plex to be ready
   wait_for:

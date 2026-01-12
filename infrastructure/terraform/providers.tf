@@ -20,7 +20,7 @@ provider "infisical" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "${path.module}/generated/kubeconfig"
   }
 }

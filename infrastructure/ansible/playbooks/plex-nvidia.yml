@@ -22,8 +22,8 @@
 
   pre_tasks:
     - name: Check for PLEX_CLAIM_TOKEN
-      fail:
-        msg: "PLEX_CLAIM_TOKEN environment variable is required. Get it from https://plex.tv/claim"
+      debug:
+        msg: "WARNING: PLEX_CLAIM_TOKEN not set. Plex will start unclaimed - visit http://{{ ansible_host }}:32400/web to claim it."
       when: lookup('env', 'PLEX_CLAIM_TOKEN') == ''
 
     - name: Wait for system to be ready
