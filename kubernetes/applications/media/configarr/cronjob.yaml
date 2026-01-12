@@ -42,7 +42,7 @@ spec:
                   key: API_KEY
             volumeMounts:
             - name: config
-              mountPath: /app/config.yml
+              mountPath: /app/config/config.yml
               subPath: config.yml
             resources:
               requests:
