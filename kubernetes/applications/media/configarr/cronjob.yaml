@@ -44,6 +44,8 @@ spec:
             - name: config
               mountPath: /app/config/config.yml
               subPath: config.yml
+            - name: repos
+              mountPath: /app/repos
             resources:
               requests:
                 cpu: 100m
@@ -55,3 +57,5 @@ spec:
           - name: config
             configMap:
               name: configarr-config
+          - name: repos
+            emptyDir: {}
