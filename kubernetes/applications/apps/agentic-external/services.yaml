@@ -42,3 +42,17 @@ spec:
     - name: http
       port: 80
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vikunja-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: vikunja-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
