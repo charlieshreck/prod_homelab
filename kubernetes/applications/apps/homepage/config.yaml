@@ -155,6 +155,7 @@ data:
                 - wlan_users
                 - wlan_devices
 
+    - Monitoring:
         - Beszel:
             icon: mdi-server
             href: https://beszel.kernow.io
