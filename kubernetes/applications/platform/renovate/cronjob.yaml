@@ -27,7 +27,7 @@ spec:
             - name: RENOVATE_AUTODISCOVER
               value: "false"
             - name: RENOVATE_REPOSITORIES
-              value: "charlieshreck/prod_homelab"
+              value: "charlieshreck/prod_homelab,charlieshreck/agentic_lab,charlieshreck/monit_homelab"
             - name: RENOVATE_GIT_AUTHOR
               value: "Renovate Bot <bot@renovateapp.com>"
             - name: LOG_LEVEL
