@@ -155,6 +155,17 @@ data:
                 - wlan_users
                 - wlan_devices
 
+        - Beszel:
+            icon: mdi-server
+            href: https://beszel.kernow.io
+            description: Host Monitoring
+            widget:
+              type: beszel
+              url: http://10.30.0.20:30090
+              username: {{HOMEPAGE_VAR_BESZEL_USERNAME}}
+              password: {{HOMEPAGE_VAR_BESZEL_PASSWORD}}
+              version: 2
+
     - Kubernetes:
         - Talos Control Plane:
             icon: talos.png

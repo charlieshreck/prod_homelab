@@ -168,17 +168,8 @@ metadata:
   name: beszel-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Beszel"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "mdi-server"
-    gethomepage.dev/description: "Host Monitoring"
-    gethomepage.dev/pod-selector: ""
-    gethomepage.dev/widget.type: "beszel"
-    gethomepage.dev/widget.url: "http://beszel-external"
-    gethomepage.dev/widget.username: "{{HOMEPAGE_VAR_BESZEL_USERNAME}}"
-    gethomepage.dev/widget.password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
-    gethomepage.dev/widget.version: "2"
+    # Disabled - widget configured directly in services.yaml for env var substitution
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
