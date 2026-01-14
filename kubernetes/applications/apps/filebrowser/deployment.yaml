@@ -15,7 +15,7 @@ spec:
       labels:
         app: filebrowser
       annotations:
-        backup.velero.io/backup-volumes-excludes: downloads,tv,movies
+        backup.velero.io/backup-volumes-excludes: plexopathy,tarriance,pleximetry,pbs,minio,truro
     spec:
       securityContext:
         fsGroup: 3000
@@ -55,12 +55,20 @@ spec:
           subPath: config.yaml
         - name: data
           mountPath: /home/filebrowser/data
-        - name: downloads
-          mountPath: /folder/downloads
-        - name: tv
-          mountPath: /folder/tv
-        - name: movies
-          mountPath: /folder/movies
+        # Media NAS (10.40.0.10) - High-speed 40GbE
+        - name: plexopathy
+          mountPath: /folder/media/Plexopathy
+        - name: tarriance
+          mountPath: /folder/media/Tarriance
+        # HDD NAS (10.20.0.103) - Bulk storage
+        - name: pleximetry
+          mountPath: /folder/hdd/Pleximetry
+        - name: pbs
+          mountPath: /folder/hdd/PBS-Backups
+        - name: minio
+          mountPath: /folder/hdd/MinIO
+        - name: truro
+          mountPath: /folder/hdd/Truro
         resources:
           requests:
             cpu: 100m
@@ -75,18 +83,32 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: filebrowser-data
-      - name: downloads
+      # Media NAS (10.40.0.10) - High-speed 40GbE network
+      - name: plexopathy
         nfs:
           server: 10.40.0.10
-          path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
-      - name: tv
+          path: /mnt/Tongariro/Plexopathy
+      - name: tarriance
         nfs:
           server: 10.40.0.10
-          path: /mnt/Tongariro/Plexopathy/Television
-      - name: movies
+          path: /mnt/Taranaki/Tarriance
+      # HDD NAS (10.20.0.103) - Bulk storage
+      - name: pleximetry
         nfs:
-          server: 10.40.0.10
-          path: /mnt/Tongariro/Plexopathy/Film
+          server: 10.20.0.103
+          path: /mnt/Taupo/Pleximetry
+      - name: pbs
+        nfs:
+          server: 10.20.0.103
+          path: /mnt/Taupo/pbs
+      - name: minio
+        nfs:
+          server: 10.20.0.103
+          path: /mnt/Taupo/MinIO
+      - name: truro
+        nfs:
+          server: 10.20.0.103
+          path: /mnt/Truro
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -127,13 +149,28 @@ data:
       database: /home/filebrowser/data/database.db
       cacheDir: /home/filebrowser/data/tmp
       sources:
-        - path: "/folder/downloads"
+        # Media NAS - Plexopathy (TV, Movies, Music)
+        - path: "/folder/media/Plexopathy"
           config:
             defaultEnabled: true
-        - path: "/folder/tv"
+        # Media NAS - Tarriance (Downloads)
+        - path: "/folder/media/Tarriance"
           config:
             defaultEnabled: true
-        - path: "/folder/movies"
+        # HDD NAS - Pleximetry (Archive media)
+        - path: "/folder/hdd/Pleximetry"
+          config:
+            defaultEnabled: true
+        # HDD NAS - PBS Backups
+        - path: "/folder/hdd/PBS-Backups"
+          config:
+            defaultEnabled: true
+        # HDD NAS - MinIO
+        - path: "/folder/hdd/MinIO"
+          config:
+            defaultEnabled: true
+        # HDD NAS - Truro pool
+        - path: "/folder/hdd/Truro"
           config:
             defaultEnabled: true
     auth:
