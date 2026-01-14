@@ -147,7 +147,7 @@ data:
             description: Network Controller
             widget:
               type: unifi
-              url: https://10.10.0.154:11443
+              url: https://10.10.0.51:11443
               key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
               fields:
                 - uptime
@@ -257,7 +257,7 @@ data:
           showLabel: true
 
     - unifi_console:
-        url: https://10.10.0.154:11443
+        url: https://10.10.0.51:11443
         key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
 
     - resources:
