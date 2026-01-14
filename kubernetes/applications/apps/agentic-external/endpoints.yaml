@@ -17,19 +17,6 @@ subsets:
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: netbox-agentic-external
-  namespace: apps
-subsets:
-  - addresses:
-      - ip: 10.20.0.40
-    ports:
-      - name: http
-        port: 30080
-        protocol: TCP
----
-apiVersion: v1
-kind: Endpoints
-metadata:
   name: langgraph-external
   namespace: apps
 subsets:

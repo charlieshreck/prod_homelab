@@ -30,32 +30,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: netbox-agentic-cloudflare
-  namespace: apps
-  annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "NetBox (Agentic)"
-    gethomepage.dev/group: "Agentic"
-    gethomepage.dev/icon: "netbox.png"
-    gethomepage.dev/description: "Network DCIM"
-    gethomepage.dev/pod-selector: ""
-spec:
-  ingressClassName: cloudflare-tunnel
-  rules:
-    - host: netbox-agentic.kernow.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: netbox-agentic-external
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: langgraph-cloudflare
   namespace: apps
   annotations:

@@ -174,9 +174,6 @@ metadata:
     gethomepage.dev/icon: "mdi-server"
     gethomepage.dev/description: "Host Monitoring"
     gethomepage.dev/pod-selector: ""
-    gethomepage.dev/widget.type: "beszel"
-    gethomepage.dev/widget.url: "http://beszel-external"
-    gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_BESZEL_KEY}}"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
