@@ -15,7 +15,7 @@ spec:
       labels:
         app: filebrowser
       annotations:
-        backup.velero.io/backup-volumes-excludes: plexopathy,tarriance,pleximetry,pbs,minio,truro
+        backup.velero.io/backup-volumes-excludes: plexopathy,tarriance,pleximetry,pbs
     spec:
       securityContext:
         fsGroup: 3000
@@ -60,15 +60,11 @@ spec:
           mountPath: /folder/media/Plexopathy
         - name: tarriance
           mountPath: /folder/media/Tarriance
-        # HDD NAS (10.20.0.103) - Bulk storage
+        # HDD NAS (10.20.0.103) - Bulk storage (only Pleximetry and PBS have NFS shares)
         - name: pleximetry
           mountPath: /folder/hdd/Pleximetry
         - name: pbs
           mountPath: /folder/hdd/PBS-Backups
-        - name: minio
-          mountPath: /folder/hdd/MinIO
-        - name: truro
-          mountPath: /folder/hdd/Truro
         resources:
           requests:
             cpu: 100m
@@ -92,7 +88,7 @@ spec:
         nfs:
           server: 10.40.0.10
           path: /mnt/Taranaki/Tarriance
-      # HDD NAS (10.20.0.103) - Bulk storage
+      # HDD NAS (10.20.0.103) - Bulk storage (only Pleximetry and PBS have NFS shares)
       - name: pleximetry
         nfs:
           server: 10.20.0.103
@@ -101,14 +97,6 @@ spec:
         nfs:
           server: 10.20.0.103
           path: /mnt/Taupo/pbs
-      - name: minio
-        nfs:
-          server: 10.20.0.103
-          path: /mnt/Taupo/MinIO
-      - name: truro
-        nfs:
-          server: 10.20.0.103
-          path: /mnt/Truro
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -163,14 +151,6 @@ data:
             defaultEnabled: true
         # HDD NAS - PBS Backups
         - path: "/folder/hdd/PBS-Backups"
-          config:
-            defaultEnabled: true
-        # HDD NAS - MinIO
-        - path: "/folder/hdd/MinIO"
-          config:
-            defaultEnabled: true
-        # HDD NAS - Truro pool
-        - path: "/folder/hdd/Truro"
           config:
             defaultEnabled: true
     auth:
