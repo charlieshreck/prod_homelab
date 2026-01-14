@@ -1,11 +1,13 @@
 ---
 # Ansible Inventory for Plex Media Server VM
+# Password stored in Infisical: /infrastructure/plex-vm/root_password
 all:
   hosts:
     plex:
       ansible_host: 10.10.0.50
       ansible_user: root
-      ansible_password: H4ckwh1z
+      # ansible_password: Use --ask-pass or set ANSIBLE_PASSWORD env var
+      # Get from Infisical: /root/.config/infisical/secrets.sh get /infrastructure/plex-vm root_password
       ansible_python_interpreter: /usr/bin/python3
       ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
