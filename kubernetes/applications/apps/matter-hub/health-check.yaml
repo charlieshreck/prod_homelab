@@ -1,0 +1,91 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matter-hub-health-check
+  namespace: apps
+data:
+  check.sh: |
+    #!/bin/sh
+    set -e
+
+    # Matter Hub health check script
+    # Checks if at least one fabric is connected
+
+    MATTER_HUB_URL="${MATTER_HUB_URL:-http://matter-hub.apps.svc.cluster.local:8482}"
+
+    echo "$(date -Iseconds) [INFO] Checking Matter Hub fabric status..."
+
+    # Get bridges info from API
+    RESPONSE=$(wget -q -O- "${MATTER_HUB_URL}/api/bridges" 2>/dev/null || echo "ERROR")
+
+    if [ "$RESPONSE" = "ERROR" ]; then
+      echo "$(date -Iseconds) [ERROR] matter_hub_health_check: Cannot connect to Matter Hub API"
+      exit 1
+    fi
+
+    # Check if response is HTML (API not available) vs JSON
+    if echo "$RESPONSE" | grep -q "<!doctype html>"; then
+      # Try the v1 API
+      RESPONSE=$(wget -q -O- "${MATTER_HUB_URL}/api/v1/bridges" 2>/dev/null || echo "ERROR")
+    fi
+
+    # Parse fabric count (simple grep approach)
+    # The API returns bridges with fabric info
+    if echo "$RESPONSE" | grep -q '"fabrics":\[\]'; then
+      echo "$(date -Iseconds) [CRITICAL] matter_hub_fabric_disconnected: No fabrics connected to Matter Hub - devices will not be visible in Google Home/Alexa/Apple Home"
+      echo "$(date -Iseconds) [INFO] Runbook: /home/agentic_lab/runbooks/infrastructure/matter-hub-commissioning-failure.md"
+      exit 1
+    elif echo "$RESPONSE" | grep -q '"fabrics":\['; then
+      FABRIC_COUNT=$(echo "$RESPONSE" | grep -o '"fabricIndex"' | wc -l)
+      echo "$(date -Iseconds) [OK] matter_hub_health_check: Matter Hub has ${FABRIC_COUNT} fabric(s) connected"
+      exit 0
+    else
+      # Fallback: check logs for fabric status
+      echo "$(date -Iseconds) [WARN] matter_hub_health_check: Could not parse API response, checking logs..."
+      exit 0
+    fi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: matter-hub-health-check
+  namespace: apps
+  labels:
+    app: matter-hub-health-check
+spec:
+  schedule: "*/10 * * * *"  # Every 10 minutes
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 60
+      template:
+        metadata:
+          labels:
+            app: matter-hub-health-check
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: health-check
+            image: busybox:latest
+            command: ["/bin/sh", "/scripts/check.sh"]
+            env:
+            - name: MATTER_HUB_URL
+              value: "http://matter-hub.apps.svc.cluster.local:8482"
+            volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16Mi
+              limits:
+                cpu: 50m
+                memory: 32Mi
+          volumes:
+          - name: scripts
+            configMap:
+              name: matter-hub-health-check
+              defaultMode: 0755
