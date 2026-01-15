@@ -20,7 +20,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: matter-hub
-        image: ghcr.io/t0bst4r/home-assistant-matter-hub:v3.0.3
+        image: ghcr.io/t0bst4r/home-assistant-matter-hub:latest
         ports:
         - name: http
           containerPort: 8482
