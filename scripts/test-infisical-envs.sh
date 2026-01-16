@@ -1,12 +1,31 @@
 #!/bin/bash
-TOKEN="st.580273bd-df0a-4530-ac87-3b43e2740c2f.21f36ada3c46fbe4f5c513c5fd3f2f2e.01ce3e0b7b085acfea804afc1325b45b"
-PROJECT_ID="9383e039-68ca-4bab-bc3c-aa06fdb82627"
+# Test Infisical environment access
+# Usage: INFISICAL_TOKEN=<token> ./test-infisical-envs.sh
+#
+# NOTE: Never hardcode tokens in scripts. Use environment variables or Infisical CLI.
 
-for env in dev development staging test production prod Production PROD; do
+set -euo pipefail
+
+if [[ -z "${INFISICAL_TOKEN:-}" ]]; then
+    echo "Error: INFISICAL_TOKEN environment variable not set"
+    echo "Usage: INFISICAL_TOKEN=<token> $0"
+    exit 1
+fi
+
+PROJECT_ID="${INFISICAL_PROJECT_ID:-9383e039-68ca-4bab-bc3c-aa06fdb82627}"
+
+for env in dev staging prod; do
     echo "=== Testing: $env ==="
-    curl -s -X GET \
+    response=$(curl -s -X GET \
         "https://app.infisical.com/api/v3/secrets/raw?workspaceId=${PROJECT_ID}&environment=${env}&secretPath=/" \
-        -H "Authorization: Bearer ${TOKEN}" | head -c 300
-    echo ""
+        -H "Authorization: Bearer ${INFISICAL_TOKEN}" 2>&1)
+
+    # Check if response contains secrets (don't print values)
+    if echo "$response" | grep -q '"secrets"'; then
+        secret_count=$(echo "$response" | grep -o '"secretKey"' | wc -l)
+        echo "  Found $secret_count secrets"
+    else
+        echo "  No access or error"
+    fi
     echo ""
 done
