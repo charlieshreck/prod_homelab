@@ -42,3 +42,17 @@ spec:
     - name: http
       port: 80
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: claude-refresh-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: claude-refresh-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
