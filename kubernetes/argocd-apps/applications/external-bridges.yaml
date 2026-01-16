@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/charlieshreck/homelab-prod.git
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
     targetRevision: main
     path: kubernetes/applications/external-bridges
   destination:
