@@ -104,3 +104,24 @@ spec:
                 name: claude-refresh-external
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mcp-webhook-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: mcp-webhook.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mcp-config-sync-external
+                port:
+                  number: 80

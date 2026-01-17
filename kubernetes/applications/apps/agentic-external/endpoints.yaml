@@ -52,3 +52,16 @@ subsets:
       - name: http
         port: 31110
         protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: mcp-config-sync-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 31103
+        protocol: TCP
