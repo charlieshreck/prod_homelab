@@ -20,11 +20,17 @@ data:
           return hs
         end
       end
-      -- Special case for cloudflare-tunnel ingress class
-      if obj.spec.ingressClassName == "cloudflare-tunnel" then
-        hs.status = "Healthy"
-        hs.message = "Cloudflare Tunnel ingress (no loadBalancer required)"
-        return hs
-      end
+    end
+    -- Special case for cloudflare-tunnel ingress class
+    if obj.spec.ingressClassName == "cloudflare-tunnel" then
+      hs.status = "Healthy"
+      hs.message = "Cloudflare Tunnel ingress (no loadBalancer required)"
+      return hs
+    end
+    -- Special case for traefik ingress class (status not always populated)
+    if obj.spec.ingressClassName == "traefik" then
+      hs.status = "Healthy"
+      hs.message = "Traefik ingress"
+      return hs
     end
     return hs
