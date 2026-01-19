@@ -125,3 +125,29 @@ spec:
                 name: mcp-config-sync-external
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: outline-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Outline"
+    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/icon: "outline.png"
+    gethomepage.dev/description: "Wiki & Knowledge Base"
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: outline.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: outline-external
+                port:
+                  number: 80

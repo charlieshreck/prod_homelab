@@ -65,3 +65,16 @@ subsets:
       - name: http
         port: 31103
         protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: outline-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 31102
+        protocol: TCP
