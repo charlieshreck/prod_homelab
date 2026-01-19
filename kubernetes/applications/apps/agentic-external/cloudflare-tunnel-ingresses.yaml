@@ -126,6 +126,26 @@ spec:
                 port:
                   number: 80
 ---
+# Outline robots.txt - served separately to allow Claude/AI crawler access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: outline-robots-cloudflare
+  namespace: apps
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: outline.kernow.io
+      http:
+        paths:
+          - path: /robots.txt
+            pathType: Exact
+            backend:
+              service:
+                name: outline-robots-external
+                port:
+                  number: 80
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

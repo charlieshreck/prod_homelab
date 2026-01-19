@@ -78,3 +78,16 @@ subsets:
       - name: http
         port: 31113
         protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: outline-robots-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 31115
+        protocol: TCP
