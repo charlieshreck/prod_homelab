@@ -66,7 +66,7 @@ subsets:
         port: 31103
         protocol: TCP
 ---
-# Outline via nginx proxy (serves custom robots.txt, proxies rest to Outline)
+# Outline with nginx sidecar (handles robots.txt internally)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -77,5 +77,5 @@ subsets:
       - ip: 10.20.0.40
     ports:
       - name: http
-        port: 31116
+        port: 31113
         protocol: TCP

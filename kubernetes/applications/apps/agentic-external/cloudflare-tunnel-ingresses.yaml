@@ -126,9 +126,7 @@ spec:
                 port:
                   number: 80
 ---
-# Outline wiki - routed via nginx proxy that serves custom robots.txt
-# and proxies all other requests to Outline (allows Claude crawlers)
-# Note: Using port 31116 to directly reach the NodePort endpoint
+# Outline wiki - nginx sidecar in agentic cluster handles robots.txt
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -153,4 +151,4 @@ spec:
               service:
                 name: outline-external
                 port:
-                  number: 31116
+                  number: 80

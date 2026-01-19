@@ -71,8 +71,7 @@ spec:
       port: 80
       protocol: TCP
 ---
-# Direct NodePort routing to outline-proxy in agentic cluster
-# Port 31116 matches both service, ingress, and endpoint for clarity
+# Outline service - nginx sidecar in agentic cluster handles robots.txt
 apiVersion: v1
 kind: Service
 metadata:
@@ -84,5 +83,5 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: 31116
+      port: 80
       protocol: TCP
