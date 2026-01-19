@@ -71,7 +71,8 @@ spec:
       port: 80
       protocol: TCP
 ---
-# Note: targetPort must match endpoint port for proper routing
+# Direct NodePort routing to outline-proxy in agentic cluster
+# Port 31116 matches both service, ingress, and endpoint for clarity
 apiVersion: v1
 kind: Service
 metadata:
@@ -83,6 +84,5 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: 80
-      targetPort: 31116
+      port: 31116
       protocol: TCP
