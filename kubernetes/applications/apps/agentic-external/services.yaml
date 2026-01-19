@@ -71,6 +71,7 @@ spec:
       port: 80
       protocol: TCP
 ---
+# Note: targetPort must match endpoint port for proper routing
 apiVersion: v1
 kind: Service
 metadata:
@@ -83,4 +84,5 @@ spec:
   ports:
     - name: http
       port: 80
+      targetPort: 31116
       protocol: TCP
