@@ -7,7 +7,7 @@ metadata:
 spec:
   schedule: "0 2 * * *"
   template:
-    storageLocation: minio
+    storageLocation: garage
     ttl: 168h  # 7 days
     includedNamespaces:
       - "*"
@@ -26,7 +26,7 @@ metadata:
 spec:
   schedule: "0 3 * * 0"
   template:
-    storageLocation: minio
+    storageLocation: garage
     ttl: 720h  # 30 days
     includedNamespaces:
       - "*"

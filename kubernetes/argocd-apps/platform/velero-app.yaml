@@ -26,14 +26,14 @@ spec:
 
           # Backup Storage Location configuration
           backupStorageLocation:
-            - name: minio
+            - name: garage
               provider: aws
-              bucket: velero-backups
+              bucket: velero-prod
               default: true
               accessMode: ReadWrite
               config:
-                region: us-east-1
-                s3Url: http://10.20.0.103:9000
+                region: garage
+                s3Url: http://10.20.0.103:30186
                 s3ForcePathStyle: "true"
               credential:
                 name: velero-minio-credentials
