@@ -152,3 +152,57 @@ spec:
                 name: outline-external
                 port:
                   number: 80
+---
+# Backrest backup management
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backrest-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Backrest"
+    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/icon: "mdi-backup-restore"
+    gethomepage.dev/description: "Backup Management (restic)"
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: backrest.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backrest-external
+                port:
+                  number: 80
+---
+# Garage S3 storage web UI
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: garage-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Garage"
+    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/icon: "mdi-garage"
+    gethomepage.dev/description: "S3-Compatible Storage"
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: garage.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: garage-external
+                port:
+                  number: 80

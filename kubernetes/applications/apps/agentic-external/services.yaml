@@ -85,3 +85,33 @@ spec:
     - name: http
       port: 80
       protocol: TCP
+---
+# Backrest backup management UI
+apiVersion: v1
+kind: Service
+metadata:
+  name: backrest-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: backrest-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+---
+# Garage S3 storage web UI (on TrueNAS-HDD)
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: garage-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP

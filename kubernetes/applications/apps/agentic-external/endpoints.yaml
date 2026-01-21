@@ -79,3 +79,31 @@ subsets:
       - name: http
         port: 31113
         protocol: TCP
+---
+# Backrest backup management UI (agentic cluster)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: backrest-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 31115
+        protocol: TCP
+---
+# Garage S3 storage web UI (TrueNAS-HDD)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: garage-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.103
+    ports:
+      - name: http
+        port: 30186
+        protocol: TCP
