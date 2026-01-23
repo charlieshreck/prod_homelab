@@ -30,7 +30,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: glasskeep-secret
-              key: jwt-secret
+              key: JWT_SECRET
         - name: DB_FILE
           value: "/app/data/notes.db"
         - name: ADMIN_EMAILS
@@ -51,7 +51,7 @@ spec:
           claimName: glasskeep-data
 ---
 # Glasskeep JWT secret managed by Infisical
-# Store the jwt-secret at /apps/glasskeep in Infisical
+# Store the JWT_SECRET at /platform/glasskeep in Infisical
 apiVersion: secrets.infisical.com/v1alpha1
 kind: InfisicalSecret
 metadata:
@@ -67,7 +67,7 @@ spec:
       secretsScope:
         projectSlug: prod-homelab-y-nij
         envSlug: prod
-        secretsPath: /apps/glasskeep
+        secretsPath: /platform/glasskeep
   managedSecretReference:
     secretName: glasskeep-secret
     secretNamespace: apps
