@@ -30,7 +30,7 @@ spec:
           value: "Europe/London"
         volumeMounts:
         - name: config
-          mountPath: /config
+          mountPath: /app/server/data
         resources:
           requests:
             cpu: 50m
