@@ -206,3 +206,30 @@ spec:
                 name: garage-external
                 port:
                   number: 80
+---
+# Silver Bullet markdown PKM
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: silverbullet-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Silver Bullet"
+    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/icon: "silverbullet.png"
+    gethomepage.dev/description: "Markdown PKM"
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: silverbullet.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: silverbullet-external
+                port:
+                  number: 80

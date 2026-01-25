@@ -107,3 +107,17 @@ subsets:
       - name: http
         port: 30186
         protocol: TCP
+---
+# Silver Bullet markdown PKM (agentic cluster)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: silverbullet-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 31116
+        protocol: TCP

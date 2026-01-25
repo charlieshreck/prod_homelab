@@ -115,3 +115,18 @@ spec:
     - name: http
       port: 80
       protocol: TCP
+---
+# Silver Bullet markdown PKM (agentic cluster)
+apiVersion: v1
+kind: Service
+metadata:
+  name: silverbullet-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: silverbullet-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
