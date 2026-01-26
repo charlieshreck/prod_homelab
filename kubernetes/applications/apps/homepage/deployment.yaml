@@ -151,12 +151,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-proxmox
-                  key: API_TOKEN
+                  key: TOKEN_SECRET
             - name: HOMEPAGE_VAR_CARRICK_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: homepage-proxmox-carrick
-                  key: token
+                  key: TOKEN_SECRET
                   optional: true
             - name: HOMEPAGE_VAR_GRAFANA_PASSWORD
               valueFrom:
