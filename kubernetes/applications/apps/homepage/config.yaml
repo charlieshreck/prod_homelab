@@ -270,7 +270,7 @@ data:
             description: Restic Backup Manager
             widget:
               type: backrest
-              url: http://10.20.0.40:31115
+              url: http://backrest.kernow.io
               fields:
                 - num_success_latest
                 - num_failure_latest
