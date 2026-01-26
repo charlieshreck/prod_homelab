@@ -256,12 +256,26 @@ data:
             widget:
               type: unifi
               url: https://10.10.0.51:11443
-              key: "{{HOMEPAGE_VAR_UNIFI_API_KEY}}"
+              username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
               fields:
                 - uptime
                 - wlan
                 - wlan_users
                 - wlan_devices
+
+        - Backrest:
+            icon: mdi-backup-restore
+            href: https://backrest.kernow.io
+            description: Restic Backup Manager
+            widget:
+              type: backrest
+              url: http://10.20.0.40:31115
+              fields:
+                - num_success_latest
+                - num_failure_latest
+                - num_plans
+                - bytes_added_30
 
     - Monitoring:
         - Beszel:
@@ -378,6 +392,10 @@ data:
           cpu: true
           memory: true
           showLabel: true
+    - unifi_console:
+        url: https://10.10.0.51:11443
+        username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+        password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
     # --- NFS Storage Widgets ---
     - resources:
         label: "Plexopathy (Media)"

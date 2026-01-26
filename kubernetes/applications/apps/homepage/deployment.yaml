@@ -92,7 +92,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-transmission
-                  key: PASSWORD
+                  key: TRANSMISSION_RPC_PASSWORD
                   optional: true
             - name: HOMEPAGE_VAR_HOMEASSISTANT_API_KEY
               valueFrom:
@@ -104,31 +104,37 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-opnsense
-                  key: key
+                  key: API_KEY
                   optional: true
             - name: HOMEPAGE_VAR_OPNSENSE_API_SECRET
               valueFrom:
                 secretKeyRef:
                   name: homepage-opnsense
-                  key: secret
+                  key: API_SECRET
                   optional: true
             - name: HOMEPAGE_VAR_ADGUARD_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: homepage-adguard
-                  key: username
+                  key: USERNAME
                   optional: true
             - name: HOMEPAGE_VAR_ADGUARD_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: homepage-adguard
-                  key: password
+                  key: PASSWORD
                   optional: true
-            - name: HOMEPAGE_VAR_UNIFI_API_KEY
+            - name: HOMEPAGE_VAR_UNIFI_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: homepage-unifi
-                  key: UNIFI_API_KEY
+                  key: USERNAME
+                  optional: true
+            - name: HOMEPAGE_VAR_UNIFI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-unifi
+                  key: PASSWORD
                   optional: true
             - name: HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY
               valueFrom:
@@ -162,19 +168,19 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-grafana
-                  key: key
+                  key: PASSWORD
                   optional: true
             - name: HOMEPAGE_VAR_BESZEL_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: homepage-beszel
-                  key: username
+                  key: USERNAME
                   optional: true
             - name: HOMEPAGE_VAR_BESZEL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: homepage-beszel
-                  key: password
+                  key: PASSWORD
                   optional: true
             - name: HOMEPAGE_VAR_PLEX_TOKEN
               valueFrom:
@@ -186,7 +192,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: homepage-argocd
-                  key: password
+                  key: ADMIN_PASSWORD
                   optional: true
           volumeMounts:
             - name: homepage-config
