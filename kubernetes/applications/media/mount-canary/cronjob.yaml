@@ -1,0 +1,57 @@
+---
+# NFS Mount Canary - writes sentinel files to detect "ghost mounts"
+# If the canary job fails, NFS mounts may be disconnected and
+# *arr suite could be writing to local disk, corrupting databases.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mount-canary-writer
+  namespace: media
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 60
+      template:
+        spec:
+          containers:
+            - name: canary
+              image: busybox:latest
+              command: ['sh', '-c']
+              args:
+                - |
+                  date > /media/downloads/.mount_ok && \
+                  date > /media/movies/.mount_ok && \
+                  date > /media/tv/.mount_ok && \
+                  echo "Canary files written successfully"
+              volumeMounts:
+                - name: downloads
+                  mountPath: /media/downloads
+                - name: movies
+                  mountPath: /media/movies
+                - name: tv
+                  mountPath: /media/tv
+              resources:
+                requests:
+                  memory: "16Mi"
+                  cpu: "10m"
+                limits:
+                  memory: "32Mi"
+                  cpu: "50m"
+          volumes:
+            - name: downloads
+              nfs:
+                server: 10.40.0.10
+                path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+            - name: movies
+              nfs:
+                server: 10.40.0.10
+                path: /mnt/Tongariro/Plexopathy/Film
+            - name: tv
+              nfs:
+                server: 10.40.0.10
+                path: /mnt/Tongariro/Plexopathy/Television
+          restartPolicy: Never
