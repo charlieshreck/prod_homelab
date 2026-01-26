@@ -362,7 +362,7 @@ data:
 
   widgets.yaml: |
     - logo:
-        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
+        icon: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/256px-Flag_of_Cornwall.svg.png
     - greeting:
         text_size: xl
         text: Kernow Homelab

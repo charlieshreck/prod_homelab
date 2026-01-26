@@ -13,9 +13,8 @@ metadata:
     gethomepage.dev/icon: "si-argo"
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=argocd-server"
     gethomepage.dev/widget.type: "argocd"
-    gethomepage.dev/widget.url: "https://argocd.kernow.io"
-    gethomepage.dev/widget.username: "admin"
-    gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_ARGOCD_PASSWORD}}"
+    gethomepage.dev/widget.url: "http://argocd-server.argocd.svc.cluster.local:80"
+    gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_ARGOCD_KEY}}"
 spec:
   ingressClassName: traefik
   tls:

@@ -6,6 +6,7 @@ namespace: argocd
 resources:
   - resources/ingress.yaml
   - resources/argocd-cm.yaml
+  - resources/argocd-rbac-cm.yaml
   - cloudflare-tunnel-ingress.yaml
 
 patches:

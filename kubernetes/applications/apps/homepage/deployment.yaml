@@ -194,6 +194,12 @@ spec:
                   name: homepage-argocd
                   key: ADMIN_PASSWORD
                   optional: true
+            - name: HOMEPAGE_VAR_ARGOCD_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-argocd
+                  key: HOMEPAGE_API_KEY
+                  optional: true
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config

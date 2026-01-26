@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   url: https://argocd.shreck.co.uk
+  accounts.homepage: apiKey
+  accounts.homepage.enabled: "true"
   resource.customizations.health.secrets.infisical.com_InfisicalSecret: |
     hs = {}
     if obj.status ~= nil and obj.status.conditions ~= nil then
