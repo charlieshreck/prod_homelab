@@ -176,6 +176,12 @@ spec:
                   name: homepage-beszel
                   key: password
                   optional: true
+            - name: HOMEPAGE_VAR_PLEX_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-plex
+                  key: PLEX_TOKEN
+                  optional: true
             - name: HOMEPAGE_VAR_ARGOCD_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -196,6 +202,15 @@ spec:
               readOnly: true
             - name: tarriance
               mountPath: /mnt/tarriance
+              readOnly: true
+            - name: pleximetry
+              mountPath: /mnt/pleximetry
+              readOnly: true
+            - name: pbs-backups
+              mountPath: /mnt/pbs-backups
+              readOnly: true
+            - name: truro
+              mountPath: /mnt/truro
               readOnly: true
           securityContext:
             runAsUser: 3000
@@ -229,6 +244,18 @@ spec:
           nfs:
             server: 10.40.0.10
             path: /mnt/Taranaki/Tarriance
+        - name: pleximetry
+          nfs:
+            server: 10.20.0.103
+            path: /mnt/Taupo/Pleximetry
+        - name: pbs-backups
+          nfs:
+            server: 10.20.0.103
+            path: /mnt/Taupo/pbs
+        - name: truro
+          nfs:
+            server: 10.20.0.103
+            path: /mnt/Truro
 ---
 apiVersion: v1
 kind: Service

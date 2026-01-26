@@ -21,7 +21,7 @@ data:
         certificate: /app/agentic/ca
 
   settings.yaml: |
-    title: Prod Homelab Dashboard
+    title: Kernow Homelab
     background:
       image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
       blur: sm
@@ -31,45 +31,80 @@ data:
     cardBlur: md
     theme: dark
     color: slate
-    headerStyle: boxed
+    headerStyle: clean
+    statusStyle: dot
+    iconStyle: theme
+    useEqualHeights: true
+    hideErrors: true
+    target: _blank
+    quicklaunch:
+      searchDescriptions: true
+      hideInternetSearch: false
+      showSearchSuggestions: true
+      hideVisitURL: false
+      provider: google
     layout:
-      Infrastructure:
-        style: row
-        columns: 3
-      Kubernetes:
-        style: row
-        columns: 5
       Media:
+        tab: Services
+        icon: mdi-filmstrip
         style: row
         columns: 4
-      Monitoring:
-        style: row
-        columns: 4
-      Agentic:
-        style: row
-        columns: 3
       Home Services:
-        style: column
+        tab: Services
+        icon: mdi-home-automation
+        style: row
         columns: 3
-      Platform Services:
-        style: column
+      Agentic:
+        tab: Services
+        icon: mdi-robot
+        style: row
+        columns: 3
+      Infrastructure:
+        tab: Infrastructure
+        icon: mdi-server-network
+        style: row
+        columns: 4
+      Kubernetes:
+        tab: Infrastructure
+        icon: mdi-kubernetes
+        style: row
         columns: 3
       Storage:
-        style: column
+        tab: Infrastructure
+        icon: mdi-database
+        style: row
+        columns: 3
+      Monitoring:
+        tab: Monitoring
+        icon: mdi-chart-line
+        style: row
+        columns: 4
+      Platform Services:
+        tab: Platform
+        icon: mdi-cog
+        style: row
         columns: 3
 
   bookmarks.yaml: |
     - Developer:
-        - Github:
+        - GitHub (Prod):
             - abbr: GH
               icon: github.png
               href: https://github.com/charlieshreck/prod_homelab
+        - GitHub (Agentic):
+            - abbr: GA
+              icon: github.png
+              href: https://github.com/charlieshreck/agentic_lab
+        - GitHub (Monit):
+            - abbr: GM
+              icon: github.png
+              href: https://github.com/charlieshreck/monit_homelab
+        - GitHub (MCP Servers):
+            - abbr: MC
+              icon: github.png
+              href: https://github.com/charlieshreck/mcp-servers
 
     - Management:
-        - Traefik:
-            - abbr: TF
-              icon: traefik.png
-              href: https://traefik.kernow.io/dashboard/
         - Cloudflare:
             - abbr: CF
               icon: cloudflare.png
@@ -78,25 +113,101 @@ data:
             - abbr: IS
               icon: infisical.png
               href: https://app.infisical.com/
+        - Traefik Dashboard:
+            - abbr: TF
+              icon: traefik.png
+              href: https://traefik.kernow.io/dashboard/
+
+    - AI & APIs:
+        - OpenRouter:
+            - abbr: OR
+              icon: mdi-api
+              href: https://openrouter.ai/
+        - Anthropic Console:
+            - abbr: AN
+              icon: mdi-brain
+              href: https://console.anthropic.com/
+        - Google AI Studio:
+            - abbr: AI
+              icon: mdi-google
+              href: https://aistudio.google.com/
+
+    - Networking:
+        - Tailscale:
+            - abbr: TS
+              icon: tailscale.png
+              href: https://login.tailscale.com/admin
+        - Cloudflare Zero Trust:
+            - abbr: ZT
+              icon: cloudflare-zero-trust.png
+              href: https://one.dash.cloudflare.com/
+
+    - Communication:
         - Element Web:
             - abbr: EL
               icon: element.png
               href: https://app.element.io/#/login
+        - Matrix:
+            - abbr: MX
+              icon: matrix.png
+              href: https://matrix.kernow.io
+
+    - Documentation:
+        - Outline Wiki:
+            - abbr: OL
+              icon: outline.png
+              href: https://outline.kernow.io
+        - Silver Bullet:
+            - abbr: SB
+              icon: silverbullet.png
+              href: https://silverbullet.kernow.io
+        - Homepage Docs:
+            - abbr: HP
+              icon: homepage.png
+              href: https://gethomepage.dev/
+
+    - Media:
+        - Plex Web:
+            - abbr: PX
+              icon: plex.png
+              href: https://app.plex.tv
+        - Overseerr:
+            - abbr: OS
+              icon: overseerr.png
+              href: https://overseerr.kernow.io
+        - Tautulli:
+            - abbr: TT
+              icon: tautulli.png
+              href: https://tautulli.kernow.io
 
   services.yaml: |
-    # Services are now automatically discovered via ingress annotations
-    # See gethomepage.dev/enabled annotations on ingress resources
+    # Services are automatically discovered via ingress annotations
+    # Manual entries below for services requiring widgets or not auto-discovered
+
+    - Media:
+        - Plex:
+            icon: plex.png
+            href: https://plex.kernow.io
+            description: Media Server (GPU Transcoding)
+            widget:
+              type: plex
+              url: http://10.10.0.50:32400
+              key: "{{HOMEPAGE_VAR_PLEX_TOKEN}}"
+              fields:
+                - streams
+                - movies
+                - tv
 
     - Infrastructure:
         - Proxmox (Ruapehu):
             icon: proxmox.png
             href: https://proxmox.kernow.io
-            description: Hypervisor Host
+            description: Primary Hypervisor
             widget:
               type: proxmox
               url: https://10.10.0.10:8006
               username: root@pam!homepage
-              password: {{HOMEPAGE_VAR_API_TOKEN}}
+              password: "{{HOMEPAGE_VAR_API_TOKEN}}"
               node: Ruapehu
 
         - Proxmox (Carrick):
@@ -107,7 +218,7 @@ data:
               type: proxmox
               url: https://10.30.0.10:8006
               username: root@pam!homepage
-              password: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
+              password: "{{HOMEPAGE_VAR_CARRICK_API_TOKEN}}"
               node: Carrick
 
         - OPNsense:
@@ -117,8 +228,8 @@ data:
             widget:
               type: opnsense
               url: https://10.10.0.1:8443
-              username: {{HOMEPAGE_VAR_OPNSENSE_API_KEY}}
-              password: {{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}
+              username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
+              password: "{{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}"
               wan: opt4
               fields:
                 - cpu
@@ -127,14 +238,14 @@ data:
                 - wanDownload
 
         - AdGuard Home:
-            icon: mdi-shield-check
+            icon: adguard-home.png
             href: https://adguard.kernow.io
-            description: DNS & Ad Blocker
+            description: DNS & Ad Blocking
             widget:
               type: adguard
               url: http://10.10.0.1:3000
-              username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
-              password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+              username: "{{HOMEPAGE_VAR_ADGUARD_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
               fields:
                 - queries
                 - blocked
@@ -148,12 +259,25 @@ data:
             widget:
               type: unifi
               url: https://10.10.0.51:11443
-              key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
+              key: "{{HOMEPAGE_VAR_UNIFI_API_KEY}}"
               fields:
                 - uptime
                 - wlan
                 - wlan_users
                 - wlan_devices
+
+        - Backrest:
+            icon: mdi-backup-restore
+            href: https://backrest.kernow.io
+            description: Restic Backup Manager
+            widget:
+              type: backrest
+              url: http://10.20.0.40:31115
+              fields:
+                - num_success_latest
+                - num_failure_latest
+                - num_plans
+                - bytes_added_30
 
     - Monitoring:
         - Beszel:
@@ -163,8 +287,8 @@ data:
             widget:
               type: beszel
               url: http://10.30.0.20:30090
-              username: {{HOMEPAGE_VAR_BESZEL_USERNAME}}
-              password: {{HOMEPAGE_VAR_BESZEL_PASSWORD}}
+              username: "{{HOMEPAGE_VAR_BESZEL_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
               version: 2
 
     - Kubernetes:
@@ -203,9 +327,6 @@ data:
             description: Agentic AI Cluster
             ping: https://10.20.0.40:6443
 
-    # Monitoring services auto-discovered via ingress annotations
-    # Widgets configured in ingress annotations
-
     - Storage:
         - TrueNAS Media:
             icon: truenas.png
@@ -214,16 +335,16 @@ data:
             widget:
               type: truenas
               url: https://10.20.0.100
-              key: {{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}
+              key: "{{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}"
 
         - TrueNAS HDD:
             icon: truenas.png
             href: https://truenas.hdd.kernow.io
-            description: HDD Storage
+            description: HDD Bulk Storage
             widget:
               type: truenas
               url: https://10.20.0.103
-              key: {{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}
+              key: "{{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}"
 
         - Ranginui (ZFS):
             icon: mdi-database
@@ -245,41 +366,64 @@ data:
             description: Downloads Share
             href: https://truenas.kernow.io
 
-    # Platform Services auto-discovered via ingress annotations
-
   widgets.yaml: |
     - logo:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
-
+    - greeting:
+        text_size: xl
+        text: Kernow Homelab
+    - datetime:
+        text_size: l
+        format:
+          dateStyle: long
+          timeStyle: short
+          hourCycle: h23
+        locale: en-GB
+    - openmeteo:
+        label: Cornwall
+        latitude: 50.2660
+        longitude: -5.0527
+        timezone: Europe/London
+        units: metric
+        cache: 5
     - search:
         provider: google
         target: _blank
-
     - kubernetes:
         cluster:
           show: true
           cpu: true
           memory: true
           showLabel: true
-          label: "Production Cluster"
+          label: "Production"
         nodes:
           show: true
           cpu: true
           memory: true
           showLabel: true
-
     - unifi_console:
         url: https://10.10.0.51:11443
-        key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
-
+        key: "{{HOMEPAGE_VAR_UNIFI_API_KEY}}"
+    # --- NFS Storage Widgets (all active shares) ---
     - resources:
         label: "Plexopathy (Media)"
         disk: /mnt/plexopathy
         expanded: true
-
     - resources:
         label: "Tarriance (Downloads)"
         disk: /mnt/tarriance
+        expanded: true
+    - resources:
+        label: "Pleximetry (Archive)"
+        disk: /mnt/pleximetry
+        expanded: true
+    - resources:
+        label: "PBS Backups"
+        disk: /mnt/pbs-backups
+        expanded: true
+    - resources:
+        label: "Truro"
+        disk: /mnt/truro
         expanded: true
 
   proxmox.yaml: |
@@ -447,6 +591,26 @@ data:
     /* Footer - Keep Hidden for Clean Look */
     footer {
       display: none;
+    }
+
+    /* Tab Navigation - Glass consistency */
+    [role="tablist"] button,
+    .tab-button {
+      background: rgba(15, 23, 42, 0.5) !important;
+      backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(148, 163, 184, 0.15) !important;
+      border-radius: 8px 8px 0 0 !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    [role="tablist"] button[aria-selected="true"],
+    .tab-button.active {
+      background: rgba(30, 41, 59, 0.8) !important;
+      border-bottom-color: rgba(59, 130, 246, 0.6) !important;
+      box-shadow: 0 -2px 12px rgba(59, 130, 246, 0.2) !important;
+    }
+    [role="tablist"] button:hover {
+      background: rgba(30, 41, 59, 0.65) !important;
+      border-color: rgba(148, 163, 184, 0.25) !important;
     }
 
   custom.js: ""
