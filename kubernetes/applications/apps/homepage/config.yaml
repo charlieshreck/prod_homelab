@@ -79,6 +79,11 @@ data:
         icon: mdi-chart-line
         style: row
         columns: 4
+      Documentation:
+        tab: Services
+        icon: mdi-book-open-variant
+        style: row
+        columns: 3
       Platform Services:
         tab: Platform
         icon: mdi-cog
@@ -153,14 +158,6 @@ data:
               href: https://matrix.kernow.io
 
     - Documentation:
-        - Outline Wiki:
-            - abbr: OL
-              icon: outline.png
-              href: https://outline.kernow.io
-        - Silver Bullet:
-            - abbr: SB
-              icon: silverbullet.png
-              href: https://silverbullet.kernow.io
         - Homepage Docs:
             - abbr: HP
               icon: homepage.png
@@ -266,19 +263,6 @@ data:
                 - wlan_users
                 - wlan_devices
 
-        - Backrest:
-            icon: mdi-backup-restore
-            href: https://backrest.kernow.io
-            description: Restic Backup Manager
-            widget:
-              type: backrest
-              url: http://10.20.0.40:31115
-              fields:
-                - num_success_latest
-                - num_failure_latest
-                - num_plans
-                - bytes_added_30
-
     - Monitoring:
         - Beszel:
             icon: mdi-server
@@ -346,25 +330,21 @@ data:
               url: https://10.20.0.103
               key: "{{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}"
 
-        - Ranginui (ZFS):
-            icon: mdi-database
-            description: VM Storage - 1.8TB NVMe
-            href: https://truenas.kernow.io
+    - Documentation:
+        - Outline:
+            icon: outline.png
+            href: https://outline.kernow.io
+            description: Team Wiki
 
-        - Taranaki (ZFS):
-            icon: mdi-database
-            description: Mayastor Storage - 3.6TB NVMe
-            href: https://truenas.kernow.io
+        - SilverBullet:
+            icon: silverbullet.png
+            href: https://silverbullet.kernow.io
+            description: Personal Notes
 
-        - Plexopathy (NFS):
-            icon: si-plex
-            description: Media Library Share
-            href: https://truenas.kernow.io
-
-        - Tarriance (NFS):
-            icon: mdi-folder-network
-            description: Downloads Share
-            href: https://truenas.kernow.io
+        - Fumadocs:
+            icon: mdi-book-search
+            href: https://fumadocs.kernow.io
+            description: Knowledge Graph UI
 
   widgets.yaml: |
     - logo:
@@ -386,9 +366,6 @@ data:
         timezone: Europe/London
         units: metric
         cache: 5
-    - search:
-        provider: google
-        target: _blank
     - kubernetes:
         cluster:
           show: true
@@ -401,10 +378,7 @@ data:
           cpu: true
           memory: true
           showLabel: true
-    - unifi_console:
-        url: https://10.10.0.51:11443
-        key: "{{HOMEPAGE_VAR_UNIFI_API_KEY}}"
-    # --- NFS Storage Widgets (all active shares) ---
+    # --- NFS Storage Widgets ---
     - resources:
         label: "Plexopathy (Media)"
         disk: /mnt/plexopathy
@@ -414,12 +388,8 @@ data:
         disk: /mnt/tarriance
         expanded: true
     - resources:
-        label: "Pleximetry (Archive)"
+        label: "Taupo (HDD)"
         disk: /mnt/pleximetry
-        expanded: true
-    - resources:
-        label: "PBS Backups"
-        disk: /mnt/pbs-backups
         expanded: true
     - resources:
         label: "Truro"
