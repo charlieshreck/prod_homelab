@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: huntarr
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    targetRevision: main
+    path: kubernetes/applications/media/huntarr
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+  - group: ""
+    kind: PersistentVolumeClaim
+    name: huntarr-config
+    jsonPointers:
+    - /spec/resources/requests/storage
+  - group: apps
+    kind: Deployment
+    name: huntarr
+    jsonPointers:
+    - /spec/replicas

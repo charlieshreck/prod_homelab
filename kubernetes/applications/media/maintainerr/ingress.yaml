@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: maintainerr
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Maintainerr"
+    gethomepage.dev/description: "Media lifecycle management"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "mdi-broom"
+    gethomepage.dev/pod-selector: "app=maintainerr"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - maintainerr.kernow.io
+      secretName: kernow-io-tls
+  rules:
+    - host: maintainerr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: maintainerr
+                port:
+                  number: 6246

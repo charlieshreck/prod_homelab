@@ -17,23 +17,47 @@ data:
           type: series
 
         include:
-          # WEB-1080p profile
           - template: sonarr-quality-definition-series
-          - template: sonarr-v4-quality-profile-web-1080p
-          - template: sonarr-v4-custom-formats-web-1080p
-          # WEB-2160p (4K) profile
-          - template: sonarr-v4-quality-profile-web-2160p
-          - template: sonarr-v4-custom-formats-web-2160p
+
+        quality_profiles:
+          - name: "4K HEVC + 1080p Fallback"
+            reset_unmatched_scores:
+              enabled: true
+            upgrade:
+              allowed: true
+              until_quality: WEB 2160p
+              until_score: 10000
+            min_format_score: 0
+            qualities:
+              - name: WEB 2160p
+                qualities:
+                  - WEBDL-2160p
+                  - WEBRip-2160p
+              - name: WEB 1080p
+                qualities:
+                  - WEBDL-1080p
+                  - WEBRip-1080p
+              - name: HDTV-1080p
 
         # GPU Hardware Transcoding Compatibility (Quadro P4000)
-        # Penalize AV1 - P4000 cannot decode AV1 in hardware
+        # AV1: P4000 has no AV1 decode hardware
+        # x265 (HD): Block x265 at 1080p - x264 preferred for compatibility, P4000 transcodes x264 efficiently
+        # x265 (no HDR/DV): Block 4K x265 without HDR/DV - SDR x265 at 4K is undesirable
         custom_formats:
           - trash_ids:
               - 15a05bc7c1a36e2b57fd628f8977e2fc  # AV1
             assign_scores_to:
-              - name: WEB-1080p
+              - name: "4K HEVC + 1080p Fallback"
                 score: -10000
-              - name: WEB-2160p
+          - trash_ids:
+              - 47435ece6b99a0b477caf360e79ba0bb  # x265 (HD)
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
+                score: -10000
+          - trash_ids:
+              - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
                 score: -10000
 
     radarr:
@@ -43,23 +67,86 @@ data:
 
         quality_definition:
           type: movie
+          preferred_ratio: 0.0
 
         include:
-          # HD Bluray + WEB (1080p) profile
           - template: radarr-quality-definition-movie
-          - template: radarr-quality-profile-hd-bluray-web
-          - template: radarr-custom-formats-hd-bluray-web
-          # UHD Bluray + WEB (4K) profile
-          - template: radarr-quality-profile-uhd-bluray-web
-          - template: radarr-custom-formats-uhd-bluray-web
+
+        quality_profiles:
+          - name: "4K HEVC + 1080p Fallback"
+            reset_unmatched_scores:
+              enabled: true
+            upgrade:
+              allowed: true
+              until_quality: Remux-2160p
+              until_score: 10000
+            min_format_score: 0
+            qualities:
+              - name: Remux-2160p
+              - name: Bluray-2160p
+              - name: WEB 2160p
+                qualities:
+                  - WEBDL-2160p
+                  - WEBRip-2160p
+              - name: Remux-1080p
+              - name: Bluray-1080p
+              - name: WEB 1080p
+                qualities:
+                  - WEBDL-1080p
+                  - WEBRip-1080p
+
+        # File size ranges (MB per minute of runtime)
+        quality_sizes:
+          - quality: WEBDL-1080p
+            min: 15
+            preferred: 100
+            max: 150
+          - quality: WEBRip-1080p
+            min: 15
+            preferred: 100
+            max: 150
+          - quality: Bluray-1080p
+            min: 25
+            preferred: 120
+            max: 200
+          - quality: Remux-1080p
+            min: 50
+            preferred: 200
+            max: 400
+          - quality: WEBDL-2160p
+            min: 50
+            preferred: 200
+            max: 350
+          - quality: WEBRip-2160p
+            min: 50
+            preferred: 200
+            max: 350
+          - quality: Bluray-2160p
+            min: 80
+            preferred: 300
+            max: 500
+          - quality: Remux-2160p
+            min: 100
+            preferred: 400
+            max: 700
 
         # GPU Hardware Transcoding Compatibility (Quadro P4000)
-        # Penalize AV1 - P4000 cannot decode AV1 in hardware
+        # AV1: P4000 has no AV1 decode hardware
+        # x265 (HD): Block x265 at 1080p - x264 preferred for compatibility, P4000 transcodes x264 efficiently
+        # x265 (no HDR/DV): Block 4K x265 without HDR/DV - SDR x265 at 4K is undesirable
         custom_formats:
           - trash_ids:
               - cae4ca30163749b891686f95532519bd  # AV1
             assign_scores_to:
-              - name: HD Bluray + WEB
+              - name: "4K HEVC + 1080p Fallback"
                 score: -10000
-              - name: UHD Bluray + WEB
+          - trash_ids:
+              - dc98083864ea246d05a42df0d05f81cc  # x265 (HD)
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
+                score: -10000
+          - trash_ids:
+              - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
                 score: -10000

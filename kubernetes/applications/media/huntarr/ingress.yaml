@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: huntarr
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Huntarr"
+    gethomepage.dev/description: "Missing content & upgrade hunter"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "si-sonarr"
+    gethomepage.dev/pod-selector: "app=huntarr"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - huntarr.kernow.io
+      secretName: kernow-io-tls
+  rules:
+    - host: huntarr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: huntarr
+                port:
+                  number: 9705

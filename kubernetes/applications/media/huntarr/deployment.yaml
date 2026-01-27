@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: huntarr
+  namespace: media
+spec:
+  replicas: 0
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: huntarr
+  template:
+    metadata:
+      labels:
+        app: huntarr
+    spec:
+      containers:
+      - name: huntarr
+        image: huntarr/huntarr:latest
+        ports:
+        - name: web
+          containerPort: 9705
+        env:
+        - name: TZ
+          value: "Europe/London"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: huntarr-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: huntarr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 9705
+    targetPort: 9705
+  selector:
+    app: huntarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: huntarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 1Gi
