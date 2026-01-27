@@ -209,7 +209,7 @@ data:
 
         - Proxmox (Carrick):
             icon: proxmox.png
-            href: https://proxmox-monit.kernow.io
+            href: https://proxmox.monit.kernow.io
             description: Monitoring Host
             widget:
               type: proxmox
