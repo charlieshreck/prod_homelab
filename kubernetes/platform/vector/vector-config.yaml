@@ -47,7 +47,7 @@ data:
         type: elasticsearch
         inputs: [add_metadata]
         endpoints:
-          - "http://10.30.0.20:30085/insert/elasticsearch"
+          - "http://victorialogs.monit.kernow.io/insert/elasticsearch"
         mode: bulk
         api_version: v8
         compression: gzip
