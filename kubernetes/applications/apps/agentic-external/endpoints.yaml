@@ -121,17 +121,3 @@ subsets:
       - name: http
         port: 31116
         protocol: TCP
----
-# NeoDash graph visualization (via agentic Traefik ingress)
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: neodash-external
-  namespace: apps
-subsets:
-  - addresses:
-      - ip: 10.20.0.90
-    ports:
-      - name: http
-        port: 80
-        protocol: TCP

@@ -233,30 +233,3 @@ spec:
                 name: silverbullet-external
                 port:
                   number: 80
----
-# NeoDash graph visualization
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: neodash-cloudflare
-  namespace: apps
-  annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "NeoDash"
-    gethomepage.dev/group: "Agentic"
-    gethomepage.dev/icon: "neo4j.png"
-    gethomepage.dev/description: "Knowledge Graph Dashboard"
-    gethomepage.dev/pod-selector: ""
-spec:
-  ingressClassName: cloudflare-tunnel
-  rules:
-    - host: neodash.kernow.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: neodash-external
-                port:
-                  number: 80
