@@ -100,7 +100,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
       }
     }
 
-    user_data_file_id = proxmox_virtual_environment_file.cloud_init.id
+    user_data_file_id = var.skip_cloud_init ? null : proxmox_virtual_environment_file.cloud_init[0].id
   }
 
   # Operating system
@@ -121,12 +121,16 @@ resource "proxmox_virtual_environment_vm" "plex" {
     ignore_changes = [
       # Ignore changes to initialization after first boot
       initialization,
+      # Ignore disk file_id changes - the cloud image was only used for initial creation
+      disk[0].file_id,
     ]
   }
 }
 
-# Cloud-init configuration
+# Cloud-init configuration (skipped for already-provisioned VMs)
 resource "proxmox_virtual_environment_file" "cloud_init" {
+  count = var.skip_cloud_init ? 0 : 1
+
   content_type = "snippets"
   datastore_id = "local"
   node_name    = var.proxmox_node

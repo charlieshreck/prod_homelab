@@ -28,6 +28,9 @@ module "plex" {
   ssh_user        = "root"
   ssh_password    = var.proxmox_password  # Using same password as Proxmox
   ssh_public_keys = var.ssh_public_keys
+
+  # Skip cloud-init for already-provisioned VM
+  skip_cloud_init = true
 }
 
 # ============================================================================

@@ -92,3 +92,9 @@ variable "ssh_public_keys" {
   type        = list(string)
   default     = []
 }
+
+variable "skip_cloud_init" {
+  description = "Skip cloud-init file creation for already-provisioned VMs"
+  type        = bool
+  default     = false
+}
