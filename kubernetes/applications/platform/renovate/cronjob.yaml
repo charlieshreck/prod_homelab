@@ -21,7 +21,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: renovate-credentials
-                  key: GIT_HUB_PAT
+                  key: GITHUB_PAT
             - name: RENOVATE_PLATFORM
               value: "github"
             - name: RENOVATE_AUTODISCOVER
