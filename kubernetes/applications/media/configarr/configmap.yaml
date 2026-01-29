@@ -19,6 +19,34 @@ data:
         include:
           - template: sonarr-quality-definition-series
 
+        # Quality size limits (MB per minute of runtime)
+        # 45min episode at 60 MB/min = ~2.7GB, at 35 MB/min = ~1.5GB
+        quality_sizes:
+          - quality: WEBDL-1080p
+            min: 5
+            preferred: 25
+            max: 35
+          - quality: WEBRip-1080p
+            min: 5
+            preferred: 25
+            max: 35
+          - quality: Bluray-1080p
+            min: 10
+            preferred: 35
+            max: 50
+          - quality: WEBDL-2160p
+            min: 10
+            preferred: 40
+            max: 60
+          - quality: WEBRip-2160p
+            min: 10
+            preferred: 40
+            max: 60
+          - quality: Bluray-2160p
+            min: 20
+            preferred: 60
+            max: 80
+
         quality_profiles:
           - name: "4K HEVC + 1080p Fallback"
             reset_unmatched_scores:
@@ -33,10 +61,12 @@ data:
                 qualities:
                   - WEBDL-2160p
                   - WEBRip-2160p
+              - name: Bluray-2160p
               - name: WEB 1080p
                 qualities:
                   - WEBDL-1080p
                   - WEBRip-1080p
+              - name: Bluray-1080p
               - name: HDTV-1080p
 
         # GPU Hardware Transcoding Compatibility (Quadro P4000)
@@ -78,57 +108,50 @@ data:
               enabled: true
             upgrade:
               allowed: true
-              until_quality: Remux-2160p
+              until_quality: Bluray-2160p
               until_score: 10000
             min_format_score: 0
             qualities:
-              - name: Remux-2160p
+              # 4K tier (no Remux - too large)
               - name: Bluray-2160p
               - name: WEB 2160p
                 qualities:
                   - WEBDL-2160p
                   - WEBRip-2160p
-              - name: Remux-1080p
+              # 1080p fallback tier (no Remux - too large)
               - name: Bluray-1080p
               - name: WEB 1080p
                 qualities:
                   - WEBDL-1080p
                   - WEBRip-1080p
 
-        # File size ranges (MB per minute of runtime)
+        # File size ranges - tighter limits for storage efficiency
+        # For a 2hr movie: 35 GB max for 4K WEB, 15 GB max for 1080p WEB
         quality_sizes:
           - quality: WEBDL-1080p
-            min: 15
-            preferred: 100
-            max: 150
+            min: 3
+            preferred: 10
+            max: 15
           - quality: WEBRip-1080p
-            min: 15
-            preferred: 100
-            max: 150
+            min: 3
+            preferred: 10
+            max: 15
           - quality: Bluray-1080p
-            min: 25
-            preferred: 120
-            max: 200
-          - quality: Remux-1080p
-            min: 50
-            preferred: 200
-            max: 400
+            min: 5
+            preferred: 15
+            max: 25
           - quality: WEBDL-2160p
-            min: 50
-            preferred: 200
-            max: 350
+            min: 10
+            preferred: 25
+            max: 35
           - quality: WEBRip-2160p
-            min: 50
-            preferred: 200
-            max: 350
+            min: 10
+            preferred: 25
+            max: 35
           - quality: Bluray-2160p
-            min: 80
-            preferred: 300
-            max: 500
-          - quality: Remux-2160p
-            min: 100
-            preferred: 400
-            max: 700
+            min: 15
+            preferred: 35
+            max: 50
 
         # GPU Hardware Transcoding Compatibility (Quadro P4000)
         # AV1: P4000 has no AV1 decode hardware
