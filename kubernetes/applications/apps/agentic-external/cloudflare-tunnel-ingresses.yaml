@@ -12,7 +12,7 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "matrix.png"
     gethomepage.dev/description: "Matrix/Conduit Server"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://matrix.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -38,7 +38,7 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "mdi-graph"
     gethomepage.dev/description: "AI Orchestration"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://langgraph.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -64,7 +64,7 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "vikunja"
     gethomepage.dev/description: "Task & Project Management"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://vikunja.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -90,7 +90,7 @@ metadata:
     gethomepage.dev/group: "Agentic"
     gethomepage.dev/icon: "mdi-key-change"
     gethomepage.dev/description: "Claude OAuth Token Refresh"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://claude-refresh.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -135,10 +135,10 @@ metadata:
   annotations:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: "Outline"
-    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/group: "Documentation"
     gethomepage.dev/icon: "outline.png"
     gethomepage.dev/description: "Wiki & Knowledge Base"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://outline.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -160,12 +160,8 @@ metadata:
   name: backrest-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Backrest"
-    gethomepage.dev/group: "Infrastructure"
-    gethomepage.dev/icon: "mdi-backup-restore"
-    gethomepage.dev/description: "Backup Management (restic)"
-    gethomepage.dev/pod-selector: ""
+    # Disabled - configured manually in services.yaml with widget
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -192,7 +188,7 @@ metadata:
     gethomepage.dev/group: "Infrastructure"
     gethomepage.dev/icon: "mdi-garage"
     gethomepage.dev/description: "S3-Compatible Storage"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://garage.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -215,11 +211,11 @@ metadata:
   namespace: apps
   annotations:
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Silver Bullet"
-    gethomepage.dev/group: "Agentic"
+    gethomepage.dev/name: "SilverBullet"
+    gethomepage.dev/group: "Documentation"
     gethomepage.dev/icon: "silverbullet.png"
     gethomepage.dev/description: "Markdown PKM"
-    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/ping: "https://silverbullet.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:

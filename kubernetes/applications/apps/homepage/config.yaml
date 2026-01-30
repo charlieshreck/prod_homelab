@@ -270,7 +270,7 @@ data:
             description: Restic Backup Manager
             widget:
               type: backrest
-              url: http://backrest.kernow.io
+              url: http://10.20.0.40:31115
               fields:
                 - num_success_latest
                 - num_failure_latest
@@ -283,11 +283,11 @@ data:
             href: https://beszel.kernow.io
             description: Host Monitoring
             widget:
-              type: beszel
-              url: https://beszel.kernow.io
-              username: "{{HOMEPAGE_VAR_BESZEL_USERNAME}}"
-              password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
-              version: 2
+              type: iframe
+              src: https://beszel.kernow.io
+              classes: h-96 w-full
+              referrerPolicy: same-origin
+              allowPolicy: ""
 
     - Kubernetes:
         - Talos Control Plane:
@@ -344,21 +344,7 @@ data:
               url: https://10.20.0.103
               key: "{{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}"
 
-    - Documentation:
-        - Outline:
-            icon: outline.png
-            href: https://outline.kernow.io
-            description: Team Wiki
-
-        - SilverBullet:
-            icon: silverbullet.png
-            href: https://silverbullet.kernow.io
-            description: Personal Notes
-
-        - Fumadocs:
-            icon: mdi-book-search
-            href: https://fumadocs.kernow.io
-            description: Knowledge Graph UI
+    # Documentation services auto-discovered via ingress annotations
 
   widgets.yaml: |
     - logo:
