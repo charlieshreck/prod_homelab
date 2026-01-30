@@ -159,6 +159,8 @@ metadata:
     gethomepage.dev/description: "Restic Backup Manager"
     gethomepage.dev/widget.type: "backrest"
     gethomepage.dev/widget.url: "http://backrest-external"
+    gethomepage.dev/widget.username: "{{HOMEPAGE_VAR_BACKREST_USERNAME}}"
+    gethomepage.dev/widget.password: "{{HOMEPAGE_VAR_BACKREST_PASSWORD}}"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:

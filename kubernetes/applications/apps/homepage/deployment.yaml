@@ -200,6 +200,18 @@ spec:
                   name: homepage-argocd
                   key: HOMEPAGE_API_KEY
                   optional: true
+            - name: HOMEPAGE_VAR_BACKREST_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-backrest
+                  key: USERNAME
+                  optional: true
+            - name: HOMEPAGE_VAR_BACKREST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-backrest
+                  key: PASSWORD
+                  optional: true
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
