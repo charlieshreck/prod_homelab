@@ -264,25 +264,13 @@ data:
                 - wlan_users
                 - wlan_devices
 
-        - Backrest:
-            icon: mdi-backup-restore
-            href: https://backrest.kernow.io
-            description: Restic Backup Manager
-            widget:
-              type: backrest
-              url: http://10.20.0.40:31115
-              fields:
-                - num_success_latest
-                - num_failure_latest
-                - num_plans
-                - bytes_added_30
+        # Backrest now auto-discovered via ingress annotation with widget
 
     - Monitoring:
         - Beszel:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
-            siteMonitor: https://beszel.kernow.io
             widget:
               type: beszel
               url: https://beszel.kernow.io

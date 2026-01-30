@@ -12,7 +12,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "grafana.png"
     gethomepage.dev/description: "Metrics Dashboards"
-    gethomepage.dev/siteMonitor: "https://grafana.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -38,7 +37,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "prometheus.png"
     gethomepage.dev/description: "Metrics Collection"
-    gethomepage.dev/siteMonitor: "https://prometheus.kernow.io"
     gethomepage.dev/widget.type: "prometheus"
     gethomepage.dev/widget.url: "http://prometheus-external"
 spec:
@@ -66,7 +64,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "victoriametrics.png"
     gethomepage.dev/description: "Time Series Database"
-    gethomepage.dev/siteMonitor: "https://victoria-metrics.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -92,7 +89,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "victoriametrics.png"
     gethomepage.dev/description: "Log Aggregation"
-    gethomepage.dev/siteMonitor: "https://victoria-logs.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -118,7 +114,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "alertmanager.png"
     gethomepage.dev/description: "Alert Routing"
-    gethomepage.dev/siteMonitor: "https://alertmanager.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -144,7 +139,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "mdi-check-circle"
     gethomepage.dev/description: "Health Checks"
-    gethomepage.dev/siteMonitor: "https://gatus.kernow.io"
     gethomepage.dev/widget.type: "gatus"
     gethomepage.dev/widget.url: "http://gatus-external"
 spec:
@@ -194,7 +188,6 @@ metadata:
     gethomepage.dev/group: "Monitoring"
     gethomepage.dev/icon: "mdi-chart-line"
     gethomepage.dev/description: "eBPF Observability"
-    gethomepage.dev/siteMonitor: "https://coroot.kernow.io"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
