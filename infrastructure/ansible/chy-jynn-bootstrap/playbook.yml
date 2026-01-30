@@ -285,6 +285,9 @@
     # ===== VALIDATION =====
     - name: Run environment validation
       command: /usr/local/bin/chy-jynn-scripts/chy-jynn-verify
+      environment:
+        KUBECONFIG: "{{ home_path }}/prod_homelab/infrastructure/terraform/generated/kubeconfig"
+        DOTFILES: "{{ dotfiles_path }}"
       register: verify_output
       changed_when: false
       failed_when: false

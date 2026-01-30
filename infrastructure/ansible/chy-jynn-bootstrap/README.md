@@ -67,9 +67,11 @@ git clone --recurse-submodules git@github.com:charlieshreck/kernow-homelab.git .
 ## Post-bootstrap Steps
 
 1. **SSH Keys**: Copy your SSH keys or generate new ones
-2. **Infisical**: Run `/root/.config/infisical/get-token.sh` to authenticate
-3. **Claude Code**: Run `claude` and authenticate
+2. **Claude Code**: Run `claude` and authenticate
+3. **Verify environment**: Run `chy-jynn-verify` to check the setup
 4. **Verify clusters**: Run `cluster-health` to check all clusters
+
+Note: Infisical access is handled via MCP tools (infrastructure-mcp) or the CLI wrapper at `/root/.config/infisical/secrets.sh`.
 
 ## Updating Configuration
 
