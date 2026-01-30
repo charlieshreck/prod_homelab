@@ -278,7 +278,7 @@ data:
             href: https://grafana.kernow.io
             description: Metrics Dashboards
             server: monitoring
-            app: kube-prometheus-stack-grafana
+            app: grafana
             namespace: monitoring
 
         - Prometheus:
@@ -321,7 +321,7 @@ data:
             href: https://gatus.kernow.io
             description: Health Checks
             server: monitoring
-            app: gatus
+            podSelector: "app=gatus"
             namespace: monitoring
             widget:
               type: gatus
@@ -332,7 +332,7 @@ data:
             href: https://coroot.kernow.io
             description: eBPF Observability
             server: monitoring
-            app: coroot
+            podSelector: "app.kubernetes.io/component=coroot"
             namespace: coroot
 
         - Beszel:
@@ -340,7 +340,7 @@ data:
             href: https://beszel.kernow.io
             description: Host Monitoring
             server: monitoring
-            app: beszel
+            podSelector: "app=beszel"
             namespace: monitoring
             widget:
               type: beszel
@@ -411,7 +411,7 @@ data:
             href: https://matrix.kernow.io
             description: Matrix/Conduit Server
             server: agentic
-            app: conduit
+            podSelector: "app=conduit"
             namespace: ai-platform
 
         - LangGraph:
@@ -419,7 +419,7 @@ data:
             href: https://langgraph.kernow.io
             description: AI Orchestration
             server: agentic
-            app: langgraph
+            podSelector: "app=langgraph"
             namespace: ai-platform
 
     - Documentation:
@@ -436,7 +436,7 @@ data:
             href: https://silverbullet.kernow.io
             description: Markdown PKM
             server: agentic
-            app: silverbullet
+            podSelector: "app=silverbullet"
             namespace: ai-platform
 
         - Vikunja:
@@ -444,7 +444,7 @@ data:
             href: https://vikunja.kernow.io
             description: Task & Project Management
             server: agentic
-            app: vikunja
+            podSelector: "app=vikunja"
             namespace: vikunja
 
     - Backups:
@@ -453,7 +453,7 @@ data:
             href: https://backrest.kernow.io
             description: Restic Backup Manager
             server: agentic
-            app: backrest
+            podSelector: "app=backrest"
             namespace: backrest
             widget:
               type: backrest
