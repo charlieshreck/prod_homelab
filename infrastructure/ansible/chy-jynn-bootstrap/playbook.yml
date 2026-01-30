@@ -90,8 +90,7 @@
         url: "https://github.com/siderolabs/talos/releases/download/v{{ talosctl_version }}/talosctl-linux-amd64"
         dest: /usr/local/bin/talosctl
         mode: '0755'
-        # Note: Talos provides SHA256 in release notes, not as separate file
-        # Verify manually when updating versions
+        checksum: "sha256:https://github.com/siderolabs/talos/releases/download/v{{ talosctl_version }}/sha256sum.txt"
 
     - name: Download terraform zip
       get_url:
@@ -106,12 +105,19 @@
         remote_src: yes
         mode: '0755'
 
-    - name: Install helm
+    - name: Download helm tarball
+      get_url:
+        url: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz"
+        dest: /tmp/helm.tar.gz
+        checksum: "sha256:https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz.sha256sum"
+      register: helm_download
+
+    - name: Extract helm
       unarchive:
-        src: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz"
+        src: /tmp/helm.tar.gz
         dest: /tmp/
         remote_src: yes
-      register: helm_extract
+      when: helm_download.changed
 
     - name: Move helm binary
       copy:
@@ -119,13 +125,14 @@
         dest: /usr/local/bin/helm
         mode: '0755'
         remote_src: yes
-      when: helm_extract.changed
+      when: helm_download.changed
 
     - name: Install argocd CLI
       get_url:
         url: "https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version }}/argocd-linux-amd64"
         dest: /usr/local/bin/argocd
         mode: '0755'
+        checksum: "sha256:https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version }}/argocd-linux-amd64.sha256"
 
     - name: Install yq
       get_url:
@@ -296,8 +303,9 @@
 
           Next steps:
           1. Clone repos (if not done): cd /home && git clone --recurse-submodules git@github.com:charlieshreck/kernow-homelab.git .
-          2. Copy SSH keys or generate new ones
-          3. Setup Infisical: /root/.config/infisical/get-token.sh
-          4. Authenticate Claude: claude
-          5. Verify environment: chy-jynn-verify
-          6. Check clusters: cluster-health
+          2. Copy SSH keys from backup or generate new ones
+          3. Authenticate Claude: claude
+          4. Verify environment: chy-jynn-verify
+          5. Check clusters: cluster-health
+
+          Note: Infisical access is via MCP tools (infrastructure-mcp) or CLI wrapper /root/.config/infisical/secrets.sh
