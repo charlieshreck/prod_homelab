@@ -282,12 +282,13 @@ data:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
+            siteMonitor: https://beszel.kernow.io
             widget:
-              type: iframe
-              src: https://beszel.kernow.io
-              classes: h-96 w-full
-              referrerPolicy: same-origin
-              allowPolicy: ""
+              type: beszel
+              url: https://beszel.kernow.io
+              username: "{{HOMEPAGE_VAR_BESZEL_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
+              version: 2
 
     - Kubernetes:
         - Talos Control Plane:
