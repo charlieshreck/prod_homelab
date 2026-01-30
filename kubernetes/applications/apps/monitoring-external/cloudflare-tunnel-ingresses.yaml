@@ -7,11 +7,8 @@ metadata:
   name: grafana-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Grafana"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "grafana.png"
-    gethomepage.dev/description: "Metrics Dashboards"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -32,13 +29,8 @@ metadata:
   name: prometheus-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Prometheus"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "prometheus.png"
-    gethomepage.dev/description: "Metrics Collection"
-    gethomepage.dev/widget.type: "prometheus"
-    gethomepage.dev/widget.url: "http://prometheus-external"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -59,11 +51,8 @@ metadata:
   name: victoriametrics-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "VictoriaMetrics"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "victoriametrics.png"
-    gethomepage.dev/description: "Time Series Database"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -84,11 +73,8 @@ metadata:
   name: victorialogs-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "VictoriaLogs"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "victoriametrics.png"
-    gethomepage.dev/description: "Log Aggregation"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -109,11 +95,8 @@ metadata:
   name: alertmanager-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "AlertManager"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "alertmanager.png"
-    gethomepage.dev/description: "Alert Routing"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -134,13 +117,8 @@ metadata:
   name: gatus-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Gatus"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "mdi-check-circle"
-    gethomepage.dev/description: "Health Checks"
-    gethomepage.dev/widget.type: "gatus"
-    gethomepage.dev/widget.url: "http://gatus-external"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -183,11 +161,8 @@ metadata:
   name: coroot-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Coroot"
-    gethomepage.dev/group: "Monitoring"
-    gethomepage.dev/icon: "mdi-chart-line"
-    gethomepage.dev/description: "eBPF Observability"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:

@@ -271,11 +271,77 @@ data:
 
         # Backrest now auto-discovered via ingress annotation with widget
 
+    # Monitoring cluster services - manual config with kubernetes status
     - Monitoring:
+        - Grafana:
+            icon: grafana.png
+            href: https://grafana.kernow.io
+            description: Metrics Dashboards
+            server: monitoring
+            app: kube-prometheus-stack-grafana
+            namespace: monitoring
+
+        - Prometheus:
+            icon: prometheus.png
+            href: https://prometheus.kernow.io
+            description: Metrics Collection
+            server: monitoring
+            app: prometheus
+            namespace: monitoring
+            widget:
+              type: prometheus
+              url: http://prometheus-external
+
+        - VictoriaMetrics:
+            icon: victoriametrics.png
+            href: https://victoria-metrics.kernow.io
+            description: Time Series Database
+            server: monitoring
+            app: victoria-metrics-single
+            namespace: monitoring
+
+        - VictoriaLogs:
+            icon: victoriametrics.png
+            href: https://victoria-logs.kernow.io
+            description: Log Aggregation
+            server: monitoring
+            app: victoria-logs-single
+            namespace: monitoring
+
+        - AlertManager:
+            icon: alertmanager.png
+            href: https://alertmanager.kernow.io
+            description: Alert Routing
+            server: monitoring
+            app: alertmanager
+            namespace: monitoring
+
+        - Gatus:
+            icon: mdi-check-circle
+            href: https://gatus.kernow.io
+            description: Health Checks
+            server: monitoring
+            app: gatus
+            namespace: monitoring
+            widget:
+              type: gatus
+              url: http://gatus-external
+
+        - Coroot:
+            icon: mdi-chart-line
+            href: https://coroot.kernow.io
+            description: eBPF Observability
+            server: monitoring
+            app: coroot
+            namespace: coroot
+
         - Beszel:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
+            server: monitoring
+            app: beszel
+            namespace: monitoring
             widget:
               type: beszel
               url: https://beszel.kernow.io
@@ -338,7 +404,68 @@ data:
               url: https://10.20.0.103
               key: "{{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}"
 
-    # Documentation services auto-discovered via ingress annotations
+    # Agentic cluster services - manual config with kubernetes status
+    - Agentic:
+        - Matrix:
+            icon: matrix.png
+            href: https://matrix.kernow.io
+            description: Matrix/Conduit Server
+            server: agentic
+            app: conduit
+            namespace: ai-platform
+
+        - LangGraph:
+            icon: mdi-graph
+            href: https://langgraph.kernow.io
+            description: AI Orchestration
+            server: agentic
+            app: langgraph
+            namespace: ai-platform
+
+    - Documentation:
+        - Outline:
+            icon: outline.png
+            href: https://outline.kernow.io
+            description: Wiki & Knowledge Base
+            server: agentic
+            app: outline
+            namespace: ai-platform
+
+        - SilverBullet:
+            icon: silverbullet.png
+            href: https://silverbullet.kernow.io
+            description: Markdown PKM
+            server: agentic
+            app: silverbullet
+            namespace: ai-platform
+
+        - Vikunja:
+            icon: vikunja
+            href: https://vikunja.kernow.io
+            description: Task & Project Management
+            server: agentic
+            app: vikunja
+            namespace: vikunja
+
+    - Backups:
+        - Backrest:
+            icon: mdi-backup-restore
+            href: https://backrest.kernow.io
+            description: Restic Backup Manager
+            server: agentic
+            app: backrest
+            namespace: backrest
+            widget:
+              type: backrest
+              url: http://backrest-external
+              username: "{{HOMEPAGE_VAR_BACKREST_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_BACKREST_PASSWORD}}"
+
+        - Garage:
+            icon: mdi-garage
+            href: https://garage.kernow.io
+            description: S3-Compatible Storage
+            # Garage runs outside k8s, no kubernetes status available
 
   widgets.yaml: |
     - logo:

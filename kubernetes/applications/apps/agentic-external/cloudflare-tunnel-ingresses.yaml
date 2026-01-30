@@ -7,11 +7,8 @@ metadata:
   name: matrix-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Matrix"
-    gethomepage.dev/group: "Agentic"
-    gethomepage.dev/icon: "matrix.png"
-    gethomepage.dev/description: "Matrix/Conduit Server"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -32,11 +29,8 @@ metadata:
   name: langgraph-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "LangGraph"
-    gethomepage.dev/group: "Agentic"
-    gethomepage.dev/icon: "mdi-graph"
-    gethomepage.dev/description: "AI Orchestration"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -57,11 +51,8 @@ metadata:
   name: vikunja-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Vikunja"
-    gethomepage.dev/group: "Documentation"
-    gethomepage.dev/icon: "vikunja"
-    gethomepage.dev/description: "Task & Project Management"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -126,11 +117,8 @@ metadata:
   name: outline-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Outline"
-    gethomepage.dev/group: "Documentation"
-    gethomepage.dev/icon: "outline.png"
-    gethomepage.dev/description: "Wiki & Knowledge Base"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -152,15 +140,8 @@ metadata:
   name: backrest-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Backrest"
-    gethomepage.dev/group: "Backups"
-    gethomepage.dev/icon: "mdi-backup-restore"
-    gethomepage.dev/description: "Restic Backup Manager"
-    gethomepage.dev/widget.type: "backrest"
-    gethomepage.dev/widget.url: "http://backrest-external"
-    gethomepage.dev/widget.username: "{{HOMEPAGE_VAR_BACKREST_USERNAME}}"
-    gethomepage.dev/widget.password: "{{HOMEPAGE_VAR_BACKREST_PASSWORD}}"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -182,11 +163,8 @@ metadata:
   name: garage-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Garage"
-    gethomepage.dev/group: "Backups"
-    gethomepage.dev/icon: "mdi-garage"
-    gethomepage.dev/description: "S3-Compatible Storage"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -208,11 +186,8 @@ metadata:
   name: silverbullet-cloudflare
   namespace: apps
   annotations:
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "SilverBullet"
-    gethomepage.dev/group: "Documentation"
-    gethomepage.dev/icon: "silverbullet.png"
-    gethomepage.dev/description: "Markdown PKM"
+    # Disabled - configured manually in services.yaml with kubernetes status
+    gethomepage.dev/enabled: "false"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
