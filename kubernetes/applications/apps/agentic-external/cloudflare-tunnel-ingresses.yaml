@@ -154,7 +154,7 @@ metadata:
   annotations:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: "Backrest"
-    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/group: "Backups"
     gethomepage.dev/icon: "mdi-backup-restore"
     gethomepage.dev/description: "Restic Backup Manager"
     gethomepage.dev/widget.type: "backrest"
@@ -184,7 +184,7 @@ metadata:
   annotations:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: "Garage"
-    gethomepage.dev/group: "Infrastructure"
+    gethomepage.dev/group: "Backups"
     gethomepage.dev/icon: "mdi-garage"
     gethomepage.dev/description: "S3-Compatible Storage"
 spec:

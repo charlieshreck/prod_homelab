@@ -74,6 +74,11 @@ data:
         icon: mdi-database
         style: row
         columns: 3
+      Backups:
+        tab: Infrastructure
+        icon: mdi-backup-restore
+        style: row
+        columns: 2
       Monitoring:
         tab: Monitoring
         icon: mdi-chart-line
