@@ -43,7 +43,7 @@ csi:
         memory: "128Mi"
 
 # =============================================================================
-# ETCD: hostPath persistence to prevent bootstrap conflicts
+# ETCD: hostPath persistence with proper cluster join handling
 # =============================================================================
 etcd:
   replicaCount: 3
@@ -51,6 +51,22 @@ etcd:
   # Disable default PVC-based persistence
   persistence:
     enabled: false
+
+  # Override command to source join env before setup
+  command:
+    - /bin/bash
+    - -c
+    - |
+      # Source join configuration if it exists (sets ETCD_INITIAL_CLUSTER_STATE=existing)
+      if [ -f /bitnami/etcd/data/new_member_envs ]; then
+        echo "Sourcing join configuration..."
+        . /bitnami/etcd/data/new_member_envs
+        export ETCD_INITIAL_CLUSTER_STATE
+        export ETCD_INITIAL_CLUSTER
+        export ETCD_INITIAL_ADVERTISE_PEER_URLS
+      fi
+      # Run the original entrypoint
+      exec /opt/bitnami/scripts/etcd/entrypoint.sh /opt/bitnami/scripts/etcd/run.sh
 
   # Use hostPath via extraVolumes (survives pod restarts, no StorageClass needed)
   extraVolumes:
@@ -63,7 +79,7 @@ etcd:
     - name: etcd-data-hostpath
       mountPath: /bitnami/etcd/data
 
-  # Init container to fix hostPath permissions for etcd user (UID 1001)
+  # Init containers: fix permissions and handle cluster join for non-first pods
   initContainers:
     - name: fix-permissions
       image: busybox:latest
@@ -73,6 +89,124 @@ etcd:
         - |
           chown -R 1001:1001 /bitnami/etcd/data
           chmod 700 /bitnami/etcd/data
+      volumeMounts:
+        - name: etcd-data-hostpath
+          mountPath: /bitnami/etcd/data
+      securityContext:
+        runAsUser: 0
+    - name: cluster-join
+      image: bitnami/etcd:3.5.6
+      env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: ETCDCTL_API
+          value: "3"
+      command:
+        - sh
+        - -c
+        - |
+          set -e
+          DATA_DIR=/bitnami/etcd/data
+          ENV_FILE=$DATA_DIR/new_member_envs
+          CLUSTER_ENDPOINT="http://mayastor-etcd-0.mayastor-etcd-headless.mayastor.svc.cluster.local:2379"
+          MY_NAME=$POD_NAME
+          MY_PEER_URL="http://${MY_NAME}.mayastor-etcd-headless.mayastor.svc.cluster.local:2380"
+
+          echo "Init: POD_NAME=$POD_NAME"
+
+          # If this is etcd-0, skip (it bootstraps the cluster)
+          if [ "$POD_NAME" = "mayastor-etcd-0" ]; then
+            echo "This is etcd-0, skipping join logic (will bootstrap or use existing data)"
+            exit 0
+          fi
+
+          # If data already exists (member directory), skip
+          if [ -d "$DATA_DIR/member" ]; then
+            echo "Data directory exists, skipping join logic"
+            exit 0
+          fi
+
+          # If new_member_envs already exists, skip
+          if [ -f "$ENV_FILE" ]; then
+            echo "Join env file exists, skipping"
+            exit 0
+          fi
+
+          echo "No existing data, checking if cluster exists..."
+
+          # Wait for cluster to be available (etcd-0 might still be starting)
+          MAX_ATTEMPTS=30
+          ATTEMPT=0
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            if etcdctl --endpoints=$CLUSTER_ENDPOINT endpoint health 2>/dev/null; then
+              echo "Cluster is healthy"
+              break
+            fi
+            echo "Waiting for cluster... attempt $((ATTEMPT+1))/$MAX_ATTEMPTS"
+            sleep 5
+            ATTEMPT=$((ATTEMPT+1))
+          done
+
+          if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+            echo "Cluster not available, will let main container handle bootstrap"
+            exit 0
+          fi
+
+          # Check if we're already a member
+          MEMBERS=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member list 2>/dev/null || echo "")
+          if echo "$MEMBERS" | grep -q "$MY_NAME"; then
+            echo "Already a member, checking if started..."
+            if echo "$MEMBERS" | grep "$MY_NAME" | grep -q "started"; then
+              echo "Already started, something is wrong - clearing for rejoin"
+              # Remove ourselves if we're showing as started but have no data
+              MEMBER_ID=$(echo "$MEMBERS" | grep "$MY_NAME" | cut -d',' -f1)
+              etcdctl --endpoints=$CLUSTER_ENDPOINT member remove $MEMBER_ID 2>/dev/null || true
+            else
+              echo "Member exists but not started - will be handled by main container"
+              exit 0
+            fi
+          fi
+
+          # Add ourselves as a new member
+          echo "Adding $MY_NAME to cluster..."
+          RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
+            echo "Failed to add member: $RESULT"
+            # Check if it's because we already exist
+            if echo "$RESULT" | grep -q "Peer URLs already exists"; then
+              echo "Peer URL exists, removing stale member..."
+              MEMBER_ID=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member list | grep "$MY_PEER_URL" | cut -d',' -f1)
+              etcdctl --endpoints=$CLUSTER_ENDPOINT member remove $MEMBER_ID 2>/dev/null || true
+              sleep 2
+              RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
+                echo "Still failed: $RESULT"
+                exit 0
+              }
+            else
+              exit 0
+            fi
+          }
+
+          echo "Member add result: $RESULT"
+
+          # Extract the env vars from the result and write to file
+          INITIAL_CLUSTER=$(echo "$RESULT" | grep ETCD_INITIAL_CLUSTER= | sed 's/.*ETCD_INITIAL_CLUSTER="//' | sed 's/"$//')
+
+          if [ -n "$INITIAL_CLUSTER" ]; then
+            echo "Writing join configuration..."
+            cat > $ENV_FILE << EOF
+          export ETCD_NAME="$MY_NAME"
+          export ETCD_INITIAL_CLUSTER="$INITIAL_CLUSTER"
+          export ETCD_INITIAL_ADVERTISE_PEER_URLS="$MY_PEER_URL"
+          export ETCD_INITIAL_CLUSTER_STATE="existing"
+          EOF
+            chown 1001:1001 $ENV_FILE
+            echo "Join configuration written to $ENV_FILE"
+            cat $ENV_FILE
+          else
+            echo "Could not extract INITIAL_CLUSTER from result"
+          fi
       volumeMounts:
         - name: etcd-data-hostpath
           mountPath: /bitnami/etcd/data
