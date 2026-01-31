@@ -113,7 +113,7 @@ variable "control_plane" {
     name   = "talos-cp-01"
     ip     = "10.10.0.40"
     cores  = 4
-    memory = 6144  # 6GB - reduced from 8GB to fit RAM constraints
+    memory = 4096  # 4GB - reduced from 6GB for RAM constraints
     disk   = 50
   }
 }
@@ -184,7 +184,7 @@ variable "plex_vm" {
     ip         = "10.10.0.50"
     truenas_ip = "10.40.0.50"
     cores      = 4
-    memory     = 8192  # 8GB
+    memory     = 6144  # 6GB
     disk       = 100
     gpu_pci_id = "0000:0d:00"  # Nvidia P4000
   }
@@ -206,7 +206,7 @@ variable "unifi_vm" {
     name   = "unifi"
     ip     = "10.10.0.51"
     cores  = 2
-    memory = 4096  # 4GB
+    memory = 3072  # 3GB - reduced from 4GB for RAM constraints
     disk   = 50
   }
 }
