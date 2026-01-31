@@ -24,6 +24,11 @@ data "talos_machine_configuration" "control_plane" {
         install = {
           image = "ghcr.io/siderolabs/installer:${var.talos_version}"
         }
+        kernel = {
+          modules = [
+            { name = "virtio_balloon" }
+          ]
+        }
         network = {
           hostname = var.control_plane.name
           interfaces = [
@@ -81,6 +86,11 @@ data "talos_machine_configuration" "workers" {
       machine = {
         install = {
           image = "ghcr.io/siderolabs/installer:${var.talos_version}"
+        }
+        kernel = {
+          modules = [
+            { name = "virtio_balloon" }
+          ]
         }
         network = {
           hostname = each.value.name
