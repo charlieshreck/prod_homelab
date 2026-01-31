@@ -48,6 +48,7 @@ resource "proxmox_virtual_environment_vm" "control_plane" {
 
   memory {
     dedicated = var.control_plane.memory
+    floating  = 2048  # Balloon minimum 2GB for control plane
   }
 
   bios = "ovmf"

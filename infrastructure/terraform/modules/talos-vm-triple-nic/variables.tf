@@ -25,6 +25,12 @@ variable "memory" {
   default     = 12288
 }
 
+variable "balloon_min" {
+  description = "Minimum memory for balloon in MB (0 to disable balloon)"
+  type        = number
+  default     = 6144  # 6GB minimum for workers
+}
+
 variable "mac_address" {
   description = "MAC address for primary network interface (vmbr0)"
   type        = string

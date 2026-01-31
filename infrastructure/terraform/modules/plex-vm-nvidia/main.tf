@@ -35,6 +35,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
 
   memory {
     dedicated = var.memory
+    floating  = 3072  # Balloon minimum 3GB for Plex
   }
 
   # BIOS settings for GPU passthrough

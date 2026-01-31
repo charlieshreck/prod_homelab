@@ -34,6 +34,7 @@ resource "proxmox_virtual_environment_vm" "unifi" {
 
   memory {
     dedicated = var.memory
+    floating  = 1536  # Balloon minimum 1.5GB for UniFi
   }
 
   # Standard BIOS (no GPU passthrough needed)

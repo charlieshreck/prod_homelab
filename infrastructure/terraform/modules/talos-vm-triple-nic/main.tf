@@ -20,6 +20,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
 
   memory {
     dedicated = var.memory
+    floating  = var.balloon_min  # Balloon minimum - allows dynamic memory reclaim
   }
 
   # BIOS settings
