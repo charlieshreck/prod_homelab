@@ -48,7 +48,7 @@ resource "proxmox_virtual_environment_vm" "control_plane" {
 
   memory {
     dedicated = var.control_plane.memory
-    floating  = 2048  # Balloon minimum 2GB for control plane
+    floating  = 0  # Disable balloon - control plane needs stable memory
   }
 
   bios = "ovmf"
@@ -115,8 +115,9 @@ module "workers" {
   vm_id        = each.value.vm_id
   proxmox_node = var.proxmox_node
 
-  cores  = each.value.cores
-  memory = each.value.memory
+  cores       = each.value.cores
+  memory      = each.value.memory
+  balloon_min = 0  # Disable balloon - workers need stable memory for Mayastor etcd
 
   mac_address = each.value.mac_address
 
