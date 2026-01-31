@@ -95,7 +95,7 @@ etcd:
       securityContext:
         runAsUser: 0
     - name: cluster-join
-      image: bitnami/etcd:3.5.6
+      image: docker.io/openebs/etcd:3.5.6-debian-11-r10
       env:
         - name: POD_NAME
           valueFrom:
