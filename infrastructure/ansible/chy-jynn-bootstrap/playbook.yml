@@ -70,12 +70,34 @@
           - python3-pip
           - python3-venv
           - ansible
-          # Node.js (for Claude CLI, Gemini CLI)
-          - nodejs
-          - npm
-          # Build tools (for some npm packages)
+          # Build tools (for npm packages)
           - build-essential
         state: present
+
+    # ===== NODE.JS 22 LTS (via NodeSource) =====
+    - name: Ensure keyrings directory exists
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add NodeSource GPG key
+      get_url:
+        url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+        dest: /etc/apt/keyrings/nodesource.asc
+        mode: '0644'
+
+    - name: Add NodeSource repository
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_22.x nodistro main"
+        state: present
+        filename: nodesource
+
+    - name: Install Node.js 22
+      apt:
+        name: nodejs
+        state: present
+        update_cache: yes
 
     # ===== CLI TOOLS WITH CHECKSUM VERIFICATION =====
     - name: Install kubectl
@@ -154,6 +176,12 @@
         global: yes
         state: present
 
+    - name: Install Infisical CLI
+      npm:
+        name: "@infisical/cli"
+        global: yes
+        state: present
+
     # ===== SYMLINKS FOR MODERN TOOLS =====
     - name: Create bat symlink
       file:
@@ -188,12 +216,12 @@
         path: "{{ dotfiles_path }}"
       register: dotfiles_exist
 
-    - name: Symlink bashrc
-      file:
-        src: "{{ dotfiles_path }}/bashrc"
-        dest: /root/.bashrc
-        state: link
-        force: yes
+    - name: Source dotfiles bashrc from system bashrc
+      lineinfile:
+        path: /root/.bashrc
+        line: '[ -f /home/dotfiles/bashrc ] && . /home/dotfiles/bashrc'
+        create: yes
+        mode: '0644'
       when: dotfiles_exist.stat.exists
 
     - name: Symlink gitconfig
@@ -282,6 +310,16 @@
         state: present
       ignore_errors: yes
 
+    # ===== CLEANUP =====
+    - name: Clean up temporary files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /tmp/terraform.zip
+        - /tmp/helm.tar.gz
+        - /tmp/linux-amd64
+
     # ===== VALIDATION =====
     - name: Run environment validation
       command: /usr/local/bin/chy-jynn-scripts/chy-jynn-verify
@@ -311,4 +349,4 @@
           4. Verify environment: chy-jynn-verify
           5. Check clusters: cluster-health
 
-          Note: Infisical access is via MCP tools (infrastructure-mcp) or CLI wrapper /root/.config/infisical/secrets.sh
+          Note: Infisical access via 'secrets' command (run 'infisical login' first) or MCP tools (infrastructure-mcp)
