@@ -110,8 +110,8 @@ etcd:
           set -e
           DATA_DIR=/bitnami/etcd/data
           ENV_FILE=$DATA_DIR/new_member_envs
-          # Use multiple endpoints - any running etcd member can serve the request
-          CLUSTER_ENDPOINTS="http://mayastor-etcd-0.mayastor-etcd-headless.mayastor.svc.cluster.local:2379,http://mayastor-etcd-1.mayastor-etcd-headless.mayastor.svc.cluster.local:2379,http://mayastor-etcd-2.mayastor-etcd-headless.mayastor.svc.cluster.local:2379"
+          # Use etcd-1 and etcd-2 endpoints only (etcd-0 might not be running during join)
+          CLUSTER_ENDPOINTS="http://mayastor-etcd-1.mayastor-etcd-headless.mayastor.svc.cluster.local:2379,http://mayastor-etcd-2.mayastor-etcd-headless.mayastor.svc.cluster.local:2379"
           MY_NAME=$POD_NAME
           MY_PEER_URL="http://${MY_NAME}.mayastor-etcd-headless.mayastor.svc.cluster.local:2380"
 
