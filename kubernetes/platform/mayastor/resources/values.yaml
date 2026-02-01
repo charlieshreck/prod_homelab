@@ -57,12 +57,13 @@ etcd:
     - /bin/bash
     - -c
     - |
-      # Source join configuration if it exists (provides ETCD_INITIAL_CLUSTER)
+      # Source join configuration if it exists (sets up for cluster join)
       if [ -f /bitnami/etcd/data/new_member_envs ]; then
         echo "Sourcing join configuration..."
         . /bitnami/etcd/data/new_member_envs
         export ETCD_INITIAL_CLUSTER
         export ETCD_INITIAL_ADVERTISE_PEER_URLS
+        export ETCD_INITIAL_CLUSTER_STATE
       fi
       # Run the original entrypoint
       exec /opt/bitnami/scripts/etcd/entrypoint.sh /opt/bitnami/scripts/etcd/run.sh
@@ -165,9 +166,47 @@ etcd:
             fi
           fi
 
-          # Cluster exists, Bitnami will handle member add
+          # Get current cluster membership
           echo "Cluster exists with members:"
           etcdctl --endpoints=$CLUSTER_ENDPOINTS member list 2>/dev/null || true
+
+          # Build INITIAL_CLUSTER from current membership
+          CURRENT_MEMBERS=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member list 2>/dev/null || echo "")
+          INITIAL_CLUSTER=""
+          while IFS= read -r line; do
+            if [ -n "$line" ]; then
+              MEMBER_NAME=$(echo "$line" | cut -d',' -f3 | tr -d ' ')
+              PEER_URL=$(echo "$line" | cut -d',' -f4 | tr -d ' ')
+              if [ -n "$MEMBER_NAME" ] && [ -n "$PEER_URL" ]; then
+                if [ -n "$INITIAL_CLUSTER" ]; then
+                  INITIAL_CLUSTER="${INITIAL_CLUSTER},"
+                fi
+                INITIAL_CLUSTER="${INITIAL_CLUSTER}${MEMBER_NAME}=${PEER_URL}"
+              fi
+            fi
+          done << MEMBERS_EOF
+$CURRENT_MEMBERS
+MEMBERS_EOF
+
+          # Add ourselves to the initial cluster string
+          if [ -n "$INITIAL_CLUSTER" ]; then
+            INITIAL_CLUSTER="${INITIAL_CLUSTER},${MY_NAME}=${MY_PEER_URL}"
+          else
+            INITIAL_CLUSTER="${MY_NAME}=${MY_PEER_URL}"
+          fi
+
+          echo "Built INITIAL_CLUSTER: $INITIAL_CLUSTER"
+
+          # Write env file for Bitnami - setting EXISTING state triggers member add
+          cat > $ENV_FILE << EOF
+export ETCD_NAME="$MY_NAME"
+export ETCD_INITIAL_CLUSTER="$INITIAL_CLUSTER"
+export ETCD_INITIAL_ADVERTISE_PEER_URLS="$MY_PEER_URL"
+export ETCD_INITIAL_CLUSTER_STATE="existing"
+EOF
+          chown 1001:1001 $ENV_FILE
+          echo "Wrote join configuration to $ENV_FILE"
+          cat $ENV_FILE
           echo "Bitnami entrypoint will add this node to the cluster"
       volumeMounts:
         - name: etcd-data-hostpath
