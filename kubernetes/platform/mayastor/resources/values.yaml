@@ -170,23 +170,24 @@ etcd:
           echo "Cluster exists with members:"
           etcdctl --endpoints=$CLUSTER_ENDPOINTS member list 2>/dev/null || true
 
-          # Build INITIAL_CLUSTER from current membership
+          # Build INITIAL_CLUSTER from current membership using simple parsing
           CURRENT_MEMBERS=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member list 2>/dev/null || echo "")
           INITIAL_CLUSTER=""
-          while IFS= read -r line; do
+          echo "$CURRENT_MEMBERS" | while IFS= read -r line; do
             if [ -n "$line" ]; then
               MEMBER_NAME=$(echo "$line" | cut -d',' -f3 | tr -d ' ')
               PEER_URL=$(echo "$line" | cut -d',' -f4 | tr -d ' ')
               if [ -n "$MEMBER_NAME" ] && [ -n "$PEER_URL" ]; then
                 if [ -n "$INITIAL_CLUSTER" ]; then
-                  INITIAL_CLUSTER="${INITIAL_CLUSTER},"
+                  echo -n ","
                 fi
-                INITIAL_CLUSTER="${INITIAL_CLUSTER}${MEMBER_NAME}=${PEER_URL}"
+                echo -n "${MEMBER_NAME}=${PEER_URL}"
               fi
             fi
-          done << MEMBERS_EOF
-$CURRENT_MEMBERS
-MEMBERS_EOF
+          done > /tmp/cluster_members
+
+          INITIAL_CLUSTER=$(cat /tmp/cluster_members 2>/dev/null || echo "")
+          rm -f /tmp/cluster_members
 
           # Add ourselves to the initial cluster string
           if [ -n "$INITIAL_CLUSTER" ]; then
@@ -198,12 +199,10 @@ MEMBERS_EOF
           echo "Built INITIAL_CLUSTER: $INITIAL_CLUSTER"
 
           # Write env file for Bitnami - setting EXISTING state triggers member add
-          cat > $ENV_FILE << EOF
-export ETCD_NAME="$MY_NAME"
-export ETCD_INITIAL_CLUSTER="$INITIAL_CLUSTER"
-export ETCD_INITIAL_ADVERTISE_PEER_URLS="$MY_PEER_URL"
-export ETCD_INITIAL_CLUSTER_STATE="existing"
-EOF
+          echo "export ETCD_NAME=\"$MY_NAME\"" > $ENV_FILE
+          echo "export ETCD_INITIAL_CLUSTER=\"$INITIAL_CLUSTER\"" >> $ENV_FILE
+          echo "export ETCD_INITIAL_ADVERTISE_PEER_URLS=\"$MY_PEER_URL\"" >> $ENV_FILE
+          echo "export ETCD_INITIAL_CLUSTER_STATE=\"existing\"" >> $ENV_FILE
           chown 1001:1001 $ENV_FILE
           echo "Wrote join configuration to $ENV_FILE"
           cat $ENV_FILE
