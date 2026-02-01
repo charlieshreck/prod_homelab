@@ -110,17 +110,12 @@ etcd:
           set -e
           DATA_DIR=/bitnami/etcd/data
           ENV_FILE=$DATA_DIR/new_member_envs
-          CLUSTER_ENDPOINT="http://mayastor-etcd-0.mayastor-etcd-headless.mayastor.svc.cluster.local:2379"
+          # Use multiple endpoints - any running etcd member can serve the request
+          CLUSTER_ENDPOINTS="http://mayastor-etcd-0.mayastor-etcd-headless.mayastor.svc.cluster.local:2379,http://mayastor-etcd-1.mayastor-etcd-headless.mayastor.svc.cluster.local:2379,http://mayastor-etcd-2.mayastor-etcd-headless.mayastor.svc.cluster.local:2379"
           MY_NAME=$POD_NAME
           MY_PEER_URL="http://${MY_NAME}.mayastor-etcd-headless.mayastor.svc.cluster.local:2380"
 
           echo "Init: POD_NAME=$POD_NAME"
-
-          # If this is etcd-0, skip (it bootstraps the cluster)
-          if [ "$POD_NAME" = "mayastor-etcd-0" ]; then
-            echo "This is etcd-0, skipping join logic (will bootstrap or use existing data)"
-            exit 0
-          fi
 
           # If data already exists (member directory), skip
           if [ -d "$DATA_DIR/member" ]; then
@@ -140,7 +135,7 @@ etcd:
           MAX_ATTEMPTS=30
           ATTEMPT=0
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            if etcdctl --endpoints=$CLUSTER_ENDPOINT endpoint health 2>/dev/null; then
+            if etcdctl --endpoints=$CLUSTER_ENDPOINTS endpoint health 2>/dev/null; then
               echo "Cluster is healthy"
               break
             fi
@@ -155,14 +150,14 @@ etcd:
           fi
 
           # Check if we're already a member
-          MEMBERS=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member list 2>/dev/null || echo "")
+          MEMBERS=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member list 2>/dev/null || echo "")
           if echo "$MEMBERS" | grep -q "$MY_NAME"; then
             echo "Already a member, checking if started..."
             if echo "$MEMBERS" | grep "$MY_NAME" | grep -q "started"; then
               echo "Already started, something is wrong - clearing for rejoin"
               # Remove ourselves if we're showing as started but have no data
               MEMBER_ID=$(echo "$MEMBERS" | grep "$MY_NAME" | cut -d',' -f1)
-              etcdctl --endpoints=$CLUSTER_ENDPOINT member remove $MEMBER_ID 2>/dev/null || true
+              etcdctl --endpoints=$CLUSTER_ENDPOINTS member remove $MEMBER_ID 2>/dev/null || true
             else
               echo "Member exists but not started - will be handled by main container"
               exit 0
@@ -171,15 +166,15 @@ etcd:
 
           # Add ourselves as a new member
           echo "Adding $MY_NAME to cluster..."
-          RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
+          RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
             echo "Failed to add member: $RESULT"
             # Check if it's because we already exist
             if echo "$RESULT" | grep -q "Peer URLs already exists"; then
               echo "Peer URL exists, removing stale member..."
-              MEMBER_ID=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member list | grep "$MY_PEER_URL" | cut -d',' -f1)
-              etcdctl --endpoints=$CLUSTER_ENDPOINT member remove $MEMBER_ID 2>/dev/null || true
+              MEMBER_ID=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member list | grep "$MY_PEER_URL" | cut -d',' -f1)
+              etcdctl --endpoints=$CLUSTER_ENDPOINTS member remove $MEMBER_ID 2>/dev/null || true
               sleep 2
-              RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINT member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
+              RESULT=$(etcdctl --endpoints=$CLUSTER_ENDPOINTS member add $MY_NAME --peer-urls=$MY_PEER_URL 2>&1) || {
                 echo "Still failed: $RESULT"
                 exit 0
               }
