@@ -12,7 +12,7 @@ data:
       - name: production
         url: https://10.10.0.40:6443
       - name: monitoring
-        url: https://10.30.0.20:6443
+        url: https://10.10.0.30:6443
         serviceAccountToken: /app/monitoring/token
         certificate: /app/monitoring/ca
       - name: agentic
@@ -212,16 +212,16 @@ data:
               password: "{{HOMEPAGE_VAR_API_TOKEN}}"
               node: Ruapehu
 
-        - Proxmox (Carrick):
+        - Proxmox (Pihanga):
             icon: proxmox.png
-            href: https://proxmox.monit.kernow.io
-            description: Monitoring Host
+            href: https://proxmox.pihanga.kernow.io
+            description: Monitoring + Backup Host
             widget:
               type: proxmox
-              url: https://10.30.0.10:8006
+              url: https://10.10.0.101:8006
               username: root@pam!homepage
-              password: "{{HOMEPAGE_VAR_CARRICK_API_TOKEN}}"
-              node: Carrick
+              password: "{{HOMEPAGE_VAR_PIHANGA_API_TOKEN}}"
+              node: Pihanga
 
         - OPNsense:
             icon: opnsense.png
@@ -377,8 +377,14 @@ data:
         - Talos Monitor:
             icon: talos.png
             description: Monitoring Cluster
-            proxmoxNode: Carrick
+            proxmoxNode: Pihanga
             proxmoxVMID: 200
+
+        - PBS Server:
+            icon: proxmox.png
+            description: Backup Server
+            proxmoxNode: Pihanga
+            proxmoxVMID: 101
 
         - Talos Agentic:
             icon: talos.png
@@ -467,6 +473,12 @@ data:
             description: S3-Compatible Storage
             # Garage runs outside k8s, no kubernetes status available
 
+        - PBS:
+            icon: proxmox.png
+            href: https://pbs.kernow.io
+            description: VM Backup Server (Pihanga)
+            ping: https://10.10.0.151:8007
+
   widgets.yaml: |
     - logo:
         icon: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Cornwall.svg/256px-Flag_of_Cornwall.svg.png
@@ -527,10 +539,10 @@ data:
       token: root@pam!homepage
       secret: {{HOMEPAGE_VAR_API_TOKEN}}
 
-    Carrick:
-      url: https://10.30.0.10:8006
+    Pihanga:
+      url: https://10.10.0.101:8006
       token: root@pam!homepage
-      secret: {{HOMEPAGE_VAR_CARRICK_API_TOKEN}}
+      secret: {{HOMEPAGE_VAR_PIHANGA_API_TOKEN}}
 
   docker.yaml: ""
 
