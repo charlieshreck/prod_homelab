@@ -2,7 +2,7 @@
 set -e
 
 # Use v1.11.3 as default, but allow overriding via environment variable
-TALOS_VERSION="${TALOS_VERSION:-v1.11.3}"
+TALOS_VERSION="${TALOS_VERSION:-v1.11.5}"
 SCHEMATIC_ID="${SCHEMATIC_ID:-}"
 
 # Only generate a new schematic ID if one isn't already provided

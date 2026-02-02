@@ -218,10 +218,21 @@ data:
             description: Monitoring + Backup Host
             widget:
               type: proxmox
-              url: https://10.10.0.101:8006
+              url: https://10.10.0.20:8006
               username: root@pam!homepage
               password: "{{HOMEPAGE_VAR_PIHANGA_API_TOKEN}}"
               node: Pihanga
+
+        - Proxmox (Hikurangi):
+            icon: proxmox.png
+            href: https://proxmox.cortex.kernow.io
+            description: Agentic Control Hub
+            widget:
+              type: proxmox
+              url: https://10.30.0.10:8006
+              username: mcp@pve!mcp-token
+              password: "{{HOMEPAGE_VAR_HIKURANGI_API_TOKEN}}"
+              node: Hikurangi
 
         - OPNsense:
             icon: opnsense.png
@@ -540,9 +551,14 @@ data:
       secret: {{HOMEPAGE_VAR_API_TOKEN}}
 
     Pihanga:
-      url: https://10.10.0.101:8006
+      url: https://10.10.0.20:8006
       token: root@pam!homepage
       secret: {{HOMEPAGE_VAR_PIHANGA_API_TOKEN}}
+
+    Hikurangi:
+      url: https://10.30.0.10:8006
+      token: mcp@pve!mcp-token
+      secret: {{HOMEPAGE_VAR_HIKURANGI_API_TOKEN}}
 
   docker.yaml: ""
 

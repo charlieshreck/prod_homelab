@@ -164,6 +164,12 @@ spec:
                   name: homepage-proxmox-pihanga
                   key: TOKEN_SECRET
                   optional: true
+            - name: HOMEPAGE_VAR_HIKURANGI_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-proxmox-hikurangi
+                  key: TOKEN_SECRET
+                  optional: true
             - name: HOMEPAGE_VAR_GRAFANA_PASSWORD
               valueFrom:
                 secretKeyRef:
