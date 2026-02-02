@@ -218,6 +218,18 @@ spec:
                   name: homepage-backrest
                   key: PASSWORD
                   optional: true
+            - name: HOMEPAGE_VAR_PBS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-pbs
+                  key: USERNAME
+                  optional: true
+            - name: HOMEPAGE_VAR_PBS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: homepage-pbs
+                  key: PASSWORD
+                  optional: true
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config

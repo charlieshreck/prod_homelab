@@ -391,12 +391,6 @@ data:
             proxmoxNode: Pihanga
             proxmoxVMID: 200
 
-        - PBS Server:
-            icon: proxmox.png
-            description: Backup Server
-            proxmoxNode: Pihanga
-            proxmoxVMID: 101
-
         - Talos Agentic:
             icon: talos.png
             description: Agentic AI Cluster
@@ -488,7 +482,11 @@ data:
             icon: proxmox.png
             href: https://pbs.kernow.io
             description: VM Backup Server (Pihanga)
-            ping: https://10.10.0.151:8007
+            widget:
+              type: proxmoxbackupserver
+              url: https://10.10.0.151:8007
+              username: "{{HOMEPAGE_VAR_PBS_USERNAME}}"
+              password: "{{HOMEPAGE_VAR_PBS_PASSWORD}}"
 
   widgets.yaml: |
     - logo:
