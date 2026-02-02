@@ -142,3 +142,18 @@ spec:
     - name: https
       port: 443
       protocol: TCP
+---
+# Proxmox Datacenter Manager on Pihanga LXC
+apiVersion: v1
+kind: Service
+metadata:
+  name: pdm-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pdm-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
+      protocol: TCP
