@@ -301,7 +301,7 @@ data:
             namespace: monitoring
             widget:
               type: prometheus
-              url: http://prometheus-external
+              url: https://prometheus.kernow.io
 
         - VictoriaMetrics:
             icon: victoriametrics.png
@@ -336,7 +336,7 @@ data:
             namespace: monitoring
             widget:
               type: gatus
-              url: http://gatus-external
+              url: https://gatus.kernow.io
 
         - Coroot:
             icon: mdi-chart-line
@@ -468,7 +468,7 @@ data:
             namespace: backrest
             widget:
               type: backrest
-              url: http://backrest-external
+              url: https://backrest.kernow.io
               username: "{{HOMEPAGE_VAR_BACKREST_USERNAME}}"
               password: "{{HOMEPAGE_VAR_BACKREST_PASSWORD}}"
 
