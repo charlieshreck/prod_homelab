@@ -239,9 +239,6 @@ spec:
             - name: pbs-backups
               mountPath: /mnt/pbs-backups
               readOnly: true
-            - name: truro
-              mountPath: /mnt/truro
-              readOnly: true
           securityContext:
             runAsUser: 3000
             runAsGroup: 3000
@@ -282,10 +279,6 @@ spec:
           nfs:
             server: 10.20.0.103
             path: /mnt/Taupo/pbs
-        - name: truro
-          nfs:
-            server: 10.20.0.103
-            path: /mnt/Truro
 ---
 apiVersion: v1
 kind: Service

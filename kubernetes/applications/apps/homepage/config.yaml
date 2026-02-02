@@ -539,10 +539,6 @@ data:
         label: "Taupo (HDD)"
         disk: /mnt/pleximetry
         expanded: true
-    - resources:
-        label: "Truro"
-        disk: /mnt/truro
-        expanded: true
 
   proxmox.yaml: |
     Ruapehu:
