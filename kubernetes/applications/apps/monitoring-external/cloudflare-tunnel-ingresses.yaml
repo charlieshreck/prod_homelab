@@ -176,3 +176,49 @@ spec:
                 name: coroot-external
                 port:
                   number: 80
+---
+# PBS Backup Server on Pihanga
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pbs-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: pbs.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pbs-external
+                port:
+                  number: 443
+---
+# Pihanga Proxmox
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxmox-pihanga-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: proxmox.pihanga.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxmox-pihanga-external
+                port:
+                  number: 443

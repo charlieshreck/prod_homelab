@@ -1,4 +1,4 @@
-# External services pointing to monitoring cluster (10.30.0.20) NodePort services
+# External services pointing to monitoring cluster on Pihanga (10.10.0.31 Traefik LB)
 # Enables Cloudflare Tunnel routing and Homepage auto-discovery
 ---
 apiVersion: v1
@@ -111,4 +111,34 @@ spec:
   ports:
     - name: http
       port: 80
+      protocol: TCP
+---
+# PBS backup server on Pihanga (direct, not via Traefik)
+apiVersion: v1
+kind: Service
+metadata:
+  name: pbs-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pbs-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
+      protocol: TCP
+---
+# Pihanga Proxmox (direct, not via Traefik)
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox-pihanga-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: proxmox-pihanga-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 443
       protocol: TCP
