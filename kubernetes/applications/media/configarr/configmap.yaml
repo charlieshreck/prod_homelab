@@ -90,6 +90,40 @@ data:
               - name: "4K HEVC + 1080p Fallback"
                 score: -10000
 
+        # Block dangerous/malware file extensions
+        # These should never appear in legitimate media releases
+        custom_formats_own:
+          - name: "Block Dangerous Extensions"
+            includeCustomFormatWhenRenaming: false
+            specifications:
+              - name: "EXE files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.exe$"
+              - name: "MSI files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.msi$"
+              - name: "BAT files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.bat$"
+              - name: "SCR files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.scr$"
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
+                score: -10000
+
     radarr:
       main:
         base_url: http://radarr.media.svc.cluster.local:7878
@@ -170,6 +204,39 @@ data:
                 score: -10000
           - trash_ids:
               - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
+            assign_scores_to:
+              - name: "4K HEVC + 1080p Fallback"
+                score: -10000
+
+        # Block dangerous/malware file extensions
+        custom_formats_own:
+          - name: "Block Dangerous Extensions"
+            includeCustomFormatWhenRenaming: false
+            specifications:
+              - name: "EXE files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.exe$"
+              - name: "MSI files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.msi$"
+              - name: "BAT files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.bat$"
+              - name: "SCR files"
+                implementation: "ReleaseTitleSpecification"
+                negate: false
+                required: false
+                fields:
+                  value: "\\.scr$"
             assign_scores_to:
               - name: "4K HEVC + 1080p Fallback"
                 score: -10000
