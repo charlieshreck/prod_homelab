@@ -214,7 +214,7 @@ data:
 
         - Proxmox (Pihanga):
             icon: proxmox.png
-            href: https://proxmox.pihanga.kernow.io
+            href: https://proxmox.monit.kernow.io
             description: Monitoring + Backup Host
             widget:
               type: proxmox
