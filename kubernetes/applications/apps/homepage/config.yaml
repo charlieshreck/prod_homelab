@@ -336,7 +336,7 @@ data:
             namespace: monitoring
             widget:
               type: gatus
-              url: https://gatus.monit.kernow.io
+              url: https://gatus.kernow.io
 
         - Coroot:
             icon: mdi-chart-line
