@@ -329,7 +329,7 @@ data:
 
         - Gatus:
             icon: mdi-check-circle
-            href: https://gatus.monit.kernow.io
+            href: https://gatus.kernow.io
             description: Health Checks
             server: monitoring
             podSelector: "app=gatus"
