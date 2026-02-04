@@ -36,6 +36,11 @@ spec:
             secretKeyRef:
               name: notifiarr-api
               key: API_KEY
+        - name: DN_UI_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: notifiarr-api
+              key: UI_PASSWORD
         - name: DN_RADARR_0_URL
           value: "http://radarr.media.svc.cluster.local:7878"
         - name: DN_RADARR_0_API_KEY
