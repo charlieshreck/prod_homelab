@@ -294,18 +294,18 @@ data:
 
         - Prometheus:
             icon: prometheus.png
-            href: https://prometheus.kernow.io
+            href: https://prometheus.monit.kernow.io
             description: Metrics Collection
             server: monitoring
             app: prometheus
             namespace: monitoring
             widget:
               type: prometheus
-              url: https://prometheus.kernow.io
+              url: https://prometheus.monit.kernow.io
 
         - VictoriaMetrics:
             icon: victoriametrics.png
-            href: https://victoria-metrics.kernow.io
+            href: https://victoriametrics.monit.kernow.io
             description: Time Series Database
             server: monitoring
             app: victoria-metrics-single
@@ -313,7 +313,7 @@ data:
 
         - VictoriaLogs:
             icon: victoriametrics.png
-            href: https://victoria-logs.kernow.io
+            href: https://victorialogs.monit.kernow.io
             description: Log Aggregation
             server: monitoring
             app: victoria-logs-single
@@ -321,7 +321,7 @@ data:
 
         - AlertManager:
             icon: alertmanager.png
-            href: https://alertmanager.kernow.io
+            href: https://alertmanager.monit.kernow.io
             description: Alert Routing
             server: monitoring
             app: alertmanager
@@ -329,14 +329,14 @@ data:
 
         - Gatus:
             icon: mdi-check-circle
-            href: https://gatus.kernow.io
+            href: https://gatus.monit.kernow.io
             description: Health Checks
             server: monitoring
             podSelector: "app=gatus"
             namespace: monitoring
             widget:
               type: gatus
-              url: https://gatus.kernow.io
+              url: https://gatus.monit.kernow.io
 
         - Coroot:
             icon: mdi-chart-line
