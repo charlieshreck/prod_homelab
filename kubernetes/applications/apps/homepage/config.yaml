@@ -417,6 +417,12 @@ data:
 
     # Agentic cluster services - manual config with kubernetes status
     - Agentic:
+        - Afferent:
+            icon: mdi-cellphone-link
+            href: https://synapse.kernow.io
+            description: Claude Code Mobile PWA
+            ping: https://synapse.kernow.io
+
         - Matrix:
             icon: matrix.png
             href: https://matrix.kernow.io
