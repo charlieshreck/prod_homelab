@@ -1,0 +1,88 @@
+---
+# External bridge for Synapse (Glance) - Claude Code chat UI
+# Running on chy-jynn LXC (10.10.0.22:3460)
+apiVersion: v1
+kind: Service
+metadata:
+  name: synapse-external
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3460
+      targetPort: 3460
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: synapse-external
+  namespace: default
+subsets:
+  - addresses:
+      - ip: 10.10.0.22  # chy-jynn LXC
+    ports:
+      - port: 3460
+---
+# Cloudflare tunnel ingress for synapse.kernow.io
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: synapse-external
+  namespace: default
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: synapse.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: synapse-external
+                port:
+                  number: 3460
+---
+# External bridge for Synapse TTY - terminal-based backup
+# Running on chy-jynn LXC (10.10.0.22:3457)
+apiVersion: v1
+kind: Service
+metadata:
+  name: synapse-tty-external
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3457
+      targetPort: 3457
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: synapse-tty-external
+  namespace: default
+subsets:
+  - addresses:
+      - ip: 10.10.0.22  # chy-jynn LXC
+    ports:
+      - port: 3457
+---
+# Cloudflare tunnel ingress for synapse.tty.kernow.io
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: synapse-tty-external
+  namespace: default
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: synapse.tty.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: synapse-tty-external
+                port:
+                  number: 3457

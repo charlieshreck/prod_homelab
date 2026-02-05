@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - claude-refresh.yaml
+  - synapse.yaml
