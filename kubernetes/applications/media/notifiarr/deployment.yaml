@@ -20,7 +20,7 @@ spec:
       hostname: notifiarr
       containers:
       - name: notifiarr
-        image: golift/notifiarr:v0.8.3
+        image: golift/notifiarr:v0.9.2
         ports:
         - name: http
           containerPort: 5454

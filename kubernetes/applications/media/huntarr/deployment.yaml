@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: huntarr
-        image: huntarr/huntarr:v1.12.1
+        image: huntarr/huntarr:9.2.3
         ports:
         - name: web
           containerPort: 9705
