@@ -19,7 +19,7 @@ spec:
     spec:
       initContainers:
       - name: config-host-whitelist
-        image: busybox:latest
+        image: busybox:1.37
         command:
           - sh
           - -c
@@ -45,7 +45,7 @@ spec:
           mountPath: /config
       containers:
       - name: sabnzbd
-        image: lscr.io/linuxserver/sabnzbd:latest
+        image: lscr.io/linuxserver/sabnzbd:4.4.1
         ports:
         - name: http
           containerPort: 8080
@@ -56,6 +56,20 @@ spec:
           value: "3000"
         - name: TZ
           value: "Europe/London"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /config

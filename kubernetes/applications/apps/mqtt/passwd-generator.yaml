@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: generate-passwd
-        image: bitnami/kubectl:latest
+        image: bitnami/kubectl:1.31
         command:
         - /bin/sh
         - -c

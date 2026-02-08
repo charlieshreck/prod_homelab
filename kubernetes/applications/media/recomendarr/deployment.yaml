@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: recomendarr
-        image: tannermiddleton/recommendarr:latest
+        image: tannermiddleton/recommendarr:v1.4.0
         ports:
         - name: http
           containerPort: 3000
@@ -28,6 +28,20 @@ spec:
           value: "3000"
         - name: TZ
           value: "Europe/London"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /app/server/data

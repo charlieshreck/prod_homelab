@@ -25,6 +25,18 @@ spec:
           containerPort: 1883
         - name: websocket
           containerPort: 9001
+        livenessProbe:
+          tcpSocket:
+            port: 1883
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 1883
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /mosquitto/config/mosquitto.conf

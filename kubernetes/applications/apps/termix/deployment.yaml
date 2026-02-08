@@ -17,13 +17,27 @@ spec:
     spec:
       containers:
       - name: termix
-        image: ghcr.io/lukegus/termix:latest
+        image: ghcr.io/lukegus/termix:v1.0.0
         ports:
         - containerPort: 8080
           name: http
         env:
         - name: PORT
           value: "8080"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: data
           mountPath: /app/data

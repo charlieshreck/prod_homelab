@@ -69,7 +69,7 @@ spec:
           restartPolicy: Never
           containers:
           - name: health-check
-            image: busybox:latest
+            image: busybox:1.37
             command: ["/bin/sh", "/scripts/check.sh"]
             env:
             - name: MATTER_HUB_URL

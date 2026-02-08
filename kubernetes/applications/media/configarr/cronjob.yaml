@@ -22,7 +22,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: configarr
-            image: ghcr.io/raydak-labs/configarr:latest
+            image: ghcr.io/raydak-labs/configarr:2.1.0
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:

@@ -24,7 +24,7 @@ spec:
         fsGroup: 3000
       initContainers:
         - name: copy-config
-          image: busybox:latest
+          image: busybox:1.37
           command:
             - sh
             - -c
@@ -41,7 +41,7 @@ spec:
             runAsUser: 0
       containers:
         - name: homepage
-          image: ghcr.io/gethomepage/homepage:latest
+          image: ghcr.io/gethomepage/homepage:v0.10.9
           imagePullPolicy: Always
           ports:
             - name: http
@@ -230,6 +230,20 @@ spec:
                   name: homepage-pbs
                   key: PASSWORD
                   optional: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config

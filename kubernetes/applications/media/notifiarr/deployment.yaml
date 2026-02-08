@@ -20,7 +20,7 @@ spec:
       hostname: notifiarr
       containers:
       - name: notifiarr
-        image: golift/notifiarr:latest
+        image: golift/notifiarr:v0.8.3
         ports:
         - name: http
           containerPort: 5454
@@ -83,6 +83,20 @@ spec:
             secretKeyRef:
               name: tautulli-credentials
               key: API_KEY
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5454
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5454
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /config

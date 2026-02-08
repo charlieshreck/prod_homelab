@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tautulli
-        image: lscr.io/linuxserver/tautulli:latest
+        image: lscr.io/linuxserver/tautulli:2.14.6
         ports:
         - name: http
           containerPort: 8181
@@ -28,6 +28,20 @@ spec:
           value: "3000"
         - name: TZ
           value: "Europe/London"
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 8181
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 8181
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /config

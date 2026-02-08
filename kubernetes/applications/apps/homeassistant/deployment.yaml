@@ -27,6 +27,20 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        livenessProbe:
+          httpGet:
+            path: /api/
+            port: 8123
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/
+            port: 8123
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         resources:
           requests:
             cpu: 200m

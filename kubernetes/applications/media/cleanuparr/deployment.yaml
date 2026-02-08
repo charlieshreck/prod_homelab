@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: cleanuparr
-        image: ghcr.io/cleanuparr/cleanuparr:latest
+        image: ghcr.io/cleanuparr/cleanuparr:v3.1.0
         ports:
         - name: http
           containerPort: 11011
@@ -30,6 +30,20 @@ spec:
           value: "3000"
         - name: TZ
           value: "Europe/London"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 11011
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 11011
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /config

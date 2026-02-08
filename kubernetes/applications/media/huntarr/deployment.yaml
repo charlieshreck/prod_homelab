@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: huntarr
-        image: huntarr/huntarr:latest
+        image: huntarr/huntarr:v1.12.1
         ports:
         - name: web
           containerPort: 9705
@@ -26,6 +26,20 @@ spec:
           value: "Europe/London"
         - name: HUNTARR_PORT
           value: "9705"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 9705
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 9705
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         volumeMounts:
         - name: config
           mountPath: /config
