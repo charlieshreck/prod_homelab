@@ -122,7 +122,7 @@ spec:
       - name: truro
         nfs:
           server: 10.20.0.103
-          path: /mnt/Truro
+          path: /mnt/Taupo/Truro
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
