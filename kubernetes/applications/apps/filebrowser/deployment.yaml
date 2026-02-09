@@ -16,6 +16,7 @@ spec:
         app: filebrowser
       annotations:
         backup.velero.io/backup-volumes-excludes: plexopathy,tarriance,pleximetry,pbs,minio,truro
+        kubectl.kubernetes.io/restartedAt: "2026-02-09T19:22:00Z"
     spec:
       securityContext:
         fsGroup: 3000
