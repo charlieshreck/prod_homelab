@@ -55,7 +55,7 @@ spec:
             - --enable-kubernetes
           env:
             - name: PULSE_URL
-              value: "https://pulse.kernow.io"
+              value: "http://pulse.kernow.io"
             - name: PULSE_TOKEN
               valueFrom:
                 secretKeyRef:
