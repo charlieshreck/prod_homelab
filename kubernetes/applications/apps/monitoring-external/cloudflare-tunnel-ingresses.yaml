@@ -245,3 +245,25 @@ spec:
                 name: pdm-external
                 port:
                   number: 443
+---
+# Pulse - Infrastructure monitoring dashboard
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pulse-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: pulse.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pulse-external
+                port:
+                  number: 80

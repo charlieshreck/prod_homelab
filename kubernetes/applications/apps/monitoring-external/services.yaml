@@ -157,3 +157,18 @@ spec:
     - name: https
       port: 443
       protocol: TCP
+---
+# Pulse - Infrastructure monitoring dashboard (monit cluster)
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulse-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pulse-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP

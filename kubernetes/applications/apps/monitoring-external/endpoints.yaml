@@ -146,3 +146,17 @@ subsets:
       - name: https
         port: 8443
         protocol: TCP
+---
+# Pulse - Infrastructure monitoring dashboard (monit cluster Traefik LB)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: pulse-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.10.0.31
+    ports:
+      - name: http
+        port: 80
+        protocol: TCP
