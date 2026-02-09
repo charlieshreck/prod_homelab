@@ -55,20 +55,6 @@ spec:
           subPath: config.yaml
         - name: data
           mountPath: /home/filebrowser/data
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          failureThreshold: 3
         # Media NAS (10.40.0.10) - High-speed 40GbE
         - name: plexopathy
           mountPath: /folder/media/Plexopathy
@@ -83,6 +69,20 @@ spec:
           mountPath: /folder/hdd/MinIO
         - name: truro
           mountPath: /folder/hdd/Truro
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
         resources:
           requests:
             cpu: 100m
