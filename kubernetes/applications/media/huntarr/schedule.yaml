@@ -45,7 +45,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: bitnami/kubectl:1.31
+            image: bitnami/kubectl:latest
             command:
             - kubectl
             - scale
@@ -71,7 +71,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: bitnami/kubectl:1.31
+            image: bitnami/kubectl:latest
             command:
             - kubectl
             - scale
