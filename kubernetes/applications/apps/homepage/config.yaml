@@ -350,7 +350,25 @@ data:
             icon: ntopng.png
             href: https://ntopng.kernow.io
             description: Network Traffic Analysis
-            ping: https://ntopng.kernow.io
+            widget:
+              type: customapi
+              url: http://10.10.0.1:3001/lua/rest/v2/get/interface/data.lua?ifid=1
+              headers:
+                Authorization: "Token {{HOMEPAGE_VAR_NTOPNG_TOKEN}}"
+              refreshInterval: 10000
+              mappings:
+                - field: rsp.num_hosts
+                  label: Hosts
+                  format: number
+                - field: rsp.num_flows
+                  label: Flows
+                  format: number
+                - field: rsp.throughput_bps
+                  label: Throughput
+                  format: bitrate
+                - field: rsp.engaged_alerts
+                  label: Alerts
+                  format: number
 
         - Beszel:
             icon: mdi-server
