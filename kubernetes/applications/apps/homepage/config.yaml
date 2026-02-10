@@ -353,8 +353,8 @@ data:
             widget:
               type: customapi
               url: http://10.10.0.1:3001/lua/rest/v2/get/interface/data.lua?ifid=1
-              headers:
-                Authorization: "Token {{HOMEPAGE_VAR_NTOPNG_TOKEN}}"
+              username: admin
+              password: "{{HOMEPAGE_VAR_NTOPNG_PASSWORD}}"
               refreshInterval: 10000
               mappings:
                 - field: rsp.num_hosts
@@ -365,7 +365,7 @@ data:
                   format: number
                 - field: rsp.throughput_bps
                   label: Throughput
-                  format: bitrate
+                  format: number
                 - field: rsp.engaged_alerts
                   label: Alerts
                   format: number

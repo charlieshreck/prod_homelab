@@ -230,11 +230,11 @@ spec:
                   name: homepage-pbs
                   key: PASSWORD
                   optional: true
-            - name: HOMEPAGE_VAR_NTOPNG_TOKEN
+            - name: HOMEPAGE_VAR_NTOPNG_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: homepage-ntopng
-                  key: API_TOKEN
+                  key: ADMIN_PASSWORD
                   optional: true
           livenessProbe:
             httpGet:
