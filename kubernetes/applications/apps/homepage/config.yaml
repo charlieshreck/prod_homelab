@@ -346,6 +346,12 @@ data:
             podSelector: "app.kubernetes.io/component=coroot"
             namespace: coroot
 
+        - ntopng:
+            icon: ntopng.png
+            href: https://ntopng.kernow.io
+            description: Network Traffic Analysis
+            ping: https://ntopng.kernow.io
+
         - Beszel:
             icon: mdi-server
             href: https://beszel.kernow.io
