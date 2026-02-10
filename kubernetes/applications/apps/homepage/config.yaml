@@ -357,16 +357,21 @@ data:
               password: "{{HOMEPAGE_VAR_NTOPNG_PASSWORD}}"
               refreshInterval: 10000
               mappings:
-                - field: rsp.num_hosts
+                - field:
+                    rsp: num_hosts
                   label: Hosts
                   format: number
-                - field: rsp.num_flows
+                - field:
+                    rsp: num_flows
                   label: Flows
                   format: number
-                - field: rsp.throughput_bps
+                - field:
+                    rsp: throughput_bps
                   label: Throughput
-                  format: number
-                - field: rsp.engaged_alerts
+                  format: float
+                  suffix: bps
+                - field:
+                    rsp: engaged_alerts
                   label: Alerts
                   format: number
 
