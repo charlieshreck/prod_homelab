@@ -14,49 +14,77 @@
   "prCreation": "not-pending",
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"]
+    "labels": [
+      "security"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["kubernetes/.+\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/kubernetes/.+\\.ya?ml$/"
+    ]
   },
   "packageRules": [
     {
       "description": "Auto-merge patch and minor updates after stability period",
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "automerge": true
     },
     {
       "description": "Require review for major updates",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false,
-      "labels": ["major-update"]
+      "labels": [
+        "major-update"
+      ]
     },
     {
       "description": "Group Kubernetes platform updates",
-      "matchManagers": ["kubernetes"],
-      "matchFileNames": ["kubernetes/platform/**"],
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "matchFileNames": [
+        "kubernetes/platform/**"
+      ],
       "groupName": "kubernetes-platform"
     },
     {
       "description": "Group application container images",
-      "matchManagers": ["kubernetes"],
-      "matchFileNames": ["kubernetes/applications/**"],
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "matchFileNames": [
+        "kubernetes/applications/**"
+      ],
       "groupName": "kubernetes-apps"
     },
     {
       "description": "Group Terraform updates",
-      "matchManagers": ["terraform"],
+      "matchManagers": [
+        "terraform"
+      ],
       "groupName": "terraform"
     },
     {
       "description": "Group Docker image updates",
-      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchManagers": [
+        "dockerfile",
+        "docker-compose"
+      ],
       "groupName": "docker-images"
     },
     {
       "description": "Group linuxserver.io images",
-      "matchPackagePatterns": ["^lscr\\.io/linuxserver/", "^linuxserver/", "^ghcr\\.io/linuxserver/"],
-      "groupName": "linuxserver-images"
+      "groupName": "linuxserver-images",
+      "matchPackageNames": [
+        "/^lscr\\.io/linuxserver//",
+        "/^linuxserver//",
+        "/^ghcr\\.io/linuxserver//"
+      ]
     }
   ],
   "schedule": [
@@ -70,6 +98,11 @@
   "semanticCommits": "enabled",
   "commitMessagePrefix": "chore(deps):",
   "rebaseWhen": "behind-base-branch",
-  "labels": ["dependencies", "renovate"],
-  "assignees": ["@charlieshreck"]
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "assignees": [
+    "@charlieshreck"
+  ]
 }
