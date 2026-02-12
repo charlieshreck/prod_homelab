@@ -1,0 +1,21 @@
+---
+# Omada Software Controller inventory
+# Password stored in Infisical: /infrastructure/proxmox-ruapehu/ROOT_PASSWORD
+all:
+  hosts:
+    omada:
+      ansible_host: 10.10.0.3
+      ansible_user: root
+      ansible_python_interpreter: /usr/bin/python3
+      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+  vars:
+    omada_timezone: Europe/London
+    # Omada controller ports
+    omada_https_port: 8043
+    omada_http_port: 8088
+    omada_discovery_port: 29810
+    omada_manage_v1_port: 29811
+    omada_manage_v2_port: 29812
+    omada_transfer_port: 29813
+    omada_rtty_port: 29814

@@ -1,0 +1,5 @@
+---
+- name: restart omada
+  systemd:
+    name: tpeap
+    state: restarted

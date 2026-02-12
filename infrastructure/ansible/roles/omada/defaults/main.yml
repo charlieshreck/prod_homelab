@@ -1,0 +1,5 @@
+---
+# Omada Network Application (formerly SDN Controller) defaults
+omada_version: "6.1.0.19"
+omada_deb_url: "https://static.tp-link.com/upload/software/2026/202601/20260121/Omada_Network_Application_v6.1.0.19_linux_x64_20260117100106.deb"
+omada_timezone: Europe/London

@@ -1,0 +1,104 @@
+---
+# Omada Network Application (v6.x) Installation
+# Installs TP-Link Omada controller on Debian 12 LXC
+# Requires: OpenJDK 17, MongoDB 7.0, JSVC
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install base dependencies
+  apt:
+    name:
+      - curl
+      - gnupg
+      - libcap2-bin
+    state: present
+
+- name: Install OpenJDK 17
+  apt:
+    name: openjdk-17-jre-headless
+    state: present
+
+- name: Install JSVC
+  apt:
+    name: jsvc
+    state: present
+  ignore_errors: yes
+
+- name: Install MongoDB 7.0
+  block:
+    - name: Add MongoDB GPG key
+      shell: |
+        curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+      args:
+        creates: /usr/share/keyrings/mongodb-server-7.0.gpg
+
+    - name: Add MongoDB repository
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/7.0 main"
+        state: present
+        filename: mongodb-org-7.0
+
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        state: present
+        update_cache: yes
+
+    - name: Start and enable MongoDB
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
+
+- name: Download Omada Network Application deb
+  get_url:
+    url: "{{ omada_deb_url }}"
+    dest: /tmp/omada-controller.deb
+    mode: '0644'
+    timeout: 120
+
+- name: Install Omada Network Application
+  shell: dpkg --ignore-depends=jsvc -i /tmp/omada-controller.deb || apt-get -f install -y
+  args:
+    creates: /opt/tplink/EAPController/bin/control.sh
+
+- name: Set timezone
+  timezone:
+    name: "{{ omada_timezone }}"
+
+- name: Start Omada controller
+  shell: /opt/tplink/EAPController/bin/control.sh start
+  register: omada_start
+  changed_when: "'started' in omada_start.stdout"
+
+- name: Enable Omada on boot
+  systemd:
+    name: tpeap
+    enabled: yes
+    daemon_reload: yes
+  ignore_errors: yes
+
+- name: Wait for Omada controller to be ready
+  uri:
+    url: "https://127.0.0.1:8043"
+    validate_certs: no
+    status_code: [200, 302]
+  register: result
+  until: result.status in [200, 302]
+  retries: 30
+  delay: 10
+
+- name: Clean up downloaded deb
+  file:
+    path: /tmp/omada-controller.deb
+    state: absent
+
+- name: Display Omada controller status
+  debug:
+    msg:
+      - "Omada Network Application v{{ omada_version }} installed"
+      - "Web UI: https://{{ ansible_host }}:8043"
+      - "Ports: 8043(HTTPS), 8088(HTTP), 29810-29817(device mgmt), 27217(MongoDB)"
