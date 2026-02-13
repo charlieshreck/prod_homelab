@@ -22,3 +22,6 @@ docker_compose_version: "2.24.0"
 
 # Nvidia Configuration
 nvidia_driver_version: "550"  # Debian 13 Trixie stable version (was 535)
+
+# Tugtainer agent configuration
+tugtainer_agent_secret: "{{ lookup('env', 'TUGTAINER_AGENT_SECRET') }}"

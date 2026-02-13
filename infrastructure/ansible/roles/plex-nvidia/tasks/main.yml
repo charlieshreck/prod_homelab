@@ -166,19 +166,26 @@
     state: present
   register: plex_compose_output
 
-# Watchtower for automatic container updates
-- name: Deploy Watchtower for auto-updates
-  community.docker.docker_container:
-    name: watchtower
-    image: containrrr/watchtower:latest
-    restart_policy: unless-stopped
-    env:
-      WATCHTOWER_CLEANUP: "true"
-      WATCHTOWER_SCHEDULE: "0 0 4 * * *"
-      WATCHTOWER_INCLUDE_STOPPED: "true"
-      DOCKER_API_VERSION: "1.44"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+# Tugtainer agent for container update management (replaces Watchtower)
+# Main Tugtainer UI runs on monit cluster at tugtainer.kernow.io
+- name: Create Tugtainer agent directory
+  file:
+    path: /opt/tugtainer
+    state: directory
+    mode: '0755'
+
+- name: Deploy Tugtainer agent compose file
+  template:
+    src: tugtainer-compose.yml.j2
+    dest: /opt/tugtainer/docker-compose.yml
+    mode: '0644'
+  notify:
+    - Restart Tugtainer agent
+
+- name: Start Tugtainer agent stack
+  community.docker.docker_compose_v2:
+    project_src: /opt/tugtainer
+    state: present
 
 - name: Wait for Plex to be ready
   wait_for:

@@ -15,3 +15,8 @@
   community.docker.docker_compose_v2:
     project_src: "{{ plex_compose_dir }}"
     state: restarted
+
+- name: Restart Tugtainer agent
+  community.docker.docker_compose_v2:
+    project_src: /opt/tugtainer
+    state: restarted

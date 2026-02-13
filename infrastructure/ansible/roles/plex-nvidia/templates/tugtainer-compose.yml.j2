@@ -1,0 +1,47 @@
+networks:
+  tugtainer_agent:
+    name: tugtainer_agent
+
+services:
+  socket-proxy:
+    container_name: socket-proxy
+    image: lscr.io/linuxserver/socket-proxy:latest
+    restart: unless-stopped
+    environment:
+      - CONTAINERS=1
+      - EVENTS=1
+      - IMAGES=1
+      - INFO=1
+      - LOG_LEVEL=warning
+      - NETWORKS=1
+      - PING=1
+      - POST=1
+      - VERSION=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    read_only: true
+    tmpfs:
+      - /run
+    networks:
+      - tugtainer_agent
+    labels:
+      dev.quenary.tugtainer.protected: 'true'
+
+  agent:
+    container_name: tugtainer-agent
+    image: ghcr.io/quenary/tugtainer-agent:1
+    restart: unless-stopped
+    ports:
+      - '9413:8001'
+    environment:
+      - AGENT_SECRET={{ tugtainer_agent_secret }}
+      - DOCKER_HOST=tcp://socket-proxy:2375
+    read_only: true
+    tmpfs:
+      - /run
+    depends_on:
+      - socket-proxy
+    networks:
+      - tugtainer_agent
+    labels:
+      dev.quenary.tugtainer.protected: 'true'
