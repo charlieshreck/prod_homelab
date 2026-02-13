@@ -389,6 +389,22 @@ data:
               password: "{{HOMEPAGE_VAR_BESZEL_PASSWORD}}"
               version: 2
 
+        - Pulse:
+            icon: mdi-heart-pulse
+            href: https://pulse.kernow.io
+            description: Server Monitoring
+            server: monitoring
+            podSelector: "app=pulse"
+            namespace: monitoring
+
+        - Tugtainer:
+            icon: mdi-package-up
+            href: https://tugtainer.kernow.io
+            description: Container Updates
+            server: monitoring
+            podSelector: "app=tugtainer"
+            namespace: monitoring
+
     - Kubernetes:
         - Talos Control Plane:
             icon: talos.png
