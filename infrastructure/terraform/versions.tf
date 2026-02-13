@@ -24,7 +24,7 @@ terraform {
     }
     infisical = {
       source  = "infisical/infisical"
-      version = "~> 0.15"
+      version = "~> 0.16"
     }
     helm = {
       source  = "hashicorp/helm"
