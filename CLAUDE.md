@@ -127,6 +127,9 @@ export KUBECONFIG=$(pwd)/generated/kubeconfig
 ```
 
 ### Ansible Operations
+
+The `plex-nvidia` role deploys Plex (with GPU), Beszel agent, and the Tugtainer agent (Docker container update management) on the Plex VM.
+
 ```bash
 cd infrastructure/ansible
 
