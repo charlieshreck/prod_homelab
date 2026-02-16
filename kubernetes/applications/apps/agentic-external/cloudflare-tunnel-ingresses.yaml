@@ -201,3 +201,25 @@ spec:
                 name: silverbullet-external
                 port:
                   number: 80
+---
+# Kernow Hub unified PWA (app has built-in auth)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kernow-hub-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: kernow.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kernow-hub-external
+                port:
+                  number: 80

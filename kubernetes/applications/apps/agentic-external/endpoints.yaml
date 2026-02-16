@@ -121,3 +121,17 @@ subsets:
       - name: http
         port: 31116
         protocol: TCP
+---
+# Kernow Hub unified PWA (agentic cluster)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: kernow-hub-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 30456
+        protocol: TCP
