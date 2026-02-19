@@ -70,28 +70,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: claude-refresh-cloudflare
-  namespace: apps
-  annotations:
-    # Disabled from Homepage
-    gethomepage.dev/enabled: "false"
-spec:
-  ingressClassName: cloudflare-tunnel
-  rules:
-    - host: claude-refresh.kernow.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: claude-refresh-external
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: mcp-webhook-cloudflare
   namespace: apps
   annotations:

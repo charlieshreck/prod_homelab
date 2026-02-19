@@ -1,5 +1,5 @@
-# External services pointing to agentic cluster (10.20.0.40) NodePort services
-# Enables Cloudflare Tunnel routing and Homepage auto-discovery
+# External services pointing to agentic cluster (10.20.0.40)
+# Migrated from NodePorts to Traefik LB (port 80) with Host header routing
 ---
 apiVersion: v1
 kind: Service
@@ -36,20 +36,6 @@ metadata:
   namespace: apps
   labels:
     app.kubernetes.io/name: vikunja-external
-spec:
-  type: ClusterIP
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: claude-refresh-external
-  namespace: apps
-  labels:
-    app.kubernetes.io/name: claude-refresh-external
 spec:
   type: ClusterIP
   ports:

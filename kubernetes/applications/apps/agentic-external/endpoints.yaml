@@ -1,5 +1,6 @@
-# Manual endpoints for external services pointing to agentic cluster NodePorts
-# Required because services with no selector don't auto-create endpoints
+# Manual endpoints for external services pointing to agentic cluster
+# Services migrated to Traefik LB (port 80, Host header routing) where possible
+# Remaining NodePorts: matrix(30167), langgraph(30800), kernow-hub(30456), backrest(31115), garage(30186)
 ---
 apiVersion: v1
 kind: Endpoints
@@ -27,6 +28,7 @@ subsets:
         port: 30800
         protocol: TCP
 ---
+# Vikunja — routed via agentic Traefik LB (Host: vikunja.kernow.io)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -37,22 +39,10 @@ subsets:
       - ip: 10.20.0.40
     ports:
       - name: http
-        port: 31095
+        port: 80
         protocol: TCP
 ---
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: claude-refresh-external
-  namespace: apps
-subsets:
-  - addresses:
-      - ip: 10.20.0.40
-    ports:
-      - name: http
-        port: 31110
-        protocol: TCP
----
+# MCP Config Sync — routed via agentic Traefik LB (Host: mcp-webhook.kernow.io)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -63,10 +53,10 @@ subsets:
       - ip: 10.20.0.40
     ports:
       - name: http
-        port: 31103
+        port: 80
         protocol: TCP
 ---
-# Outline with nginx sidecar (handles robots.txt internally)
+# Outline — routed via agentic Traefik LB (Host: outline.kernow.io)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -77,7 +67,7 @@ subsets:
       - ip: 10.20.0.40
     ports:
       - name: http
-        port: 31113
+        port: 80
         protocol: TCP
 ---
 # Backrest backup management UI (agentic cluster)
@@ -108,7 +98,7 @@ subsets:
         port: 30186
         protocol: TCP
 ---
-# Silver Bullet markdown PKM (agentic cluster)
+# Silver Bullet — routed via agentic Traefik LB (Host: silverbullet.kernow.io)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -119,7 +109,7 @@ subsets:
       - ip: 10.20.0.40
     ports:
       - name: http
-        port: 31116
+        port: 80
         protocol: TCP
 ---
 # Kernow Hub unified PWA (agentic cluster)
