@@ -102,7 +102,7 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.103
+      - ip: 10.10.0.103
     ports:
       - name: http
         port: 30186

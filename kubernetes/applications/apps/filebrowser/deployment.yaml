@@ -61,7 +61,7 @@ spec:
           mountPath: /folder/media/Plexopathy
         - name: tarriance
           mountPath: /folder/media/Tarriance
-        # HDD NAS (10.20.0.103) - Bulk storage
+        # HDD NAS (10.10.0.103) - Bulk storage
         - name: pleximetry
           mountPath: /folder/hdd/Pleximetry
         - name: pbs
@@ -107,22 +107,22 @@ spec:
         nfs:
           server: 10.40.0.10
           path: /mnt/Taranaki/Tarriance
-      # HDD NAS (10.20.0.103) - Bulk storage
+      # HDD NAS (10.10.0.103) - Bulk storage
       - name: pleximetry
         nfs:
-          server: 10.20.0.103
+          server: 10.10.0.103
           path: /mnt/Taupo/Pleximetry
       - name: pbs
         nfs:
-          server: 10.20.0.103
+          server: 10.10.0.103
           path: /mnt/Taupo/pbs
       - name: minio
         nfs:
-          server: 10.20.0.103
+          server: 10.10.0.103
           path: /mnt/Taupo/MinIO
       - name: truro
         nfs:
-          server: 10.20.0.103
+          server: 10.10.0.103
           path: /mnt/Taupo/Truro
 ---
 apiVersion: v1

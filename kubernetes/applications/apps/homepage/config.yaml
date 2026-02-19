@@ -457,7 +457,7 @@ data:
             description: HDD Bulk Storage
             widget:
               type: truenas
-              url: https://10.20.0.103
+              url: https://10.10.0.103
               key: "{{HOMEPAGE_VAR_TRUENAS_HDD_API_KEY}}"
 
     # Agentic cluster services - manual config with kubernetes status
