@@ -1,6 +1,7 @@
 # Manual endpoints for external services pointing to agentic cluster
 # Services migrated to Traefik LB (port 80, Host header routing) where possible
-# Remaining NodePorts: matrix(30167), langgraph(30800), kernow-hub(30456), backrest(31115), garage(30186)
+# Traefik LB endpoints use 10.20.0.90 (Cilium L2 VIP for agentic Traefik)
+# Remaining NodePorts use 10.20.0.40 (node IP): matrix(30167), langgraph(30800), kernow-hub(30456), backrest(31115), garage(30186)
 ---
 apiVersion: v1
 kind: Endpoints
@@ -36,7 +37,7 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.40
+      - ip: 10.20.0.90
     ports:
       - name: http
         port: 80
@@ -50,7 +51,7 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.40
+      - ip: 10.20.0.90
     ports:
       - name: http
         port: 80
@@ -64,7 +65,7 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.40
+      - ip: 10.20.0.90
     ports:
       - name: http
         port: 80
@@ -106,7 +107,7 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.40
+      - ip: 10.20.0.90
     ports:
       - name: http
         port: 80
