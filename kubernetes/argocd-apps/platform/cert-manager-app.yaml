@@ -19,6 +19,10 @@ spec:
             value: "true"
           - name: crds.keep
             value: "true"
+          - name: dns01RecursiveNameservers
+            value: "8.8.8.8:53,1.1.1.1:53"
+          - name: dns01RecursiveNameserversOnly
+            value: "true"
     # Git repository for additional resources (ClusterIssuer, Certificate, etc.)
     - repoURL: https://github.com/charlieshreck/prod_homelab.git
       targetRevision: main
