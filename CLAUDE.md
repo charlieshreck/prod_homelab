@@ -233,13 +233,10 @@ spec:
 - Project Slug: `prod-homelab-y-nij` (use in Kubernetes manifests)
 - Project ID: `9383e039-68ca-4bab-bc3c-aa06fdb82627` (use in REST API)
 - Environment: `prod`
-- Service Token: `st.a46273f4-351c-4f5e-8de3-1e5f40391ffe...`
 
-**Verify secrets:**
-```bash
-export INFISICAL_SERVICE_TOKEN="st.a46273f4-351c-4f5e-8de3-1e5f40391ffe.31920c113fa1e30fe99d6600ce7d77f5.15ecd6e9e8a199249b850c5b14e809df"
-./scripts/verify-infisical-secrets.sh
-```
+### Infisical Access
+Use the Infisical CLI or MCP tools to retrieve secrets. See global ~/.claude/CLAUDE.md for usage patterns.
+NEVER hardcode service tokens in documentation or code.
 
 **Check current status:**
 ```bash
@@ -404,7 +401,7 @@ showmount -e 10.40.0.10
 ## External Dependencies
 
 - **Proxmox host**: Ruapehu (10.10.0.10) - root@pam
-- **TrueNAS**: 10.10.0.100 (mgmt), 10.40.0.10 (NFS)
+- **TrueNAS**: 10.10.0.103 (mgmt), 10.40.0.10 (NFS)
 - **Infisical**: https://app.infisical.com - project: prod_homelab (slug: prod-homelab-y-nij, ID: 9383e039-68ca-4bab-bc3c-aa06fdb82627)
 - **Cloudflare**: Domain: kernow.io
 - **Git**: https://github.com/charlieshreck/homelab-prod.git
