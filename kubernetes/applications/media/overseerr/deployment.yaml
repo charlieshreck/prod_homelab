@@ -28,18 +28,27 @@ spec:
           value: "Europe/London"
         - name: PORT
           value: "5055"
+        - name: DISABLE_TELEMETRY
+          value: "true"
+        startupProbe:
+          httpGet:
+            path: /api/v1/status
+            port: 5055
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 30
         livenessProbe:
           httpGet:
             path: /api/v1/status
             port: 5055
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 30
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /api/v1/status
             port: 5055
-          initialDelaySeconds: 5
+          initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 3
         volumeMounts:
