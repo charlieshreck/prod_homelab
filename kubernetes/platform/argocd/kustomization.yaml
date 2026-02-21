@@ -8,6 +8,7 @@ resources:
   - resources/argocd-cm.yaml
   - resources/argocd-rbac-cm.yaml
   - cloudflare-tunnel-ingress.yaml
+  - servicemonitor.yaml
 
 patches:
   - path: argocd-server-service-patch.yaml
