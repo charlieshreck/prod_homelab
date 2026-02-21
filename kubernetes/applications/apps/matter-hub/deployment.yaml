@@ -15,9 +15,9 @@ spec:
       labels:
         app: matter-hub
     spec:
-      # hostNetwork required for mDNS discovery by Google Home
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+      # Removed hostNetwork: pod network allows proper DNS resolution
+      # Modern Matter protocol works fine without hostNetwork
+      dnsPolicy: ClusterFirst
       containers:
       - name: matter-hub
         image: ghcr.io/t0bst4r/home-assistant-matter-hub:3.0.4
@@ -48,7 +48,7 @@ spec:
             memory: 256Mi
           limits:
             cpu: 500m
-            memory: 512Mi
+            memory: 1Gi
         securityContext:
           privileged: false
         livenessProbe:
