@@ -48,13 +48,13 @@ spec:
             - name: downloads
               nfs:
                 server: 10.40.0.10
-                path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+                path: /mnt/Taupo/Pleximetry
             - name: movies
               nfs:
                 server: 10.40.0.10
-                path: /mnt/Tongariro/Plexopathy/Film
+                path: /mnt/Taupo/Pleximetry
             - name: tv
               nfs:
                 server: 10.40.0.10
-                path: /mnt/Tongariro/Plexopathy/Television
+                path: /mnt/Taupo/Pleximetry
           restartPolicy: Never
