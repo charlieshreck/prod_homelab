@@ -41,7 +41,7 @@ spec:
   jobTemplate:
     spec:
       activeDeadlineSeconds: 300
-      backoffLimit: 1
+      backoffLimit: 3
       template:
         spec:
           serviceAccountName: huntarr-scheduler
@@ -74,18 +74,23 @@ spec:
   jobTemplate:
     spec:
       activeDeadlineSeconds: 300
-      backoffLimit: 1
+      backoffLimit: 3
       template:
         spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: registry.k8s.io/kubectl:v1.31
+            image: bitnami/kubectl:latest
             command:
-            - kubectl
-            - scale
-            - deployment/huntarr
-            - --replicas=0
-            - -n
-            - media
+            - /bin/sh
+            - -c
+            - |
+              echo "Stopping huntarr deployment..."
+              kubectl scale deployment/huntarr --replicas=0 -n media
+              if [ $? -eq 0 ]; then
+                echo "Successfully scaled huntarr to 0 replicas"
+              else
+                echo "Failed to scale huntarr"
+                exit 1
+              fi
           restartPolicy: OnFailure
