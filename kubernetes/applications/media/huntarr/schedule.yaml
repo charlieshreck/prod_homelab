@@ -11,9 +11,9 @@ metadata:
   namespace: media
 rules:
 - apiGroups: ["apps"]
-  resources: ["deployments/scale"]
+  resources: ["deployments", "deployments/scale"]
   resourceNames: ["huntarr"]
-  verbs: ["patch", "get"]
+  verbs: ["get", "patch", "update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -47,7 +47,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: bitnami/kubectl:latest
+            image: registry.k8s.io/kubectl:v1.34
             command:
             - /bin/sh
             - -c
@@ -80,7 +80,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: bitnami/kubectl:latest
+            image: registry.k8s.io/kubectl:v1.34
             command:
             - /bin/sh
             - -c
