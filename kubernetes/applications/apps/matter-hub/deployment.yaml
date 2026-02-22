@@ -15,8 +15,9 @@ spec:
       labels:
         app: matter-hub
     spec:
-      # Removed hostNetwork: pod network allows proper DNS resolution
-      # Modern Matter protocol works fine without hostNetwork
+      hostNetwork: true
+      # hostNetwork required for mDNS multicast discovery on home network
+      # Without it, mDNS broadcasts don't reach home network devices (Google Home, etc)
       dnsPolicy: ClusterFirst
       containers:
       - name: matter-hub
