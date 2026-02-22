@@ -15,9 +15,8 @@ spec:
       labels:
         app: matter-hub
     spec:
-      hostNetwork: true
-      # hostNetwork required for mDNS multicast discovery on home network
-      # Without it, mDNS broadcasts don't reach home network devices (Google Home, etc)
+      # hostNetwork: false (default) - pod uses cluster network
+      # mDNS discovery requires UDP multicast exposure via ExternalName service
       dnsPolicy: ClusterFirst
       containers:
       - name: matter-hub
@@ -26,6 +25,14 @@ spec:
         - name: http
           containerPort: 8482
           protocol: TCP
+        - name: matter
+          containerPort: 5540
+          protocol: UDP
+          hostPort: 5540
+        - name: mdns
+          containerPort: 5353
+          protocol: UDP
+          hostPort: 5353
         env:
         - name: TZ
           value: "Europe/London"
