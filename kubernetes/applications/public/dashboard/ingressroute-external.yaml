@@ -17,7 +17,7 @@ spec:
     - hosts:
         - kernow.io
         - www.kernow.io
-      secretName: shreck-co-uk-tls
+      secretName: kernow-io-tls
   rules:
     - host: kernow.io
       http:

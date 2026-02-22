@@ -40,4 +40,4 @@ spec:
         - kind: TraefikService
           name: api@internal
   tls:
-    secretName: shreck-co-uk-tls
+    secretName: kernow-io-tls
