@@ -15,9 +15,10 @@ spec:
       labels:
         app: matter-hub
     spec:
-      # hostNetwork: false (default) - pod uses cluster network
-      # mDNS discovery requires UDP multicast exposure via ExternalName service
-      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      # hostNetwork: true allows mDNS multicast packets to reach home network
+      # ClusterFirstWithHostNet maintains cluster DNS resolution while using hostNetwork
       containers:
       - name: matter-hub
         image: ghcr.io/t0bst4r/home-assistant-matter-hub:3.0.4
