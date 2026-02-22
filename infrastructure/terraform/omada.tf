@@ -18,7 +18,7 @@ variable "omada_lxc" {
     name   = "omada"
     ip     = "10.10.0.3"
     cores  = 1
-    memory = 2048  # 2GB - Omada + MongoDB + Java requires >1GB
+    memory = 4096  # 4GB - Omada + MongoDB + Java memory footprint increased to prevent 85%+ usage
     disk   = 10
   }
 }
