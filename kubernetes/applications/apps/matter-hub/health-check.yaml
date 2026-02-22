@@ -27,12 +27,22 @@ data:
     fi
     echo "$(date -Iseconds) [OK] Matter Hub HTTP responding (${HTTP_CODE})"
 
-    # Check 2: Matter Server TCP port is open
-    if ! nc -z -w5 "$MATTER_SERVER_HOST" "$MATTER_SERVER_PORT" 2>/dev/null; then
-      echo "$(date -Iseconds) [CRITICAL] matter_server_health_check: Matter Server port ${MATTER_SERVER_PORT} not reachable"
-      exit 1
-    fi
-    echo "$(date -Iseconds) [OK] Matter Server port ${MATTER_SERVER_PORT} reachable"
+    # Check 2: Matter Server TCP port is open (with retries)
+    RETRIES=3
+    RETRY_DELAY=2
+    for i in $(seq 1 $RETRIES); do
+      if nc -z -w10 "$MATTER_SERVER_HOST" "$MATTER_SERVER_PORT" 2>/dev/null; then
+        echo "$(date -Iseconds) [OK] Matter Server port ${MATTER_SERVER_PORT} reachable"
+        break
+      fi
+      if [ $i -lt $RETRIES ]; then
+        echo "$(date -Iseconds) [WARN] Matter Server port check failed (attempt $i/$RETRIES), retrying in ${RETRY_DELAY}s..."
+        sleep $RETRY_DELAY
+      else
+        echo "$(date -Iseconds) [CRITICAL] matter_server_health_check: Matter Server port ${MATTER_SERVER_PORT} not reachable after $RETRIES attempts"
+        exit 1
+      fi
+    done
 
     echo "$(date -Iseconds) [OK] matter_hub_health_check: All checks passed"
     exit 0
@@ -50,8 +60,8 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      backoffLimit: 1
-      activeDeadlineSeconds: 60
+      backoffLimit: 2
+      activeDeadlineSeconds: 120
       template:
         metadata:
           labels:
@@ -61,6 +71,7 @@ spec:
           containers:
           - name: health-check
             image: busybox:1.37
+            imagePullPolicy: IfNotPresent
             command: ["/bin/sh", "/scripts/check.sh"]
             env:
             - name: MATTER_HUB_URL
