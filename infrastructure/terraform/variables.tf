@@ -138,7 +138,7 @@ variable "workers" {
       truenas_ip    = "10.40.0.41"
       storage_ip    = "10.50.0.41"
       cores         = 4
-      memory        = 12288  # 12GB
+      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1100
     }
@@ -148,7 +148,7 @@ variable "workers" {
       truenas_ip    = "10.40.0.42"
       storage_ip    = "10.50.0.42"
       cores         = 4
-      memory        = 12288  # 12GB
+      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1100
     }
@@ -158,7 +158,7 @@ variable "workers" {
       truenas_ip    = "10.40.0.43"
       storage_ip    = "10.50.0.43"
       cores         = 4
-      memory        = 12288  # 12GB
+      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1100
     }
@@ -184,7 +184,7 @@ variable "plex_vm" {
     ip         = "10.10.0.50"
     truenas_ip = "10.40.0.50"
     cores      = 4
-    memory     = 6144  # 6GB
+    memory     = 7168  # 7GB (increased from 6GB - currently oversubscribed at 6.5GB)
     disk       = 100
     gpu_pci_id = "0000:0d:00"  # Nvidia P4000
   }
@@ -206,7 +206,7 @@ variable "unifi_vm" {
     name   = "unifi"
     ip     = "10.10.0.51"
     cores  = 2
-    memory = 3072  # 3GB - reduced from 4GB for RAM constraints
+    memory = 2048  # 2GB (reduced from 3GB - using only 1.5GB)
     disk   = 50
   }
 }
