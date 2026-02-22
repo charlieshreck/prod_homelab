@@ -87,10 +87,19 @@ metadata:
   name: matter-hub
   namespace: apps
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: http
     port: 8482
     targetPort: 8482
+    protocol: TCP
+  - name: matter
+    port: 5540
+    targetPort: 5540
+    protocol: UDP
+  - name: mdns
+    port: 5353
+    targetPort: 5353
+    protocol: UDP
   selector:
     app: matter-hub
