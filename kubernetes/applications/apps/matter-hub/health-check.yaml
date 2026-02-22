@@ -10,41 +10,32 @@ data:
     set -e
 
     # Matter Hub health check script
-    # Checks if at least one fabric is connected
+    # HAMH is an SPA - all HTTP routes return HTML, no REST API.
+    # We verify: (1) matter-hub HTTP server is up, (2) matter-server TCP port is reachable.
 
     MATTER_HUB_URL="${MATTER_HUB_URL:-http://matter-hub.apps.svc.cluster.local:8482}"
+    MATTER_SERVER_HOST="${MATTER_SERVER_HOST:-matter-server.apps.svc.cluster.local}"
+    MATTER_SERVER_PORT="${MATTER_SERVER_PORT:-5580}"
 
-    echo "$(date -Iseconds) [INFO] Checking Matter Hub fabric status..."
+    echo "$(date -Iseconds) [INFO] Checking Matter Hub and Matter Server..."
 
-    # Get bridges info from API
-    RESPONSE=$(wget -q -O- "${MATTER_HUB_URL}/api/bridges" 2>/dev/null || echo "ERROR")
-
-    if [ "$RESPONSE" = "ERROR" ]; then
-      echo "$(date -Iseconds) [ERROR] matter_hub_health_check: Cannot connect to Matter Hub API"
+    # Check 1: Matter Hub HTTP server responds
+    HTTP_CODE=$(wget -q -O /dev/null -S "${MATTER_HUB_URL}/" 2>&1 | grep "HTTP/" | tail -1 | awk '{print $2}')
+    if [ -z "$HTTP_CODE" ] || [ "$HTTP_CODE" -ge 500 ] 2>/dev/null; then
+      echo "$(date -Iseconds) [CRITICAL] matter_hub_health_check: Matter Hub HTTP not responding (code: ${HTTP_CODE:-none})"
       exit 1
     fi
+    echo "$(date -Iseconds) [OK] Matter Hub HTTP responding (${HTTP_CODE})"
 
-    # Check if response is HTML (API not available) vs JSON
-    if echo "$RESPONSE" | grep -q "<!doctype html>"; then
-      # Try the v1 API
-      RESPONSE=$(wget -q -O- "${MATTER_HUB_URL}/api/v1/bridges" 2>/dev/null || echo "ERROR")
-    fi
-
-    # Parse fabric count (simple grep approach)
-    # The API returns bridges with fabric info
-    if echo "$RESPONSE" | grep -q '"fabrics":\[\]'; then
-      echo "$(date -Iseconds) [CRITICAL] matter_hub_fabric_disconnected: No fabrics connected to Matter Hub - devices will not be visible in Google Home/Alexa/Apple Home"
-      echo "$(date -Iseconds) [INFO] Runbook: /home/agentic_lab/runbooks/infrastructure/matter-hub-commissioning-failure.md"
+    # Check 2: Matter Server TCP port is open
+    if ! nc -z -w5 "$MATTER_SERVER_HOST" "$MATTER_SERVER_PORT" 2>/dev/null; then
+      echo "$(date -Iseconds) [CRITICAL] matter_server_health_check: Matter Server port ${MATTER_SERVER_PORT} not reachable"
       exit 1
-    elif echo "$RESPONSE" | grep -q '"fabrics":\['; then
-      FABRIC_COUNT=$(echo "$RESPONSE" | grep -o '"fabricIndex"' | wc -l)
-      echo "$(date -Iseconds) [OK] matter_hub_health_check: Matter Hub has ${FABRIC_COUNT} fabric(s) connected"
-      exit 0
-    else
-      # Fallback: check logs for fabric status
-      echo "$(date -Iseconds) [WARN] matter_hub_health_check: Could not parse API response, checking logs..."
-      exit 0
     fi
+    echo "$(date -Iseconds) [OK] Matter Server port ${MATTER_SERVER_PORT} reachable"
+
+    echo "$(date -Iseconds) [OK] matter_hub_health_check: All checks passed"
+    exit 0
 ---
 apiVersion: batch/v1
 kind: CronJob

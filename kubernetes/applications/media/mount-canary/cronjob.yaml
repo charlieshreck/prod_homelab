@@ -27,16 +27,13 @@ spec:
               args:
                 - |
                   date > /media/downloads/.mount_ok && \
-                  date > /media/movies/.mount_ok && \
-                  date > /media/tv/.mount_ok && \
+                  date > /media/plexopathy/.mount_ok && \
                   echo "Canary files written successfully"
               volumeMounts:
                 - name: downloads
                   mountPath: /media/downloads
-                - name: movies
-                  mountPath: /media/movies
-                - name: tv
-                  mountPath: /media/tv
+                - name: plexopathy
+                  mountPath: /media/plexopathy
               resources:
                 requests:
                   memory: "16Mi"
@@ -48,13 +45,9 @@ spec:
             - name: downloads
               nfs:
                 server: 10.40.0.10
-                path: /mnt/Taupo/Pleximetry
-            - name: movies
+                path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+            - name: plexopathy
               nfs:
                 server: 10.40.0.10
-                path: /mnt/Taupo/Pleximetry
-            - name: tv
-              nfs:
-                server: 10.40.0.10
-                path: /mnt/Taupo/Pleximetry
+                path: /mnt/Tongariro/Plexopathy
           restartPolicy: Never
