@@ -15,7 +15,9 @@ data:
 
     MATTER_HUB_URL="${MATTER_HUB_URL:-http://matter-hub.apps.svc.cluster.local:8482}"
     MATTER_SERVER_HOST="${MATTER_SERVER_HOST:-matter-server.apps.svc.cluster.local}"
-    MATTER_SERVER_PORT="${MATTER_SERVER_PORT:-5580}"
+    # Use MATTER_SERVER_SERVICE_PORT (5580) instead of MATTER_SERVER_PORT (tcp://IP:5580)
+    # Kubernetes auto-injects MATTER_SERVER_PORT as "protocol://IP:port" which breaks netcat
+    MATTER_SERVER_PORT="${MATTER_SERVER_SERVICE_PORT:-5580}"
 
     echo "$(date -Iseconds) [INFO] Checking Matter Hub and Matter Server..."
 
