@@ -40,7 +40,7 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 300
+      activeDeadlineSeconds: 600
       backoffLimit: 3
       template:
         spec:
@@ -48,6 +48,7 @@ spec:
           containers:
           - name: kubectl
             image: registry.k8s.io/kubectl:v1.34
+            imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
             - -c
@@ -73,7 +74,7 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 300
+      activeDeadlineSeconds: 600
       backoffLimit: 3
       template:
         spec:
@@ -81,6 +82,7 @@ spec:
           containers:
           - name: kubectl
             image: registry.k8s.io/kubectl:v1.34
+            imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
             - -c
