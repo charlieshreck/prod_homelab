@@ -126,3 +126,17 @@ subsets:
       - name: http
         port: 30456
         protocol: TCP
+---
+# Tamar PWA (Synapse LXC)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: tamar-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.10.0.22
+    ports:
+      - name: http
+        port: 3456
+        protocol: TCP
