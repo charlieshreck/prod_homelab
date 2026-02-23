@@ -17,6 +17,9 @@ spec:
       activeDeadlineSeconds: 60
       template:
         spec:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
           containers:
             - name: canary
               image: busybox:1.37
