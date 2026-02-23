@@ -113,7 +113,7 @@ variable "control_plane" {
     name   = "talos-cp-01"
     ip     = "10.10.0.40"
     cores  = 4
-    memory = 4096  # 4GB - reduced from 6GB for RAM constraints
+    memory = 5120  # 5GB - increased to reduce memory pressure (was 4GB at 85% utilization)
     disk   = 50
   }
 }
