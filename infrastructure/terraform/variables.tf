@@ -140,7 +140,7 @@ variable "workers" {
       cores         = 4
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1100
+      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
     }
     "worker-02" = {
       name          = "talos-worker-02"
@@ -150,7 +150,7 @@ variable "workers" {
       cores         = 4
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1100
+      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
     }
     "worker-03" = {
       name          = "talos-worker-03"
@@ -160,7 +160,7 @@ variable "workers" {
       cores         = 4
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1100
+      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
     }
   }
 }
