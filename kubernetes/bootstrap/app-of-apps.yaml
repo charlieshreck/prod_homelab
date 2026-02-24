@@ -20,6 +20,10 @@ spec:
       kind: Application
       jsonPointers:
         - /metadata/annotations
+        - /metadata/finalizers
+        - /metadata/labels
+        - /metadata/managedFields
+        - /status
   syncPolicy:
     automated:
       prune: true
