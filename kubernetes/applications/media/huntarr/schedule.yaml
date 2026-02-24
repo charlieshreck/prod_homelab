@@ -47,7 +47,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: registry.k8s.io/kubectl:v1.34
+            image: registry.k8s.io/kubectl:v1.34.1
             imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
@@ -81,7 +81,7 @@ spec:
           serviceAccountName: huntarr-scheduler
           containers:
           - name: kubectl
-            image: registry.k8s.io/kubectl:v1.34
+            image: registry.k8s.io/kubectl:v1.34.1
             imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
