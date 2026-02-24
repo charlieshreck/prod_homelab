@@ -229,7 +229,7 @@ data:
             description: Agentic Control Hub
             widget:
               type: proxmox
-              url: https://10.30.0.10:8006
+              url: https://10.10.0.178:8006
               username: mcp@pve!mcp-token
               password: "{{HOMEPAGE_VAR_HIKURANGI_API_TOKEN}}"
               node: Hikurangi
@@ -448,7 +448,7 @@ data:
             description: NVMe Media Storage
             widget:
               type: truenas
-              url: https://10.20.0.100
+              url: https://10.10.0.100
               key: "{{HOMEPAGE_VAR_TRUENAS_MEDIA_API_KEY}}"
 
         - TrueNAS HDD:
@@ -462,11 +462,11 @@ data:
 
     # Agentic cluster services - manual config with kubernetes status
     - Agentic:
-        - Afferent:
+        - Tamar:
             icon: mdi-cellphone-link
-            href: https://synapse.kernow.io
+            href: https://tamar.kernow.io
             description: Claude Code Mobile PWA
-            ping: https://synapse.kernow.io
+            ping: https://tamar.kernow.io
 
         - Matrix:
             icon: matrix.png
@@ -601,7 +601,7 @@ data:
       secret: {{HOMEPAGE_VAR_PIHANGA_API_TOKEN}}
 
     Hikurangi:
-      url: https://10.30.0.10:8006
+      url: https://10.10.0.178:8006
       token: mcp@pve!mcp-token
       secret: {{HOMEPAGE_VAR_HIKURANGI_API_TOKEN}}
 
