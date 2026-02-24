@@ -40,8 +40,8 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 1200
-      backoffLimit: 3
+      activeDeadlineSeconds: 60
+      backoffLimit: 1
       template:
         spec:
           serviceAccountName: huntarr-scheduler
@@ -50,17 +50,12 @@ spec:
             image: registry.k8s.io/kubectl:v1.34.1
             imagePullPolicy: IfNotPresent
             command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Starting huntarr deployment..."
-              kubectl scale deployment/huntarr --replicas=1 -n media
-              if [ $? -eq 0 ]; then
-                echo "Successfully scaled huntarr to 1 replica"
-              else
-                echo "Failed to scale huntarr"
-                exit 1
-              fi
+            - kubectl
+            - scale
+            - deployment/huntarr
+            - --replicas=1
+            - -n
+            - media
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1
@@ -74,8 +69,8 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
-      activeDeadlineSeconds: 1200
-      backoffLimit: 3
+      activeDeadlineSeconds: 60
+      backoffLimit: 1
       template:
         spec:
           serviceAccountName: huntarr-scheduler
@@ -84,15 +79,10 @@ spec:
             image: registry.k8s.io/kubectl:v1.34.1
             imagePullPolicy: IfNotPresent
             command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Stopping huntarr deployment..."
-              kubectl scale deployment/huntarr --replicas=0 -n media
-              if [ $? -eq 0 ]; then
-                echo "Successfully scaled huntarr to 0 replicas"
-              else
-                echo "Failed to scale huntarr"
-                exit 1
-              fi
+            - kubectl
+            - scale
+            - deployment/huntarr
+            - --replicas=0
+            - -n
+            - media
           restartPolicy: OnFailure
