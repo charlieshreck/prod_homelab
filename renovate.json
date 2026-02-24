@@ -10,7 +10,7 @@
   "platformAutomerge": false,
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
-  "prCreation": "not-pending",
+  "prCreation": "immediate",
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": [
@@ -32,33 +32,41 @@
       "automerge": true
     },
     {
-      "description": "Require review for major updates (creates PR)",
+      "description": "Major updates get individual PRs (not grouped, not auto-merged)",
       "matchUpdateTypes": [
         "major"
       ],
       "automerge": false,
-      "automergeType": "pr",
+      "groupName": null,
       "labels": [
         "major-update"
       ]
     },
     {
-      "description": "Group Kubernetes platform updates",
+      "description": "Group non-major Kubernetes platform updates",
       "matchManagers": [
         "kubernetes"
       ],
       "matchFileNames": [
         "kubernetes/platform/**"
       ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "groupName": "kubernetes-platform"
     },
     {
-      "description": "Group application container images",
+      "description": "Group non-major application container images",
       "matchManagers": [
         "kubernetes"
       ],
       "matchFileNames": [
         "kubernetes/applications/**"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
       ],
       "groupName": "kubernetes-apps"
     },
