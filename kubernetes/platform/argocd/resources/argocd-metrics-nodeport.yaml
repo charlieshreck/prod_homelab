@@ -1,0 +1,44 @@
+---
+# NodePort service for Prometheus cross-cluster scraping of ArgoCD app controller metrics.
+# The API server proxy (/api/v1/namespaces/argocd/services/.../proxy/) is unreliable
+# due to CNI routing constraints between the monit cluster and prod cluster pod network.
+# NodePort 30082 is stable and directly reachable from the monitoring cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-metrics-nodeport
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/part-of: argocd
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: argocd-application-controller
+  ports:
+    - name: metrics
+      port: 8082
+      targetPort: 8082
+      nodePort: 30082
+---
+# NodePort service for Prometheus cross-cluster scraping of ArgoCD server metrics.
+# NodePort 30083 is stable and directly reachable from the monitoring cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-metrics-nodeport
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: argocd-server
+  ports:
+    - name: metrics
+      port: 8083
+      targetPort: 8083
+      nodePort: 30083
