@@ -1,4 +1,28 @@
 ---
+# Allow external (NodePort) ingress to argocd-application-controller port 8082.
+# The default ArgoCD network policy only permits pod-to-pod traffic (namespaceSelector: {}).
+# This supplemental policy allows Prometheus on the monit cluster to scrape via NodePort 30082.
+# NetworkPolicies are additive - traffic is allowed if ANY matching policy permits it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-application-controller-metrics-external
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: application-controller
+    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/part-of: argocd
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-application-controller
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - port: 8082
+          protocol: TCP
+---
 # NodePort service for Prometheus cross-cluster scraping of ArgoCD app controller metrics.
 # The API server proxy (/api/v1/namespaces/argocd/services/.../proxy/) is unreliable
 # due to CNI routing constraints between the monit cluster and prod cluster pod network.
