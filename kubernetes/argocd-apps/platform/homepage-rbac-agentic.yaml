@@ -12,8 +12,6 @@ spec:
     repoURL: https://github.com/charlieshreck/agentic_lab.git
     targetRevision: main
     path: kubernetes/platform/homepage-rbac
-    directory:
-      recurse: false
   destination:
     server: https://10.20.0.40:6443
     namespace: homepage
