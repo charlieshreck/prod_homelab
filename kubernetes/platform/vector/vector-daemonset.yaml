@@ -53,7 +53,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: vector
-          image: timberio/vector:0.44.0-distroless-libc
+          image: timberio/vector:0.53.0-distroless-libc
           imagePullPolicy: IfNotPresent
           args:
             - --config-dir
