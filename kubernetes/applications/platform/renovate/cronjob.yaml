@@ -38,10 +38,12 @@ spec:
               value: "required"
             - name: RENOVATE_BASE_BRANCHES
               value: "main"
+            - name: RENOVATE_NODE_ARGS
+              value: "--max-old-space-size=2048"
             resources:
               requests:
                 cpu: 100m
-                memory: 256Mi
+                memory: 512Mi
               limits:
                 cpu: 1000m
-                memory: 1Gi
+                memory: 3Gi
