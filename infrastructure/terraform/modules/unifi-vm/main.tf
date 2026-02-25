@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "unifi" {
 
   memory {
     dedicated = var.memory
-    floating  = 1536  # Balloon minimum 1.5GB for UniFi
+    floating  = 2048  # Balloon minimum 2GB - UniFi stack requires ~1.5GB for services + OS overhead
   }
 
   # Standard BIOS (no GPU passthrough needed)
