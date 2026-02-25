@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "unifi" {
 
   memory {
     dedicated = var.memory
-    floating  = 2048  # Balloon minimum 2GB - UniFi stack requires ~1.5GB for services + OS overhead
+    floating  = 0  # Disable balloon - actual usage is ~1.9GB (Node.js 642MB + Java 296MB + MongoDB + OS), ballooning causes severe swap thrashing
   }
 
   # Standard BIOS (no GPU passthrough needed)

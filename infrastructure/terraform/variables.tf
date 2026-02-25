@@ -206,7 +206,7 @@ variable "unifi_vm" {
     name   = "unifi"
     ip     = "10.10.0.51"
     cores  = 2
-    memory = 3072  # 3GB - UniFi stack needs ~1.5GB (Node.js core 641MB + Java 222MB + MongoDB + helpers)
+    memory = 3072  # 3GB - UniFi stack actual RSS ~1.2GB + OS/cache needs ~1.9GB total, balloon disabled
     disk   = 50
   }
 }
