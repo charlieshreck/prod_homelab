@@ -36,5 +36,14 @@ lxc_sysctl_settings:
 infisical_apt_repo: "https://dl.cloudsmith.io/public/infisical/infisical-cli/deb/debian"
 infisical_apt_key_url: "https://dl.cloudsmith.io/public/infisical/infisical-cli/gpg.CF7DA0D0AE2E4812.key"
 
+# Infisical machine identity (Universal Auth)
+# These MUST be provided via ansible-vault or --extra-vars
+infisical_config_dir: /root/.config/infisical
+infisical_client_id: ""
+infisical_client_secret: ""
+infisical_workspace_id: "9383e039-68ca-4bab-bc3c-aa06fdb82627"
+infisical_environment: "prod"
+infisical_base_url: "https://app.infisical.com"
+
 # Beszel agent configuration
 beszel_agent_managed: true

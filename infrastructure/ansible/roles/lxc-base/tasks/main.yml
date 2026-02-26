@@ -111,3 +111,29 @@
 - name: Display Infisical CLI version
   debug:
     msg: "Infisical CLI: {{ infisical_version.stdout }}"
+
+# Infisical machine identity for runtime secret injection
+- name: Create Infisical config directory
+  file:
+    path: "{{ infisical_config_dir }}"
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: Deploy machine identity config
+  template:
+    src: machine-identity.json.j2
+    dest: "{{ infisical_config_dir }}/machine-identity.json"
+    mode: '0600'
+    owner: root
+    group: root
+  when: infisical_client_id | length > 0
+
+- name: Deploy infisical-env helper script
+  template:
+    src: infisical-env.sh.j2
+    dest: /usr/local/bin/infisical-env.sh
+    mode: '0755'
+    owner: root
+    group: root

@@ -7,7 +7,7 @@ Wants=redis-server.service
 Type=simple
 User={{ tamar_user }}
 WorkingDirectory={{ tamar_working_dir }}
-ExecStart=/bin/bash -c 'eval $(infisical export --env={{ tamar_infisical_env }} --path={{ tamar_infisical_path }} --format=dotenv-export) && exec /usr/bin/node server.js'
+ExecStart=/bin/bash -c 'eval $(/usr/local/bin/infisical-env.sh {{ tamar_infisical_path }}) && exec /usr/bin/node server.js'
 Restart=always
 RestartSec=5
 
