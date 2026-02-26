@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
   - ghcr-repo-creds.yaml
-  - arc-public-repo.yaml
