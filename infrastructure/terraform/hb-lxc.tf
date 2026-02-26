@@ -37,19 +37,21 @@ module "hb_lxc" {
 
   cores  = var.hb_lxc.cores
   memory = var.hb_lxc.memory
-  swap   = 512
+  swap   = 0
 
   disk_size      = var.hb_lxc.disk
   disk_datastore = "Aoraki" # Hikurangi uses Aoraki ZFS pool
 
-  network_bridge = "vmbr1" # Hikurangi's prod network bridge
+  network_bridge = "vmbr0" # Primary NIC on prod network (also has vmbr1 for AI network)
   ip_address     = "${var.hb_lxc.ip}/24"
   gateway        = var.prod_gateway
-  mac_address    = "52:54:00:10:01:01"
+  mac_address    = "BC:24:11:33:B5:45"
   dns_servers    = var.dns_servers
 
-  root_password   = var.proxmox_password
+  root_password   = var.proxmox_lxc_password
   ssh_public_keys = var.ssh_public_keys
+
+  unprivileged = false # Existing privileged container
 
   tags = ["investmentology", "ai-worker", "lxc"]
 }

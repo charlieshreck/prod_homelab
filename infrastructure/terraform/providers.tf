@@ -13,32 +13,34 @@ provider "proxmox" {
 }
 
 # Hikurangi (10.10.0.178) - Haute Banque LXC
+# Uses password auth (root@pam), not API token
 provider "proxmox" {
   alias    = "hikurangi"
   endpoint = "https://10.10.0.178:8006"
-  username = var.proxmox_user
-  password = var.proxmox_password
+  username = "root@pam"
+  password = var.proxmox_lxc_password
   insecure = true
 
   ssh {
     agent    = false
     username = "root"
-    password = var.proxmox_password
+    password = var.proxmox_lxc_password
   }
 }
 
 # Pihanga (10.10.0.20) - Synapse LXC + monitoring cluster
+# Uses password auth (root@pam), not API token
 provider "proxmox" {
   alias    = "pihanga"
   endpoint = "https://10.10.0.20:8006"
-  username = var.proxmox_user
-  password = var.proxmox_password
+  username = "root@pam"
+  password = var.proxmox_lxc_password
   insecure = true
 
   ssh {
     agent    = false
     username = "root"
-    password = var.proxmox_password
+    password = var.proxmox_lxc_password
   }
 }
 

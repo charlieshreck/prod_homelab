@@ -183,15 +183,16 @@ resource "talos_machine_bootstrap" "cluster" {
 # ============================================================================
 # Kubeconfig Export
 # ============================================================================
-resource "local_file" "kubeconfig" {
-  depends_on = [
-    talos_machine_bootstrap.cluster
-  ]
-
-  content         = data.talos_cluster_kubeconfig.cluster.kubeconfig_raw
-  filename        = "${path.module}/generated/kubeconfig"
-  file_permission = "0600"
-}
+# TEMPORARILY DISABLED: talos_cluster_kubeconfig data source hangs.
+# resource "local_file" "kubeconfig" {
+#   depends_on = [
+#     talos_machine_bootstrap.cluster
+#   ]
+#
+#   content         = data.talos_cluster_kubeconfig.cluster.kubeconfig_raw
+#   filename        = "${path.module}/generated/kubeconfig"
+#   file_permission = "0600"
+# }
 
 resource "local_file" "talosconfig" {
   content         = data.talos_client_configuration.cluster.talos_config

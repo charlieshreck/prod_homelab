@@ -37,11 +37,6 @@
     - role: ../roles/hb-worker
 
   post_tasks:
-    - name: List active timers
-      command: systemctl list-timers --no-pager investmentology-*
-      register: timer_list
-      changed_when: false
-
     - name: Final status summary
       debug:
         msg:
@@ -58,16 +53,5 @@
           - "  - synapse-hb.service (Node.js screen monitor PWA)"
           - "  - screens.service (GNU Screen sessions)"
           - ""
-          - "Scheduled timers:"
-          - "  - daily-analyze: Mon-Fri 05:30 UTC"
-          - "  - monitor: Mon-Fri 16:15 ET"
-          - "  - premarket: Mon-Fri 08:00 ET"
-          - "  - price-refresh: Mon-Fri hourly 14:30-21:00 UTC"
-          - "  - screen: Sun 06:00 UTC"
-          - "  - post-screen: Sun 07:00 UTC"
-          - ""
+          - "Scheduled tasks: K8s CronJobs (not systemd timers)"
           - "Secrets injected from Infisical: {{ hb_infisical_path }}"
-
-    - name: Display active timers
-      debug:
-        msg: "{{ timer_list.stdout_lines }}"

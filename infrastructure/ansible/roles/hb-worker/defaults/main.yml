@@ -9,7 +9,7 @@ investmentology_user: root
 
 # Synapse HB (Screen Monitor PWA)
 synapse_hb_port: 3460
-synapse_hb_working_dir: /home/investmentology
+synapse_hb_working_dir: /home/synapse-hb
 synapse_hb_user: root
 
 # Infisical secret injection for synapse-hb.service
@@ -20,27 +20,5 @@ hb_infisical_path: /platform/haute-banque
 # Screens service configuration
 screens_user: root
 
-# Timer schedules (using OnCalendar= directives)
-# daily-analyze: Weekdays at 05:30 UTC
-timer_daily_analyze: "Mon..Fri 05:30"
-timer_daily_analyze_timeout: 7200
-
-# monitor: Weekdays post-market (16:15 ET = ~21:15 UTC, but uses America/New_York)
-timer_monitor: "Mon..Fri 16:15 America/New_York"
-timer_monitor_timeout: 1800
-
-# premarket: Weekdays pre-market (08:00 ET)
-timer_premarket: "Mon..Fri 08:00 America/New_York"
-timer_premarket_timeout: 900
-
-# price-refresh: Hourly during market hours (Mon-Fri, 09:30-16:00 ET)
-timer_price_refresh: "Mon..Fri 14:30,15:30,16:30,17:30,18:30,19:30,20:30,21:00:00 UTC"
-timer_price_refresh_timeout: 600
-
-# screen: Weekly Sunday at 06:00 UTC
-timer_screen: "Sun 06:00"
-timer_screen_timeout: 3600
-
-# post-screen: Weekly Sunday at 07:00 UTC
-timer_post_screen: "Sun 07:00"
-timer_post_screen_timeout: 7200
+# Timer schedules managed by K8s CronJobs (not systemd)
+# See investmentology/k8s/base/cronjob-*.yaml

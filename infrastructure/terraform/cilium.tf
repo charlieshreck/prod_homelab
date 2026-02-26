@@ -8,7 +8,6 @@
 resource "null_resource" "wait_for_cluster" {
   depends_on = [
     talos_machine_bootstrap.cluster,
-    local_file.kubeconfig
   ]
 
   provisioner "local-exec" {

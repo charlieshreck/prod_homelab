@@ -78,102 +78,40 @@
     - Reload systemd
     - Restart Screens
 
-# Deploy timer services (oneshot) and timers
-- name: Deploy investmentology-daily-analyze.service
-  template:
-    src: investmentology-daily-analyze.service.j2
-    dest: /etc/systemd/system/investmentology-daily-analyze.service
-    mode: '0644'
+# Timers are managed as K8s CronJobs (not systemd timers)
+# Stop and disable any existing timers from previous deployments
+- name: Stop and disable legacy investmentology timers
+  systemd:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  loop:
+    - investmentology-daily-analyze.timer
+    - investmentology-monitor.timer
+    - investmentology-premarket.timer
+    - investmentology-price-refresh.timer
+    - investmentology-screen.timer
+    - investmentology-post-screen.timer
+  failed_when: false
+
+- name: Remove legacy timer and service unit files
+  file:
+    path: "/etc/systemd/system/{{ item }}"
+    state: absent
+  loop:
+    - investmentology-daily-analyze.service
+    - investmentology-daily-analyze.timer
+    - investmentology-monitor.service
+    - investmentology-monitor.timer
+    - investmentology-premarket.service
+    - investmentology-premarket.timer
+    - investmentology-price-refresh.service
+    - investmentology-price-refresh.timer
+    - investmentology-screen.service
+    - investmentology-screen.timer
+    - investmentology-post-screen.service
+    - investmentology-post-screen.timer
   notify: Reload systemd
-
-- name: Deploy investmentology-daily-analyze.timer
-  template:
-    src: investmentology-daily-analyze.timer.j2
-    dest: /etc/systemd/system/investmentology-daily-analyze.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart daily-analyze timer
-
-- name: Deploy investmentology-monitor.service
-  template:
-    src: investmentology-monitor.service.j2
-    dest: /etc/systemd/system/investmentology-monitor.service
-    mode: '0644'
-  notify: Reload systemd
-
-- name: Deploy investmentology-monitor.timer
-  template:
-    src: investmentology-monitor.timer.j2
-    dest: /etc/systemd/system/investmentology-monitor.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart monitor timer
-
-- name: Deploy investmentology-premarket.service
-  template:
-    src: investmentology-premarket.service.j2
-    dest: /etc/systemd/system/investmentology-premarket.service
-    mode: '0644'
-  notify: Reload systemd
-
-- name: Deploy investmentology-premarket.timer
-  template:
-    src: investmentology-premarket.timer.j2
-    dest: /etc/systemd/system/investmentology-premarket.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart premarket timer
-
-- name: Deploy investmentology-price-refresh.service
-  template:
-    src: investmentology-price-refresh.service.j2
-    dest: /etc/systemd/system/investmentology-price-refresh.service
-    mode: '0644'
-  notify: Reload systemd
-
-- name: Deploy investmentology-price-refresh.timer
-  template:
-    src: investmentology-price-refresh.timer.j2
-    dest: /etc/systemd/system/investmentology-price-refresh.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart price-refresh timer
-
-- name: Deploy investmentology-screen.service
-  template:
-    src: investmentology-screen.service.j2
-    dest: /etc/systemd/system/investmentology-screen.service
-    mode: '0644'
-  notify: Reload systemd
-
-- name: Deploy investmentology-screen.timer
-  template:
-    src: investmentology-screen.timer.j2
-    dest: /etc/systemd/system/investmentology-screen.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart screen timer
-
-- name: Deploy investmentology-post-screen.service
-  template:
-    src: investmentology-post-screen.service.j2
-    dest: /etc/systemd/system/investmentology-post-screen.service
-    mode: '0644'
-  notify: Reload systemd
-
-- name: Deploy investmentology-post-screen.timer
-  template:
-    src: investmentology-post-screen.timer.j2
-    dest: /etc/systemd/system/investmentology-post-screen.timer
-    mode: '0644'
-  notify:
-    - Reload systemd
-    - Restart post-screen timer
 
 # Enable all long-running services
 - name: Reload systemd daemon
@@ -198,20 +136,6 @@
     enabled: yes
     state: started
 
-# Enable all timers
-- name: Enable and start all investmentology timers
-  systemd:
-    name: "{{ item }}"
-    enabled: yes
-    state: started
-  loop:
-    - investmentology-daily-analyze.timer
-    - investmentology-monitor.timer
-    - investmentology-premarket.timer
-    - investmentology-price-refresh.timer
-    - investmentology-screen.timer
-    - investmentology-post-screen.timer
-
 - name: Display HB Worker status
   debug:
     msg:
@@ -219,4 +143,4 @@
       - "API/PWA: http://{{ ansible_host }}:80"
       - "Screen Monitor PWA: http://{{ ansible_host }}:{{ synapse_hb_port }}"
       - "Secrets injected from Infisical: {{ hb_infisical_path }}"
-      - "Active timers: daily-analyze, monitor, premarket, price-refresh, screen, post-screen"
+      - "Timers: managed by K8s CronJobs (not systemd)"

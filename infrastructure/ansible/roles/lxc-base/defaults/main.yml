@@ -18,7 +18,6 @@ lxc_base_packages:
   - ca-certificates
   - gnupg
   - apt-transport-https
-  - software-properties-common
   - procps
   - net-tools
   - dnsutils

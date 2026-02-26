@@ -12,9 +12,17 @@ variable "proxmox_user" {
 }
 
 variable "proxmox_password" {
-  description = "Proxmox password"
+  description = "Proxmox API token secret (Ruapehu) or password"
   type        = string
   sensitive   = true
+}
+
+# Separate credentials for Pihanga/Hikurangi (password auth, no API token)
+variable "proxmox_lxc_password" {
+  description = "Proxmox root password for LXC hosts (Pihanga, Hikurangi)"
+  type        = string
+  sensitive   = true
+  default     = ""
 }
 
 variable "proxmox_node" {

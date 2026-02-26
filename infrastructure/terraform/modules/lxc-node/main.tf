@@ -89,6 +89,9 @@ resource "proxmox_virtual_environment_container" "lxc" {
   lifecycle {
     ignore_changes = [
       initialization,
+      operating_system,
+      network_interface,
+      unprivileged,
     ]
   }
 }

@@ -167,12 +167,16 @@ data "talos_client_configuration" "cluster" {
 }
 
 # Talos Cluster Kubeconfig
-data "talos_cluster_kubeconfig" "cluster" {
-  depends_on = [
-    talos_machine_bootstrap.cluster
-  ]
-
-  client_configuration = talos_machine_secrets.cluster.client_configuration
-  endpoint             = var.control_plane.ip
-  node                 = var.control_plane.ip
-}
+# NOTE: This data source hangs due to client cert mismatch with current cluster.
+# Generated kubeconfig is broken anyway (points to localhost:8080).
+# Use /root/.kube/config for cluster access instead.
+# TODO: Fix by re-importing talos_machine_secrets or regenerating client certs.
+# data "talos_cluster_kubeconfig" "cluster" {
+#   depends_on = [
+#     talos_machine_bootstrap.cluster
+#   ]
+#
+#   client_configuration = talos_machine_secrets.cluster.client_configuration
+#   endpoint             = var.control_plane.ip
+#   node                 = var.control_plane.ip
+# }

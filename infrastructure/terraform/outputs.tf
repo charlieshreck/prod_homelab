@@ -67,11 +67,11 @@ output "mayastor_nodes" {
   }
 }
 
-# Kubeconfig
-output "kubeconfig_path" {
-  description = "Path to generated kubeconfig file"
-  value       = local_file.kubeconfig.filename
-}
+# Kubeconfig (disabled - data source hangs, use /root/.kube/config)
+# output "kubeconfig_path" {
+#   description = "Path to generated kubeconfig file"
+#   value       = local_file.kubeconfig.filename
+# }
 
 output "talosconfig_path" {
   description = "Path to generated talosconfig file"
@@ -119,8 +119,9 @@ output "gitops_repository" {
 output "quick_start_commands" {
   description = "Quick start commands for cluster access"
   value       = <<-EOT
-    # Export kubeconfig
-    export KUBECONFIG=${local_file.kubeconfig.filename}
+    # Export kubeconfig (use unified config, not generated)
+    export KUBECONFIG=/root/.kube/config
+    kubectl config use-context admin@homelab-prod
 
     # Check cluster nodes
     kubectl get nodes

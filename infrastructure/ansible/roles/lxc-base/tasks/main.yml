@@ -26,7 +26,7 @@
     mode: '0644'
     backup: yes
 
-# Sysctl optimizations (inotify watches for file watchers, dev tools)
+# Sysctl optimizations (may fail in LXC containers due to namespace restrictions)
 - name: Apply sysctl optimizations
   sysctl:
     name: "{{ item.key }}"
@@ -35,6 +35,7 @@
     reload: yes
     sysctl_file: /etc/sysctl.d/99-lxc-optimizations.conf
   loop: "{{ lxc_sysctl_settings | dict2items }}"
+  failed_when: false
 
 # SSH authorized keys
 - name: Ensure .ssh directory exists
@@ -53,64 +54,30 @@
   loop: "{{ lxc_authorized_keys }}"
   when: lxc_authorized_keys | length > 0
 
-# Infisical CLI installation
-- name: Create keyrings directory
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
-
+# Infisical CLI installation (via official Cloudsmith repo)
 - name: Check if Infisical CLI is already installed
   command: which infisical
   register: infisical_check
   changed_when: false
   failed_when: false
 
-- name: Download Infisical GPG key
-  get_url:
-    url: "{{ infisical_apt_key_url }}"
-    dest: /etc/apt/keyrings/infisical.asc
-    mode: '0644'
-  when: infisical_check.rc != 0
-
-- name: Get system architecture
-  command: dpkg --print-architecture
-  register: dpkg_arch
-  changed_when: false
-
-- name: Get Debian codename
-  command: lsb_release -cs
-  register: debian_codename
-  changed_when: false
-  failed_when: false
-
-- name: Add Infisical apt repository
-  copy:
-    content: |
-      deb [signed-by=/etc/apt/keyrings/infisical.asc] {{ infisical_apt_repo }} any-version main
-    dest: /etc/apt/sources.list.d/infisical.list
-    mode: '0644'
-  when: infisical_check.rc != 0
-
-- name: Update apt cache after adding Infisical repo
-  apt:
-    update_cache: yes
-  when: infisical_check.rc != 0
-
-- name: Install Infisical CLI
-  apt:
-    name: infisical
-    state: present
+- name: Install Infisical CLI via setup script
+  shell: |
+    curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash
+    apt-get install -y infisical
+  args:
+    creates: /usr/bin/infisical
   when: infisical_check.rc != 0
 
 - name: Verify Infisical CLI installation
   command: infisical --version
   register: infisical_version
   changed_when: false
+  failed_when: false
 
 - name: Display Infisical CLI version
   debug:
-    msg: "Infisical CLI: {{ infisical_version.stdout }}"
+    msg: "Infisical CLI: {{ infisical_version.stdout | default('not installed') }}"
 
 # Infisical machine identity for runtime secret injection
 - name: Create Infisical config directory
