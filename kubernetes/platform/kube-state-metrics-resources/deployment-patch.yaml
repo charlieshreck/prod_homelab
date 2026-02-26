@@ -1,0 +1,36 @@
+---
+# Resource requests patch for kube-prometheus-stack-kube-state-metrics on prod cluster.
+# This deployment is orphaned from its original Helm/ArgoCD management.
+# ArgoCD SSA adopts the resource and manages only the fields specified here.
+#
+# Root cause: BestEffort QoS (no resource requests) → eviction under I/O pressure
+# during PBS backup window (Ruapehu 02:20 UTC). Adding 50m/64Mi moves to Burstable QoS.
+# Same fix applied to monit cluster in commit f4a448c (Feb 26 2026).
+#
+# Runbook: agentic_lab/runbooks/infrastructure/kube-state-metrics-crashloop.md
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-prometheus-stack-kube-state-metrics
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: kube-prometheus-stack
+      app.kubernetes.io/name: kube-state-metrics
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: kube-prometheus-stack
+        app.kubernetes.io/name: kube-state-metrics
+    spec:
+      containers:
+        - name: kube-state-metrics
+          image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.14.0
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
