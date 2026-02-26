@@ -25,11 +25,11 @@ resource "proxmox_virtual_environment_download_file" "talos_nocloud_image" {
   # Use custom factory image with extensions (intel-ucode, i915-ucode, iscsi-tools, util-linux-tools)
   url = "https://factory.talos.dev/image/${data.external.talos_image.result.schematic_id}/${data.external.talos_image.result.version}/nocloud-amd64.iso"
 
-  file_name               = "talos-${data.external.talos_image.result.version}-${substr(data.external.talos_image.result.schematic_id, 0, 8)}-nocloud-amd64.iso"
-  overwrite               = false
-  overwrite_unmanaged     = true
-  checksum                = null
-  checksum_algorithm      = null
+  file_name           = "talos-${data.external.talos_image.result.version}-${substr(data.external.talos_image.result.schematic_id, 0, 8)}-nocloud-amd64.iso"
+  overwrite           = false
+  overwrite_unmanaged = true
+  checksum            = null
+  checksum_algorithm  = null
 }
 
 # ============================================================================
@@ -48,7 +48,7 @@ resource "proxmox_virtual_environment_vm" "control_plane" {
 
   memory {
     dedicated = var.control_plane.memory
-    floating  = 0  # Disable balloon - control plane needs stable memory
+    floating  = 0 # Disable balloon - control plane needs stable memory
   }
 
   bios = "ovmf"
@@ -117,7 +117,7 @@ module "workers" {
 
   cores       = each.value.cores
   memory      = each.value.memory
-  balloon_min = 0  # Disable balloon - workers need stable memory for Mayastor etcd
+  balloon_min = 0 # Disable balloon - workers need stable memory for Mayastor etcd
 
   mac_address = each.value.mac_address
 

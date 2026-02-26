@@ -1,0 +1,9 @@
+[Unit]
+Description=Investmentology Pre-Market Stop-Loss Timer
+
+[Timer]
+OnCalendar={{ timer_premarket }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

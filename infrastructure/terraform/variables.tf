@@ -113,7 +113,7 @@ variable "control_plane" {
     name   = "talos-cp-01"
     ip     = "10.10.0.40"
     cores  = 4
-    memory = 5120  # 5GB - increased to reduce memory pressure (was 4GB at 85% utilization)
+    memory = 5120 # 5GB - increased to reduce memory pressure (was 4GB at 85% utilization)
     disk   = 50
   }
 }
@@ -137,30 +137,30 @@ variable "workers" {
       ip            = "10.10.0.41"
       truenas_ip    = "10.40.0.41"
       storage_ip    = "10.50.0.41"
-      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
-      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
+      cores         = 6    # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
+      memory        = 9216 # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
+      mayastor_disk = 1000 # Reduced from 1100GB to prevent Taranaki pool saturation
     }
     "worker-02" = {
       name          = "talos-worker-02"
       ip            = "10.10.0.42"
       truenas_ip    = "10.40.0.42"
       storage_ip    = "10.50.0.42"
-      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
-      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
+      cores         = 6    # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
+      memory        = 9216 # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
+      mayastor_disk = 1000 # Reduced from 1100GB to prevent Taranaki pool saturation
     }
     "worker-03" = {
       name          = "talos-worker-03"
       ip            = "10.10.0.43"
       truenas_ip    = "10.40.0.43"
       storage_ip    = "10.50.0.43"
-      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
-      memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
+      cores         = 6    # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
+      memory        = 9216 # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
-      mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
+      mayastor_disk = 1000 # Reduced from 1100GB to prevent Taranaki pool saturation
     }
   }
 }
@@ -184,9 +184,9 @@ variable "plex_vm" {
     ip         = "10.10.0.50"
     truenas_ip = "10.40.0.50"
     cores      = 4
-    memory     = 7168  # 7GB (increased from 6GB - currently oversubscribed at 6.5GB)
+    memory     = 7168 # 7GB (increased from 6GB - currently oversubscribed at 6.5GB)
     disk       = 100
-    gpu_pci_id = "0000:0d:00"  # Nvidia P4000
+    gpu_pci_id = "0000:0d:00" # Nvidia P4000
   }
 }
 
@@ -206,7 +206,7 @@ variable "unifi_vm" {
     name   = "unifi"
     ip     = "10.10.0.51"
     cores  = 2
-    memory = 3072  # 3GB - UniFi stack actual RSS ~1.2GB + OS/cache needs ~1.9GB total, balloon disabled
+    memory = 3072 # 3GB - UniFi stack actual RSS ~1.2GB + OS/cache needs ~1.9GB total, balloon disabled
     disk   = 50
   }
 }

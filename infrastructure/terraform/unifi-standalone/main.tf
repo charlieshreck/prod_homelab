@@ -87,8 +87,8 @@ resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   url       = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
   file_name = "debian-13-generic-amd64.img"
 
-  overwrite               = false
-  overwrite_unmanaged     = true
+  overwrite           = false
+  overwrite_unmanaged = true
 }
 
 # Cloud-init configuration
@@ -98,7 +98,7 @@ resource "proxmox_virtual_environment_file" "cloud_init" {
   node_name    = var.proxmox_node
 
   source_raw {
-    data = <<-EOF
+    data      = <<-EOF
       #cloud-config
       hostname: ${var.vm_name}
       manage_etc_hosts: true

@@ -1,0 +1,40 @@
+---
+# Default variables for lxc-base role
+
+# System Configuration
+lxc_timezone: UTC
+dns_server: 10.10.0.1
+
+# Base packages to install on all LXC containers
+lxc_base_packages:
+  - curl
+  - git
+  - wget
+  - htop
+  - tmux
+  - screen
+  - jq
+  - unzip
+  - ca-certificates
+  - gnupg
+  - apt-transport-https
+  - software-properties-common
+  - procps
+  - net-tools
+  - dnsutils
+
+# SSH authorized keys (add public keys here)
+lxc_authorized_keys: []
+
+# Sysctl optimizations
+lxc_sysctl_settings:
+  fs.inotify.max_user_watches: 524288
+  fs.inotify.max_user_instances: 512
+  fs.inotify.max_queued_events: 16384
+
+# Infisical CLI configuration
+infisical_apt_repo: "https://dl.cloudsmith.io/public/infisical/infisical-cli/deb/debian"
+infisical_apt_key_url: "https://dl.cloudsmith.io/public/infisical/infisical-cli/gpg.CF7DA0D0AE2E4812.key"
+
+# Beszel agent configuration
+beszel_agent_managed: true

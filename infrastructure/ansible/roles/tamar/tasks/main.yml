@@ -1,0 +1,106 @@
+---
+# Tasks for tamar role - configures Tamar (Express + Node.js + Redis) on Synapse LXC
+
+# Node.js 22 LTS from NodeSource
+- name: Check if Node.js is already installed
+  command: node --version
+  register: node_check
+  changed_when: false
+  failed_when: false
+
+- name: Download NodeSource setup script
+  get_url:
+    url: "https://deb.nodesource.com/setup_{{ nodejs_major_version }}.x"
+    dest: /tmp/nodesource_setup.sh
+    mode: '0755'
+  when: node_check.rc != 0 or (nodejs_major_version not in (node_check.stdout | default('')))
+
+- name: Run NodeSource setup script
+  command: /tmp/nodesource_setup.sh
+  when: node_check.rc != 0 or (nodejs_major_version not in (node_check.stdout | default('')))
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Verify Node.js version
+  command: node --version
+  register: node_version
+  changed_when: false
+
+- name: Display Node.js version
+  debug:
+    msg: "Node.js: {{ node_version.stdout }}"
+
+# Redis server
+- name: Install Redis server
+  apt:
+    name: redis-server
+    state: present
+
+- name: Configure Redis maxmemory
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^# ?maxmemory '
+    line: "maxmemory {{ redis_maxmemory }}"
+    state: present
+  notify: Restart Redis
+
+- name: Configure Redis maxmemory-policy
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^# ?maxmemory-policy'
+    line: "maxmemory-policy {{ redis_maxmemory_policy }}"
+    state: present
+  notify: Restart Redis
+
+- name: Configure Redis bind address
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^bind '
+    line: "bind {{ redis_bind }}"
+    state: present
+  notify: Restart Redis
+
+- name: Ensure Redis is started and enabled
+  systemd:
+    name: redis-server
+    state: started
+    enabled: yes
+
+# Tamar systemd service
+- name: Deploy tamar.service unit file
+  template:
+    src: tamar.service.j2
+    dest: /etc/systemd/system/tamar.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart Tamar
+
+- name: Enable tamar.service
+  systemd:
+    name: tamar
+    enabled: yes
+    daemon_reload: yes
+
+- name: Ensure Tamar is running
+  systemd:
+    name: tamar
+    state: started
+
+- name: Wait for Tamar to be ready
+  wait_for:
+    host: 127.0.0.1
+    port: "{{ tamar_port }}"
+    delay: 5
+    timeout: 60
+
+- name: Display Tamar status
+  debug:
+    msg:
+      - "Tamar is running on port {{ tamar_port }}"
+      - "Secrets injected from Infisical: {{ tamar_infisical_path }}"
+      - "Access: http://{{ ansible_host }}:{{ tamar_port }}"

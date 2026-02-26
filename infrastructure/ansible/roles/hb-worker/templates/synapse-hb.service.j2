@@ -1,0 +1,19 @@
+[Unit]
+Description=Synapse HB - Screen Monitor PWA
+After=network.target
+
+[Service]
+Type=simple
+User={{ synapse_hb_user }}
+WorkingDirectory={{ synapse_hb_working_dir }}
+ExecStart=/bin/bash -c 'eval $(infisical export --env={{ hb_infisical_env }} --path={{ hb_infisical_path }} --format=dotenv-export) && exec /usr/bin/node server.js'
+Restart=always
+RestartSec=5
+Environment=PORT={{ synapse_hb_port }}
+StandardOutput=journal
+StandardError=journal
+
+# AUTH_CREDENTIALS injected at runtime by Infisical CLI via ExecStart eval
+
+[Install]
+WantedBy=multi-user.target

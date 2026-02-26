@@ -1,0 +1,19 @@
+[Unit]
+Description=Screen Session Manager
+After=network.target
+
+[Service]
+Type=oneshot
+User={{ screens_user }}
+RemainAfterExit=yes
+ExecStart=/usr/bin/screen -dmS claude-invest bash
+ExecStart=/usr/bin/screen -dmS gemini-invest bash
+ExecStart=/usr/bin/screen -dmS dev bash
+ExecStop=/usr/bin/screen -S claude-invest -X quit
+ExecStop=/usr/bin/screen -S gemini-invest -X quit
+ExecStop=/usr/bin/screen -S dev -X quit
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

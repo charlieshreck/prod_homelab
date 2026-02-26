@@ -15,9 +15,9 @@ resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   # Debian 13 (Trixie) stable cloud image - qcow2 format
   url = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
 
-  file_name               = "debian-13-generic-amd64.img"
-  overwrite               = false
-  overwrite_unmanaged     = true
+  file_name           = "debian-13-generic-amd64.img"
+  overwrite           = false
+  overwrite_unmanaged = true
 }
 
 resource "proxmox_virtual_environment_vm" "unifi" {
@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "unifi" {
 
   memory {
     dedicated = var.memory
-    floating  = 0  # Disable balloon - actual usage is ~1.9GB (Node.js 642MB + Java 296MB + MongoDB + OS), ballooning causes severe swap thrashing
+    floating  = 0 # Disable balloon - actual usage is ~1.9GB (Node.js 642MB + Java 296MB + MongoDB + OS), ballooning causes severe swap thrashing
   }
 
   # Standard BIOS (no GPU passthrough needed)
@@ -75,7 +75,7 @@ resource "proxmox_virtual_environment_vm" "unifi" {
 
   # Operating system
   operating_system {
-    type = "l26"  # Linux 2.6+ kernel
+    type = "l26" # Linux 2.6+ kernel
   }
 
   # Agent

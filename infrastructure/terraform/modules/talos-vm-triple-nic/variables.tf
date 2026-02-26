@@ -28,7 +28,7 @@ variable "memory" {
 variable "balloon_min" {
   description = "Minimum memory for balloon in MB (0 to disable balloon)"
   type        = number
-  default     = 6144  # 6GB minimum for workers
+  default     = 6144 # 6GB minimum for workers
 }
 
 variable "mac_address" {

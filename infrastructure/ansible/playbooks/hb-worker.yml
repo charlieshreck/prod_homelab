@@ -1,0 +1,73 @@
+---
+# HB Worker (Investmentology LXC) Configuration Playbook
+# Configures Python + Node.js services with timer-based scheduling
+#
+# Usage:
+#   ansible-playbook -i inventory/lxc.yml playbooks/hb-worker.yml
+#
+# Prerequisites:
+#   - HB LXC provisioned (10.10.0.101 on Hikurangi)
+#   - SSH access configured (via ProxyJump through 10.10.0.178)
+#   - Infisical secrets populated at /platform/haute-banque
+#   - Investmentology application code deployed to /home/investmentology
+
+- name: Configure HB Worker (Investmentology LXC)
+  hosts: haute_banque
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Wait for system to be ready
+      wait_for_connection:
+        delay: 5
+        timeout: 120
+
+    - name: Gather facts after waiting
+      setup:
+
+    - name: Display target information
+      debug:
+        msg:
+          - "Target host: {{ ansible_host }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+
+  roles:
+    - role: ../roles/lxc-base
+    - role: ../roles/hb-worker
+
+  post_tasks:
+    - name: List active timers
+      command: systemctl list-timers --no-pager investmentology-*
+      register: timer_list
+      changed_when: false
+
+    - name: Final status summary
+      debug:
+        msg:
+          - "=========================================="
+          - "HB Worker deployment complete!"
+          - "=========================================="
+          - ""
+          - "API/PWA: http://{{ ansible_host }}:80"
+          - "Screen Monitor: http://{{ ansible_host }}:{{ synapse_hb_port }}"
+          - "External: https://haute-banque.kernow.io"
+          - ""
+          - "Long-running services:"
+          - "  - investmentology.service (Python FastAPI server)"
+          - "  - synapse-hb.service (Node.js screen monitor PWA)"
+          - "  - screens.service (GNU Screen sessions)"
+          - ""
+          - "Scheduled timers:"
+          - "  - daily-analyze: Mon-Fri 05:30 UTC"
+          - "  - monitor: Mon-Fri 16:15 ET"
+          - "  - premarket: Mon-Fri 08:00 ET"
+          - "  - price-refresh: Mon-Fri hourly 14:30-21:00 UTC"
+          - "  - screen: Sun 06:00 UTC"
+          - "  - post-screen: Sun 07:00 UTC"
+          - ""
+          - "Secrets injected from Infisical: {{ hb_infisical_path }}"
+
+    - name: Display active timers
+      debug:
+        msg: "{{ timer_list.stdout_lines }}"

@@ -10,7 +10,7 @@ output "vm_name" {
 
 output "management_ip" {
   description = "Management network IP (vmbr0/eth0)"
-  value       = var.mac_address  # Note: Actual IP is configured in Talos config
+  value       = var.mac_address # Note: Actual IP is configured in Talos config
 }
 
 output "mac_address" {

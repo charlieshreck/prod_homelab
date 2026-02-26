@@ -1,5 +1,36 @@
+# Default provider - Ruapehu (10.10.0.10)
 provider "proxmox" {
   endpoint = "https://${var.proxmox_host}:8006"
+  username = var.proxmox_user
+  password = var.proxmox_password
+  insecure = true
+
+  ssh {
+    agent    = false
+    username = "root"
+    password = var.proxmox_password
+  }
+}
+
+# Hikurangi (10.10.0.178) - Haute Banque LXC
+provider "proxmox" {
+  alias    = "hikurangi"
+  endpoint = "https://10.10.0.178:8006"
+  username = var.proxmox_user
+  password = var.proxmox_password
+  insecure = true
+
+  ssh {
+    agent    = false
+    username = "root"
+    password = var.proxmox_password
+  }
+}
+
+# Pihanga (10.10.0.20) - Synapse LXC + monitoring cluster
+provider "proxmox" {
+  alias    = "pihanga"
+  endpoint = "https://10.10.0.20:8006"
   username = var.proxmox_user
   password = var.proxmox_password
   insecure = true

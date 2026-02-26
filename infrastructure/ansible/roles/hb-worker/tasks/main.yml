@@ -1,0 +1,222 @@
+---
+# Tasks for hb-worker role - configures Investmentology on Haute Banque LXC
+
+# Python (from Debian 13 repos - already includes 3.12+)
+- name: Install Python and development packages
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+      - python3-dev
+      - build-essential
+      - libpq-dev
+      - postgresql-client
+    state: present
+
+- name: Verify Python version
+  command: python3 --version
+  register: python_version
+  changed_when: false
+
+- name: Display Python version
+  debug:
+    msg: "Python: {{ python_version.stdout }}"
+
+# Node.js for synapse-hb PWA
+- name: Check if Node.js is already installed
+  command: node --version
+  register: node_check
+  changed_when: false
+  failed_when: false
+
+- name: Download NodeSource setup script
+  get_url:
+    url: "https://deb.nodesource.com/setup_22.x"
+    dest: /tmp/nodesource_setup.sh
+    mode: '0755'
+  when: node_check.rc != 0
+
+- name: Run NodeSource setup script
+  command: /tmp/nodesource_setup.sh
+  when: node_check.rc != 0
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+  when: node_check.rc != 0
+
+# Deploy investmentology.service (long-running API/PWA server)
+- name: Deploy investmentology.service
+  template:
+    src: investmentology.service.j2
+    dest: /etc/systemd/system/investmentology.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart Investmentology
+
+# Deploy synapse-hb.service (screen monitor PWA with Infisical secrets)
+- name: Deploy synapse-hb.service
+  template:
+    src: synapse-hb.service.j2
+    dest: /etc/systemd/system/synapse-hb.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart Synapse HB
+
+# Deploy screens.service (screen session manager)
+- name: Deploy screens.service
+  template:
+    src: screens.service.j2
+    dest: /etc/systemd/system/screens.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart Screens
+
+# Deploy timer services (oneshot) and timers
+- name: Deploy investmentology-daily-analyze.service
+  template:
+    src: investmentology-daily-analyze.service.j2
+    dest: /etc/systemd/system/investmentology-daily-analyze.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-daily-analyze.timer
+  template:
+    src: investmentology-daily-analyze.timer.j2
+    dest: /etc/systemd/system/investmentology-daily-analyze.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart daily-analyze timer
+
+- name: Deploy investmentology-monitor.service
+  template:
+    src: investmentology-monitor.service.j2
+    dest: /etc/systemd/system/investmentology-monitor.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-monitor.timer
+  template:
+    src: investmentology-monitor.timer.j2
+    dest: /etc/systemd/system/investmentology-monitor.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart monitor timer
+
+- name: Deploy investmentology-premarket.service
+  template:
+    src: investmentology-premarket.service.j2
+    dest: /etc/systemd/system/investmentology-premarket.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-premarket.timer
+  template:
+    src: investmentology-premarket.timer.j2
+    dest: /etc/systemd/system/investmentology-premarket.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart premarket timer
+
+- name: Deploy investmentology-price-refresh.service
+  template:
+    src: investmentology-price-refresh.service.j2
+    dest: /etc/systemd/system/investmentology-price-refresh.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-price-refresh.timer
+  template:
+    src: investmentology-price-refresh.timer.j2
+    dest: /etc/systemd/system/investmentology-price-refresh.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart price-refresh timer
+
+- name: Deploy investmentology-screen.service
+  template:
+    src: investmentology-screen.service.j2
+    dest: /etc/systemd/system/investmentology-screen.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-screen.timer
+  template:
+    src: investmentology-screen.timer.j2
+    dest: /etc/systemd/system/investmentology-screen.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart screen timer
+
+- name: Deploy investmentology-post-screen.service
+  template:
+    src: investmentology-post-screen.service.j2
+    dest: /etc/systemd/system/investmentology-post-screen.service
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Deploy investmentology-post-screen.timer
+  template:
+    src: investmentology-post-screen.timer.j2
+    dest: /etc/systemd/system/investmentology-post-screen.timer
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart post-screen timer
+
+# Enable all long-running services
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start investmentology.service
+  systemd:
+    name: investmentology
+    enabled: yes
+    state: started
+
+- name: Enable and start synapse-hb.service
+  systemd:
+    name: synapse-hb
+    enabled: yes
+    state: started
+
+- name: Enable and start screens.service
+  systemd:
+    name: screens
+    enabled: yes
+    state: started
+
+# Enable all timers
+- name: Enable and start all investmentology timers
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - investmentology-daily-analyze.timer
+    - investmentology-monitor.timer
+    - investmentology-premarket.timer
+    - investmentology-price-refresh.timer
+    - investmentology-screen.timer
+    - investmentology-post-screen.timer
+
+- name: Display HB Worker status
+  debug:
+    msg:
+      - "Investmentology services deployed on HB LXC"
+      - "API/PWA: http://{{ ansible_host }}:80"
+      - "Screen Monitor PWA: http://{{ ansible_host }}:{{ synapse_hb_port }}"
+      - "Secrets injected from Infisical: {{ hb_infisical_path }}"
+      - "Active timers: daily-analyze, monitor, premarket, price-refresh, screen, post-screen"

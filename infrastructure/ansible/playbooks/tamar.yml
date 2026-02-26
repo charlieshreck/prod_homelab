@@ -1,0 +1,57 @@
+---
+# Tamar (Synapse LXC) Configuration Playbook
+# Configures Express + Node.js + Redis with Infisical secret injection
+#
+# Usage:
+#   ansible-playbook -i inventory/lxc.yml playbooks/tamar.yml
+#
+# Prerequisites:
+#   - Synapse LXC provisioned (10.10.0.22 on Pihanga)
+#   - SSH access configured
+#   - Infisical secrets populated at /platform/tamar
+#   - Tamar application code deployed to /home/tamar
+
+- name: Configure Tamar (Synapse LXC)
+  hosts: synapse
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Wait for system to be ready
+      wait_for_connection:
+        delay: 5
+        timeout: 120
+
+    - name: Gather facts after waiting
+      setup:
+
+    - name: Display target information
+      debug:
+        msg:
+          - "Target host: {{ ansible_host }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+
+  roles:
+    - role: ../roles/lxc-base
+    - role: ../roles/tamar
+
+  post_tasks:
+    - name: Final status summary
+      debug:
+        msg:
+          - "=========================================="
+          - "Tamar deployment complete!"
+          - "=========================================="
+          - ""
+          - "Application: http://{{ ansible_host }}:{{ tamar_port }}"
+          - "External: https://tamar.kernow.io"
+          - ""
+          - "Services:"
+          - "  - tamar.service (Express + Node.js PWA)"
+          - "  - redis-server.service (session store)"
+          - ""
+          - "Secrets injected from Infisical: {{ tamar_infisical_path }}"
+          - "  AUTH_USERNAME, AUTH_PASSWORD, SESSION_SECRET, A2A_API_TOKEN"
+          - ""
+          - "Verify: systemctl status tamar"

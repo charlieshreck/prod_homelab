@@ -1,0 +1,27 @@
+[Unit]
+Description=Tamar - Unified Estate Operations PWA
+After=network.target redis-server.service
+Wants=redis-server.service
+
+[Service]
+Type=simple
+User={{ tamar_user }}
+WorkingDirectory={{ tamar_working_dir }}
+ExecStart=/bin/bash -c 'eval $(infisical export --env={{ tamar_infisical_env }} --path={{ tamar_infisical_path }} --format=dotenv-export) && exec /usr/bin/node server.js'
+Restart=always
+RestartSec=5
+
+# Non-secret environment variables
+Environment=NODE_ENV={{ tamar_node_env }}
+Environment=PORT={{ tamar_port }}
+Environment=REDIS_URL={{ tamar_redis_url }}
+Environment=REDIS_DB={{ tamar_redis_db }}
+Environment=ERROR_HUNTER_URL={{ tamar_error_hunter_url }}
+Environment=GATUS_URL={{ tamar_gatus_url }}
+Environment=LANGGRAPH_URL={{ tamar_langgraph_url }}
+
+# Secrets (AUTH_USERNAME, AUTH_PASSWORD, SESSION_SECRET, A2A_API_TOKEN)
+# are injected at runtime by Infisical CLI via ExecStart eval
+
+[Install]
+WantedBy=multi-user.target

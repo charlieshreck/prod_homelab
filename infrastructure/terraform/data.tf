@@ -1,5 +1,6 @@
 # Proxmox node data source
-data "proxmox_virtual_environment_nodes" "available" {}
+# Temporarily commented out due to auth issues with the provider
+# data "proxmox_virtual_environment_nodes" "available" {}
 
 # Generate Talos machine secrets
 resource "talos_machine_secrets" "cluster" {
@@ -55,11 +56,11 @@ data "talos_machine_configuration" "control_plane" {
       cluster = {
         network = {
           cni = {
-            name = "none"  # Using Cilium
+            name = "none" # Using Cilium
           }
         }
         proxy = {
-          disabled = true  # Cilium replaces kube-proxy
+          disabled = true # Cilium replaces kube-proxy
         }
       }
     })
@@ -146,11 +147,11 @@ data "talos_machine_configuration" "workers" {
       cluster = {
         network = {
           cni = {
-            name = "none"  # Using Cilium
+            name = "none" # Using Cilium
           }
         }
         proxy = {
-          disabled = true  # Cilium replaces kube-proxy
+          disabled = true # Cilium replaces kube-proxy
         }
       }
     })

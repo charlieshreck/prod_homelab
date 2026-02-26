@@ -20,7 +20,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
 
   memory {
     dedicated = var.memory
-    floating  = var.balloon_min  # Balloon minimum - allows dynamic memory reclaim
+    floating  = var.balloon_min # Balloon minimum - allows dynamic memory reclaim
   }
 
   # BIOS settings
@@ -91,12 +91,12 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
 
   # Operating system
   operating_system {
-    type = "l26"  # Linux 2.6+ kernel
+    type = "l26" # Linux 2.6+ kernel
   }
 
   # Agent
   agent {
-    enabled = false  # Talos doesn't use qemu-guest-agent
+    enabled = false # Talos doesn't use qemu-guest-agent
   }
 
   # Machine config will be applied via Talos provider after VM creation

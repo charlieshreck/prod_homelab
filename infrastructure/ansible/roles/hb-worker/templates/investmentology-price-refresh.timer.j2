@@ -1,0 +1,9 @@
+[Unit]
+Description=Investmentology Intraday Price Refresh Timer
+
+[Timer]
+OnCalendar={{ timer_price_refresh }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Investmentology Pre-Market Stop-Loss Check
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} -m investmentology cron daily-monitor --premarket
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec={{ timer_premarket_timeout }}

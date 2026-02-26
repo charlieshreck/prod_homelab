@@ -1,0 +1,12 @@
+[Unit]
+Description=Investmentology Post-Screen Analysis
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} -m investmentology cron post-screen-analyze --limit 20
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec={{ timer_post_screen_timeout }}

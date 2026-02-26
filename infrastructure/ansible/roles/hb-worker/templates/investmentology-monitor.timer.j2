@@ -1,0 +1,9 @@
+[Unit]
+Description=Investmentology Daily Post-Market Monitor Timer
+
+[Timer]
+OnCalendar={{ timer_monitor }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

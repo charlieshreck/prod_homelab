@@ -1,0 +1,5 @@
+---
+# Handlers for lxc-base role
+
+- name: Reload sysctl
+  command: sysctl --system

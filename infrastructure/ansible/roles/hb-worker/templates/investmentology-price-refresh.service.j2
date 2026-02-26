@@ -1,0 +1,12 @@
+[Unit]
+Description=Investmentology Intraday Price Refresh
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} -m investmentology cron price-refresh
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec={{ timer_price_refresh_timeout }}

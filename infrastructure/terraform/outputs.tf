@@ -118,7 +118,7 @@ output "gitops_repository" {
 # Quick Start Commands
 output "quick_start_commands" {
   description = "Quick start commands for cluster access"
-  value = <<-EOT
+  value       = <<-EOT
     # Export kubeconfig
     export KUBECONFIG=${local_file.kubeconfig.filename}
 

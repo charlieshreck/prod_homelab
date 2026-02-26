@@ -1,0 +1,113 @@
+---
+# Common setup tasks for all LXC containers
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install base packages
+  apt:
+    name: "{{ lxc_base_packages }}"
+    state: present
+
+# Timezone configuration
+- name: Set timezone to {{ lxc_timezone }}
+  timezone:
+    name: "{{ lxc_timezone }}"
+
+# DNS configuration
+- name: Configure resolv.conf to use {{ dns_server }}
+  copy:
+    content: |
+      nameserver {{ dns_server }}
+      search kernow.io
+    dest: /etc/resolv.conf
+    mode: '0644'
+    backup: yes
+
+# Sysctl optimizations (inotify watches for file watchers, dev tools)
+- name: Apply sysctl optimizations
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+    sysctl_file: /etc/sysctl.d/99-lxc-optimizations.conf
+  loop: "{{ lxc_sysctl_settings | dict2items }}"
+
+# SSH authorized keys
+- name: Ensure .ssh directory exists
+  file:
+    path: /root/.ssh
+    state: directory
+    mode: '0700'
+    owner: root
+    group: root
+
+- name: Deploy SSH authorized keys
+  authorized_key:
+    user: root
+    key: "{{ item }}"
+    state: present
+  loop: "{{ lxc_authorized_keys }}"
+  when: lxc_authorized_keys | length > 0
+
+# Infisical CLI installation
+- name: Create keyrings directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Check if Infisical CLI is already installed
+  command: which infisical
+  register: infisical_check
+  changed_when: false
+  failed_when: false
+
+- name: Download Infisical GPG key
+  get_url:
+    url: "{{ infisical_apt_key_url }}"
+    dest: /etc/apt/keyrings/infisical.asc
+    mode: '0644'
+  when: infisical_check.rc != 0
+
+- name: Get system architecture
+  command: dpkg --print-architecture
+  register: dpkg_arch
+  changed_when: false
+
+- name: Get Debian codename
+  command: lsb_release -cs
+  register: debian_codename
+  changed_when: false
+  failed_when: false
+
+- name: Add Infisical apt repository
+  copy:
+    content: |
+      deb [signed-by=/etc/apt/keyrings/infisical.asc] {{ infisical_apt_repo }} any-version main
+    dest: /etc/apt/sources.list.d/infisical.list
+    mode: '0644'
+  when: infisical_check.rc != 0
+
+- name: Update apt cache after adding Infisical repo
+  apt:
+    update_cache: yes
+  when: infisical_check.rc != 0
+
+- name: Install Infisical CLI
+  apt:
+    name: infisical
+    state: present
+  when: infisical_check.rc != 0
+
+- name: Verify Infisical CLI installation
+  command: infisical --version
+  register: infisical_version
+  changed_when: false
+
+- name: Display Infisical CLI version
+  debug:
+    msg: "Infisical CLI: {{ infisical_version.stdout }}"

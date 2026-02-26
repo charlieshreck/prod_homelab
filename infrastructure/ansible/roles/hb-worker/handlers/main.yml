@@ -1,0 +1,51 @@
+---
+# Handlers for hb-worker role
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Restart Investmentology
+  systemd:
+    name: investmentology
+    state: restarted
+
+- name: Restart Synapse HB
+  systemd:
+    name: synapse-hb
+    state: restarted
+
+- name: Restart Screens
+  systemd:
+    name: screens
+    state: restarted
+
+- name: Restart daily-analyze timer
+  systemd:
+    name: investmentology-daily-analyze.timer
+    state: restarted
+
+- name: Restart monitor timer
+  systemd:
+    name: investmentology-monitor.timer
+    state: restarted
+
+- name: Restart premarket timer
+  systemd:
+    name: investmentology-premarket.timer
+    state: restarted
+
+- name: Restart price-refresh timer
+  systemd:
+    name: investmentology-price-refresh.timer
+    state: restarted
+
+- name: Restart screen timer
+  systemd:
+    name: investmentology-screen.timer
+    state: restarted
+
+- name: Restart post-screen timer
+  systemd:
+    name: investmentology-post-screen.timer
+    state: restarted

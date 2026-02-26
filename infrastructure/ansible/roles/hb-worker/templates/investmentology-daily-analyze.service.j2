@@ -1,0 +1,12 @@
+[Unit]
+Description=Investmentology Daily Watchlist Re-Analysis
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} -m investmentology cron daily-watchlist-analyze --limit 30
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec={{ timer_daily_analyze_timeout }}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Investmentology - AI Investment Advisory Platform
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User={{ investmentology_user }}
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} serve.py
+Restart=always
+RestartSec=5
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+---
+# Site playbook - runs all infrastructure playbooks
+#
+# Usage:
+#   ansible-playbook -i inventory/plex.yml -i inventory/lxc.yml -i inventory/unifi.yml -i inventory/omada.yml playbooks/site.yml
+#
+# Or run individual playbooks:
+#   ansible-playbook -i inventory/plex.yml playbooks/plex-nvidia.yml
+#   ansible-playbook -i inventory/lxc.yml playbooks/tamar.yml
+#   ansible-playbook -i inventory/lxc.yml playbooks/hb-worker.yml
+
+- import_playbook: plex-nvidia.yml
+- import_playbook: tamar.yml
+- import_playbook: hb-worker.yml

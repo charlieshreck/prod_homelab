@@ -1,0 +1,12 @@
+[Unit]
+Description=Investmentology Daily Post-Market Monitor
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory={{ investmentology_working_dir }}
+ExecStart={{ investmentology_python }} -m investmentology cron daily-monitor
+Environment=PYTHONPATH={{ investmentology_pythonpath }}
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec={{ timer_monitor_timeout }}

@@ -16,9 +16,9 @@ resource "proxmox_virtual_environment_download_file" "debian_cloud_image" {
   # Use .img extension for Proxmox compatibility
   url = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2"
 
-  file_name               = "debian-13-generic-amd64.img"
-  overwrite               = false
-  overwrite_unmanaged     = true
+  file_name           = "debian-13-generic-amd64.img"
+  overwrite           = false
+  overwrite_unmanaged = true
 }
 
 resource "proxmox_virtual_environment_vm" "plex" {
@@ -35,11 +35,11 @@ resource "proxmox_virtual_environment_vm" "plex" {
 
   memory {
     dedicated = var.memory
-    floating  = 0  # Disable ballooning - transcoding needs full 6GB
+    floating  = 0 # Disable ballooning - transcoding needs full 6GB
   }
 
   # BIOS settings for GPU passthrough
-  bios = "ovmf"
+  bios    = "ovmf"
   machine = "q35"
 
   # EFI disk
@@ -76,11 +76,11 @@ resource "proxmox_virtual_environment_vm" "plex" {
 
   # GPU Passthrough - Nvidia P4000
   hostpci {
-    device  = "hostpci0"
-    id      = var.gpu_pci_id
-    pcie    = true
-    rombar  = true
-    xvga    = false
+    device = "hostpci0"
+    id     = var.gpu_pci_id
+    pcie   = true
+    rombar = true
+    xvga   = false
   }
 
   # Initialization (cloud-init for Debian/Ubuntu)
@@ -106,7 +106,7 @@ resource "proxmox_virtual_environment_vm" "plex" {
 
   # Operating system
   operating_system {
-    type = "l26"  # Linux 2.6+ kernel
+    type = "l26" # Linux 2.6+ kernel
   }
 
   # Agent

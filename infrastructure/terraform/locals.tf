@@ -48,11 +48,11 @@ locals {
   # Mayastor storage node specifications
   mayastor_nodes = {
     for key, worker in local.workers_config : key => {
-      node_name     = worker.name
-      storage_ip    = worker.storage_ip  # vmbr4 network IP
-      disk_device   = "/dev/sdb"         # SCSI1 disk (Mayastor volume)
-      pool_name     = "${worker.name}-pool"
-      disk_size_gb  = worker.mayastor_disk
+      node_name    = worker.name
+      storage_ip   = worker.storage_ip # vmbr4 network IP
+      disk_device  = "/dev/sdb"        # SCSI1 disk (Mayastor volume)
+      pool_name    = "${worker.name}-pool"
+      disk_size_gb = worker.mayastor_disk
     }
   }
 

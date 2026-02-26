@@ -1,0 +1,26 @@
+---
+# LXC Container inventory
+# Synapse LXC (Pihanga) and Haute Banque LXC (Hikurangi)
+# Passwords stored in Infisical
+all:
+  children:
+    lxc:
+      children:
+        synapse:
+          hosts:
+            synapse-lxc:
+              ansible_host: 10.10.0.22
+              ansible_user: root
+              ansible_python_interpreter: /usr/bin/python3
+              ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        haute_banque:
+          hosts:
+            hb-lxc:
+              ansible_host: 10.10.0.101
+              ansible_user: root
+              ansible_python_interpreter: /usr/bin/python3
+              ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyJump=root@10.10.0.178'
+
+  vars:
+    lxc_timezone: UTC
+    dns_server: 10.10.0.1

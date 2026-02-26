@@ -1,0 +1,9 @@
+[Unit]
+Description=Investmentology Daily Watchlist Analysis Timer
+
+[Timer]
+OnCalendar={{ timer_daily_analyze }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target
