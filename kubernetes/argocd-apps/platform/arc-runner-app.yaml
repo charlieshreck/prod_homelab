@@ -8,11 +8,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    repoURL: https://github.com/charlieshreck/agentic_lab.git
     targetRevision: main
     path: kubernetes/platform/arc-runner-set
   destination:
-    server: https://kubernetes.default.svc
+    server: https://10.20.0.40:6443
     namespace: arc-runners
   syncPolicy:
     automated:
@@ -40,11 +40,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/charlieshreck/prod_homelab.git
+    repoURL: https://github.com/charlieshreck/agentic_lab.git
     targetRevision: main
-    path: kubernetes/platform/arc
+    path: kubernetes/platform/arc-secrets
   destination:
-    server: https://kubernetes.default.svc
+    server: https://10.20.0.40:6443
     namespace: arc-runners
   syncPolicy:
     automated:
