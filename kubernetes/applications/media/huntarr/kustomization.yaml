@@ -5,6 +5,5 @@ namespace: media
 
 resources:
   - deployment.yaml
-  - schedule.yaml
   - ingress.yaml
   - cloudflare-tunnel-ingress.yaml
