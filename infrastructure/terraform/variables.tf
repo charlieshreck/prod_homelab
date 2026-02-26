@@ -137,7 +137,7 @@ variable "workers" {
       ip            = "10.10.0.41"
       truenas_ip    = "10.40.0.41"
       storage_ip    = "10.50.0.41"
-      cores         = 4
+      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
@@ -147,7 +147,7 @@ variable "workers" {
       ip            = "10.10.0.42"
       truenas_ip    = "10.40.0.42"
       storage_ip    = "10.50.0.42"
-      cores         = 4
+      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
@@ -157,7 +157,7 @@ variable "workers" {
       ip            = "10.10.0.43"
       truenas_ip    = "10.40.0.43"
       storage_ip    = "10.50.0.43"
-      cores         = 4
+      cores         = 6  # Increased from 4: Mayastor SPDK busy-polls 2 vCPUs constantly (~50% floor); 4 vCPUs left no headroom for Renovate/workloads
       memory        = 9216  # 9GB (reduced from 12GB to reduce host memory pressure)
       disk          = 50
       mayastor_disk = 1000  # Reduced from 1100GB to prevent Taranaki pool saturation
