@@ -8,17 +8,6 @@ metadata:
 data:
   kubernetes.yaml: |
     mode: cluster
-    clusters:
-      - name: production
-        url: https://10.10.0.40:6443
-      - name: monitoring
-        url: https://10.10.0.30:6443
-        serviceAccountToken: /app/monitoring/token
-        certificate: /app/monitoring/ca
-      - name: agentic
-        url: https://10.20.0.40:6443
-        serviceAccountToken: /app/agentic/token
-        certificate: /app/agentic/ca
 
   settings.yaml: |
     title: Kernow Homelab
@@ -282,23 +271,19 @@ data:
 
         # Backrest now auto-discovered via ingress annotation with widget
 
-    # Monitoring cluster services - manual config with kubernetes status
+    # Monitoring cluster services - use ping for status (cross-cluster k8s API is fragile)
     - Monitoring:
         - Grafana:
             icon: grafana.png
             href: https://grafana.kernow.io
             description: Metrics Dashboards
-            server: monitoring
-            app: grafana
-            namespace: monitoring
+            ping: https://grafana.kernow.io
 
         - Prometheus:
             icon: prometheus.png
             href: https://prometheus.monit.kernow.io
             description: Metrics Collection
-            server: monitoring
-            app: prometheus
-            namespace: monitoring
+            ping: https://prometheus.monit.kernow.io
             widget:
               type: prometheus
               url: https://prometheus.monit.kernow.io
@@ -307,33 +292,25 @@ data:
             icon: victoriametrics.png
             href: https://victoriametrics.monit.kernow.io
             description: Time Series Database
-            server: monitoring
-            app: victoria-metrics-single
-            namespace: monitoring
+            ping: https://victoriametrics.monit.kernow.io
 
         - VictoriaLogs:
             icon: victoriametrics.png
             href: https://victorialogs.monit.kernow.io
             description: Log Aggregation
-            server: monitoring
-            app: victoria-logs-single
-            namespace: monitoring
+            ping: https://victorialogs.monit.kernow.io
 
         - AlertManager:
             icon: alertmanager.png
             href: https://alertmanager.monit.kernow.io
             description: Alert Routing
-            server: monitoring
-            app: alertmanager
-            namespace: monitoring
+            ping: https://alertmanager.monit.kernow.io
 
         - Gatus:
             icon: mdi-check-circle
             href: https://gatus.kernow.io
             description: Health Checks
-            server: monitoring
-            podSelector: "app=gatus"
-            namespace: monitoring
+            ping: https://gatus.kernow.io
             widget:
               type: gatus
               url: https://gatus.kernow.io
@@ -342,9 +319,7 @@ data:
             icon: mdi-chart-line
             href: https://coroot.kernow.io
             description: eBPF Observability
-            server: monitoring
-            podSelector: "app.kubernetes.io/component=coroot"
-            namespace: coroot
+            ping: https://coroot.kernow.io
 
         - ntopng:
             icon: ntopng.png
@@ -379,9 +354,7 @@ data:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
-            server: monitoring
-            podSelector: "app=beszel"
-            namespace: monitoring
+            ping: https://beszel.kernow.io
             widget:
               type: beszel
               url: https://beszel.kernow.io
@@ -393,17 +366,13 @@ data:
             icon: mdi-heart-pulse
             href: https://pulse.kernow.io
             description: Server Monitoring
-            server: monitoring
-            podSelector: "app=pulse"
-            namespace: monitoring
+            ping: https://pulse.kernow.io
 
         - Tugtainer:
             icon: mdi-package-up
             href: https://tugtainer.kernow.io
             description: Container Updates
-            server: monitoring
-            podSelector: "app=tugtainer"
-            namespace: monitoring
+            ping: https://tugtainer.kernow.io
 
     - Kubernetes:
         - Talos Control Plane:
@@ -472,51 +441,39 @@ data:
             icon: matrix.png
             href: https://matrix.kernow.io
             description: Matrix/Conduit Server
-            server: agentic
-            podSelector: "app=conduit"
-            namespace: ai-platform
+            ping: https://matrix.kernow.io
 
         - LangGraph:
             icon: mdi-graph
             href: https://langgraph.kernow.io
             description: AI Orchestration
-            server: agentic
-            podSelector: "app=langgraph"
-            namespace: ai-platform
+            ping: https://langgraph.kernow.io
 
     - Documentation:
         - Outline:
             icon: outline.png
             href: https://outline.kernow.io
             description: Wiki & Knowledge Base
-            server: agentic
-            app: outline
-            namespace: ai-platform
+            ping: https://outline.kernow.io
 
         - SilverBullet:
             icon: silverbullet.png
             href: https://silverbullet.kernow.io
             description: Markdown PKM
-            server: agentic
-            podSelector: "app=silverbullet"
-            namespace: ai-platform
+            ping: https://silverbullet.kernow.io
 
         - Vikunja:
             icon: vikunja
             href: https://vikunja.kernow.io
             description: Task & Project Management
-            server: agentic
-            podSelector: "app=vikunja"
-            namespace: vikunja
+            ping: https://vikunja.kernow.io
 
     - Backups:
         - Backrest:
             icon: mdi-backup-restore
             href: https://backrest.kernow.io
             description: Restic Backup Manager
-            server: agentic
-            podSelector: "app=backrest"
-            namespace: backrest
+            ping: https://backrest.kernow.io
             widget:
               type: backrest
               url: https://backrest.kernow.io
