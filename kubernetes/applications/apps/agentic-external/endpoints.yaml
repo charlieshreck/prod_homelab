@@ -140,3 +140,17 @@ subsets:
       - name: http
         port: 3456
         protocol: TCP
+---
+# Investmentology PWA (agentic cluster NodePort)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: investmentology-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.20.0.40
+    ports:
+      - name: http
+        port: 30580
+        protocol: TCP

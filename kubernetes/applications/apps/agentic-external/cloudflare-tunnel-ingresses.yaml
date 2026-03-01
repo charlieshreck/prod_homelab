@@ -223,3 +223,25 @@ spec:
                 name: tamar-external
                 port:
                   number: 80
+---
+# Investmentology PWA (app has built-in auth)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: investmentology-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: haute-banque.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: investmentology-external
+                port:
+                  number: 80
