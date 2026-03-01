@@ -1,0 +1,60 @@
+---
+# Scheduled daily restart to mitigate known karakeep memory leak.
+# Upstream issue: https://github.com/karakeep-app/karakeep/issues/2344
+# Remove once the upstream fix is released.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: karakeep-restarter
+  namespace: apps
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: karakeep-deployment-restarter
+  namespace: apps
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: karakeep-restarter-binding
+  namespace: apps
+subjects:
+- kind: ServiceAccount
+  name: karakeep-restarter
+  namespace: apps
+roleRef:
+  kind: Role
+  name: karakeep-deployment-restarter
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: karakeep-restart
+  namespace: apps
+spec:
+  schedule: "0 3 * * *"  # 3am UTC daily
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: karakeep-restarter
+          restartPolicy: OnFailure
+          containers:
+          - name: kubectl
+            image: bitnami/kubectl:latest
+            command:
+            - kubectl
+            - rollout
+            - restart
+            - deployment/karakeep
+            - -n
+            - apps

@@ -5,3 +5,4 @@ resources:
   - ingress.yaml
   - cloudflare-tunnel-ingress.yaml
   - infisical-secret.yaml
+  - restart-cronjob.yaml
