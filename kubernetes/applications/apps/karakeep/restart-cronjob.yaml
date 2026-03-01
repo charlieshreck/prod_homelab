@@ -38,7 +38,7 @@ metadata:
   name: karakeep-restart
   namespace: apps
 spec:
-  schedule: "0 3 * * *"  # 3am UTC daily
+  schedule: "0 3,15 * * *"  # 3am and 3pm UTC (every 12h) — memory leak mitigation
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 2
