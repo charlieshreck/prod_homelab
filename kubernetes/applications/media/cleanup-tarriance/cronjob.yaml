@@ -1,0 +1,69 @@
+---
+# Cleanup old downloads from Tarriance NFS (Taranaki pool)
+# Deletes files older than 7 days from the Transmission download staging area.
+#
+# Problem: Completed torrents/usenet downloads accumulate in the staging area
+# when Cleanuparr cannot clean them (unlinked from arr apps, or import failures).
+# The Taranaki pool is only 230 GiB — saturation causes all downloads to stop.
+#
+# Safety: 7-day window is conservative. By day 7, arr apps have either imported
+# the file or permanently failed to import it. Files actively being downloaded
+# or imported will be accessed recently and won't match the mtime filter.
+#
+# Related: runbook/infrastructure/truenas-media-taranaki-orphaned-downloads.md
+# Incidents: #385, #386, #387, #428, #429 (recurring Taranaki saturation)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleanup-tarriance-old-downloads
+  namespace: media
+spec:
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        spec:
+          securityContext:
+            runAsUser: 3000
+            runAsGroup: 3000
+          containers:
+            - name: cleanup
+              image: busybox:1.37
+              command: ['sh', '-c']
+              args:
+                - |
+                  echo "=== Tarriance cleanup: $(date) ==="
+                  echo "Current usage:"
+                  du -sh /downloads/* 2>/dev/null | sort -hr | head -20
+                  echo ""
+                  echo "Files older than 7 days:"
+                  find /downloads -mtime +7 -type f | head -50
+                  echo ""
+                  echo "Removing files older than 7 days..."
+                  find /downloads -mtime +7 -type f -delete -print
+                  echo ""
+                  echo "Removing empty directories..."
+                  find /downloads -mindepth 1 -type d -empty -delete -print
+                  echo ""
+                  echo "Cleanup complete. Remaining usage:"
+                  du -sh /downloads 2>/dev/null
+              volumeMounts:
+                - name: downloads
+                  mountPath: /downloads
+              resources:
+                requests:
+                  memory: "16Mi"
+                  cpu: "10m"
+                limits:
+                  memory: "32Mi"
+                  cpu: "50m"
+          volumes:
+            - name: downloads
+              nfs:
+                server: 10.40.0.10
+                path: /mnt/Taranaki/Tarriance/hopuhopu_katoa
+          restartPolicy: Never
