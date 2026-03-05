@@ -18,8 +18,8 @@ variable "hb_lxc" {
     vmid   = 101
     name   = "haute-banque"
     ip     = "10.10.0.101"
-    cores  = 2
-    memory = 4096
+    cores  = 4
+    memory = 8192
     disk   = 30
   }
 }
