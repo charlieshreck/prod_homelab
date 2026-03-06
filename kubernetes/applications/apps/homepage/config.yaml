@@ -141,16 +141,6 @@ data:
               icon: cloudflare-zero-trust.png
               href: https://one.dash.cloudflare.com/
 
-    - Communication:
-        - Element Web:
-            - abbr: EL
-              icon: element.png
-              href: https://app.element.io/#/login
-        - Matrix:
-            - abbr: MX
-              icon: matrix.png
-              href: https://matrix.kernow.io
-
     - Documentation:
         - Homepage Docs:
             - abbr: HP
@@ -442,12 +432,6 @@ data:
             href: https://tamar.kernow.io
             description: Claude Code Mobile PWA
             ping: https://tamar.kernow.io
-
-        - Matrix:
-            icon: matrix.png
-            href: https://matrix.kernow.io
-            description: Matrix/Conduit Server
-            ping: https://matrix.kernow.io
 
         - LangGraph:
             icon: mdi-graph

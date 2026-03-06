@@ -4,28 +4,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: matrix-cloudflare
-  namespace: apps
-  annotations:
-    # Disabled - configured manually in services.yaml with kubernetes status
-    gethomepage.dev/enabled: "false"
-spec:
-  ingressClassName: cloudflare-tunnel
-  rules:
-    - host: matrix.kernow.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: matrix-external
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: langgraph-cloudflare
   namespace: apps
   annotations:
