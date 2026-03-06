@@ -279,28 +279,28 @@ data:
             icon: prometheus.png
             href: https://prometheus.monit.kernow.io
             description: Metrics Collection
-            ping: https://prometheus.monit.kernow.io
+            ping: http://prometheus.monit.kernow.io
             widget:
               type: prometheus
-              url: https://prometheus.monit.kernow.io
+              url: http://prometheus.monit.kernow.io
 
         - VictoriaMetrics:
             icon: victoriametrics.png
             href: https://victoriametrics.monit.kernow.io
             description: Time Series Database
-            ping: https://victoriametrics.monit.kernow.io
+            ping: http://victoriametrics.monit.kernow.io
 
         - VictoriaLogs:
             icon: victoriametrics.png
             href: https://victorialogs.monit.kernow.io
             description: Log Aggregation
-            ping: https://victorialogs.monit.kernow.io
+            ping: http://victorialogs.monit.kernow.io
 
         - AlertManager:
             icon: alertmanager.png
             href: https://alertmanager.monit.kernow.io
             description: Alert Routing
-            ping: https://alertmanager.monit.kernow.io
+            ping: http://alertmanager.monit.kernow.io
 
         - Gatus:
             icon: mdi-check-circle
@@ -437,7 +437,7 @@ data:
             icon: mdi-graph
             href: https://langgraph.kernow.io
             description: AI Orchestration
-            ping: https://langgraph.kernow.io
+            ping: http://langgraph.agentic.kernow.io
 
         - Haute-Banque:
             icon: mdi-finance
@@ -462,7 +462,7 @@ data:
             icon: silverbullet.png
             href: https://silverbullet.kernow.io
             description: Markdown PKM
-            ping: https://silverbullet.kernow.io
+            ping: http://silverbullet.agentic.kernow.io
 
         - Vikunja:
             icon: vikunja
