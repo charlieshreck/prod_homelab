@@ -437,7 +437,7 @@ data:
             icon: mdi-graph
             href: https://langgraph.kernow.io
             description: AI Orchestration
-            ping: http://langgraph.agentic.kernow.io
+            ping: http://10.20.0.40:30800/health
 
         - Haute-Banque:
             icon: mdi-finance
