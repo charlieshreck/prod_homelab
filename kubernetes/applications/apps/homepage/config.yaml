@@ -269,6 +269,12 @@ data:
                 - wlan_users
                 - wlan_devices
 
+        - Omada Controller:
+            icon: mdi-switch
+            href: https://omada.kernow.io
+            description: TP-Link Switch Management
+            ping: https://omada.kernow.io
+
         # Backrest now auto-discovered via ingress annotation with widget
 
     # Monitoring cluster services - use ping for status (cross-cluster k8s API is fragile)
@@ -448,6 +454,18 @@ data:
             href: https://langgraph.kernow.io
             description: AI Orchestration
             ping: https://langgraph.kernow.io
+
+        - Haute-Banque:
+            icon: mdi-finance
+            href: https://haute-banque.kernow.io
+            description: Investment Portfolio Manager
+            ping: https://haute-banque.kernow.io
+
+        - OpenWebUI:
+            icon: mdi-chat
+            href: http://10.20.0.40:31120
+            description: AI Chat Interface
+            ping: http://10.20.0.40:31120
 
     - Documentation:
         - Outline:
