@@ -263,23 +263,23 @@ data:
             icon: mdi-switch
             href: https://omada.kernow.io
             description: TP-Link Switch Management
-            ping: https://omada.kernow.io
+            siteMonitor: https://omada.kernow.io
 
         # Backrest now auto-discovered via ingress annotation with widget
 
-    # Monitoring cluster services - use ping for status (cross-cluster k8s API is fragile)
+    # Monitoring cluster services - use siteMonitor for HTTP status (ICMP ping fails on Cilium L2 LB VIPs)
     - Monitoring:
         - Grafana:
             icon: grafana.png
             href: https://grafana.kernow.io
             description: Metrics Dashboards
-            ping: https://grafana.kernow.io
+            siteMonitor: https://grafana.kernow.io
 
         - Prometheus:
             icon: prometheus.png
             href: https://prometheus.monit.kernow.io
             description: Metrics Collection
-            ping: http://prometheus.monit.kernow.io
+            siteMonitor: http://prometheus.monit.kernow.io
             widget:
               type: prometheus
               url: http://prometheus.monit.kernow.io
@@ -288,25 +288,25 @@ data:
             icon: victoriametrics.png
             href: https://victoriametrics.monit.kernow.io
             description: Time Series Database
-            ping: http://victoriametrics.monit.kernow.io
+            siteMonitor: http://victoriametrics.monit.kernow.io
 
         - VictoriaLogs:
             icon: victoriametrics.png
             href: https://victorialogs.monit.kernow.io
             description: Log Aggregation
-            ping: http://victorialogs.monit.kernow.io
+            siteMonitor: http://victorialogs.monit.kernow.io
 
         - AlertManager:
             icon: alertmanager.png
             href: https://alertmanager.monit.kernow.io
             description: Alert Routing
-            ping: http://alertmanager.monit.kernow.io
+            siteMonitor: http://alertmanager.monit.kernow.io
 
         - Gatus:
             icon: mdi-check-circle
             href: https://gatus.kernow.io
             description: Health Checks
-            ping: https://gatus.kernow.io
+            siteMonitor: https://gatus.kernow.io
             widget:
               type: gatus
               url: https://gatus.kernow.io
@@ -315,7 +315,7 @@ data:
             icon: mdi-chart-line
             href: https://coroot.kernow.io
             description: eBPF Observability
-            ping: https://coroot.kernow.io
+            siteMonitor: https://coroot.kernow.io
 
         - ntopng:
             icon: ntopng.png
@@ -350,7 +350,7 @@ data:
             icon: mdi-server
             href: https://beszel.kernow.io
             description: Host Monitoring
-            ping: https://beszel.kernow.io
+            siteMonitor: https://beszel.kernow.io
             widget:
               type: beszel
               url: https://beszel.kernow.io
@@ -362,13 +362,13 @@ data:
             icon: mdi-heart-pulse
             href: https://pulse.kernow.io
             description: Server Monitoring
-            ping: https://pulse.kernow.io
+            siteMonitor: https://pulse.kernow.io
 
         - Tugtainer:
             icon: mdi-package-up
             href: https://tugtainer.kernow.io
             description: Container Updates
-            ping: https://tugtainer.kernow.io
+            siteMonitor: https://tugtainer.kernow.io
 
     - Kubernetes:
         - Talos Control Plane:
@@ -404,7 +404,7 @@ data:
         - Talos Agentic:
             icon: talos.png
             description: Agentic AI Cluster
-            ping: https://10.20.0.40:6443
+            siteMonitor: https://10.20.0.40:6443
 
     - Storage:
         - TrueNAS Media:
@@ -431,51 +431,51 @@ data:
             icon: mdi-cellphone-link
             href: https://tamar.kernow.io
             description: Claude Code Mobile PWA
-            ping: https://tamar.kernow.io
+            siteMonitor: https://tamar.kernow.io
 
         - LangGraph:
             icon: mdi-graph
             href: https://langgraph.kernow.io
             description: AI Orchestration
-            ping: http://10.20.0.40:30800/health
+            siteMonitor: http://10.20.0.40:30800/health
 
         - Haute-Banque:
             icon: mdi-finance
             href: https://haute-banque.kernow.io
             description: Investment Portfolio Manager
-            ping: https://haute-banque.kernow.io
+            siteMonitor: https://haute-banque.kernow.io
 
         - OpenWebUI:
             icon: mdi-chat
             href: http://10.20.0.40:31120
             description: AI Chat Interface
-            ping: http://10.20.0.40:31120
+            siteMonitor: http://10.20.0.40:31120
 
     - Documentation:
         - Outline:
             icon: outline.png
             href: https://outline.kernow.io
             description: Wiki & Knowledge Base
-            ping: https://outline.kernow.io
+            siteMonitor: https://outline.kernow.io
 
         - SilverBullet:
             icon: silverbullet.png
             href: https://silverbullet.kernow.io
             description: Markdown PKM
-            ping: http://silverbullet.agentic.kernow.io
+            siteMonitor: http://silverbullet.agentic.kernow.io
 
         - Vikunja:
             icon: vikunja
             href: https://vikunja.kernow.io
             description: Task & Project Management
-            ping: https://vikunja.kernow.io
+            siteMonitor: https://vikunja.kernow.io
 
     - Backups:
         - Backrest:
             icon: mdi-backup-restore
             href: https://backrest.kernow.io
             description: Restic Backup Manager
-            ping: https://backrest.kernow.io
+            siteMonitor: https://backrest.kernow.io
             widget:
               type: backrest
               url: https://backrest.kernow.io
