@@ -4,7 +4,8 @@ metadata:
   name: renovate
   namespace: renovate
 spec:
-  schedule: "0 */6 * * *"  # Run every 6 hours
+  suspend: true  # Suspended — replaced by Claude Update Patrol (/home/scripts/update-patrol/)
+  schedule: "0 */6 * * *"  # Run every 6 hours (suspended)
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
