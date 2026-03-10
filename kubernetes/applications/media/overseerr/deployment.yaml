@@ -15,9 +15,21 @@ spec:
       labels:
         app: overseerr
     spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+      - name: fix-permissions
+        image: busybox:1.37
+        command: ["sh", "-c", "chown -R 1000:1000 /app/config"]
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
       containers:
       - name: overseerr
-        image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+        image: ghcr.io/seerr-team/seerr:v3.1.0
         ports:
         - name: http
           containerPort: 5055
@@ -28,8 +40,11 @@ spec:
           value: "Europe/London"
         - name: PORT
           value: "5055"
-        - name: DISABLE_TELEMETRY
-          value: "true"
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
         startupProbe:
           httpGet:
             path: /api/v1/status

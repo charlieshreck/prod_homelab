@@ -6,8 +6,8 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Overseerr"
-    gethomepage.dev/description: "Request management"
+    gethomepage.dev/name: "Seerr"
+    gethomepage.dev/description: "Media request management"
     gethomepage.dev/group: "Media"
     gethomepage.dev/icon: "overseerr.png"
     gethomepage.dev/pod-selector: "app=overseerr"
