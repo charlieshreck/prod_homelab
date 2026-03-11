@@ -27,24 +27,26 @@ spec:
             port: 80
           initialDelaySeconds: 30
           periodSeconds: 30
+          timeoutSeconds: 5
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 5
           failureThreshold: 3
         volumeMounts:
         - name: data
           mountPath: /data
         resources:
           requests:
-            cpu: 50m
-            memory: 128Mi
+            cpu: 100m
+            memory: 192Mi
           limits:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 500m
+            memory: 384Mi
       volumes:
       - name: data
         persistentVolumeClaim:
