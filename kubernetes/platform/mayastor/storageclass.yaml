@@ -8,4 +8,4 @@ parameters:
   protocol: "nvmf"
   ioTimeout: "60"
 allowVolumeExpansion: true
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
