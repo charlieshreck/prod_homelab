@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: transmission
-        image: lscr.io/linuxserver/transmission:4.0.6-r4-ls320
+        image: lscr.io/linuxserver/transmission:4.1.1
         ports:
         - name: web
           containerPort: 9091
