@@ -93,10 +93,10 @@ Mayastor CSI staging paths on kubelet nodes become stale after etcd wipes. The j
 
 ### Immediate (This Week)
 
-- [ ] **Increase Velero backup frequency**: Move from weekly to daily for apps/media namespaces
+- [x] **Velero backup frequency**: Already daily (0 2 * * *) + weekly (0 3 * * 0) — no change needed. Issue was restore complexity, not backup frequency.
 - [ ] **Document Velero restore procedure**: Write a runbook with the exact steps discovered during this incident
 - [ ] **Test Velero restore**: Schedule quarterly restore tests to verify backup integrity
-- [ ] **Fix worker-03 CSI**: Investigate and resolve the persistent stale jbd2 journal entry
+- [x] **Fix worker-03 CSI**: Resolved by restarting io-engine + csi-node pods on worker-03. Root cause: stale NVMe-oF transport state after Mayastor etcd wipe. New volume attachments returned "transport error" until io-engine was restarted.
 
 ### Short-Term (This Month)
 
@@ -129,7 +129,11 @@ Mayastor CSI staging paths on kubelet nodes become stale after etcd wipes. The j
 
 4. **Backups you don't test aren't backups**. The weekly Velero backup existed but no one had ever verified a restore would actually work. It did work — but only after discovering and solving 6 distinct failure modes.
 
-5. **CSI storage drivers have hidden state** on kubelet nodes (staging paths, journal entries, NVMe-oF connections). This state can become stale and block operations with no automated recovery.
+5. **CSI storage drivers have hidden state** on kubelet nodes (staging paths, journal entries, NVMe-oF connections). This state can become stale and block operations with no automated recovery. **Fix**: Restart the io-engine DaemonSet pod and csi-node DaemonSet pod on the affected node to clear stale NVMe-oF transport state.
+
+6. **Velero Kopia PVR references specific pod UIDs**. If you delete a pod during a restore, the PVR becomes orphaned and can't find the new pod (different UID). Must keep the original pod alive or create a fresh restore.
+
+7. **WaitForFirstConsumer PVCs with `nodeName` pods**: Using `nodeName` bypasses the scheduler, so the PVC never gets the `volume.kubernetes.io/selected-node` annotation. Must add this annotation manually for provisioning to proceed.
 
 ---
 
