@@ -36,7 +36,7 @@ spec:
           runAsUser: 0
       containers:
       - name: filebrowser
-        image: gtstef/filebrowser:v1.2.2-stable
+        image: gtstef/filebrowser:1.2.2-stable
         securityContext:
           runAsUser: 3000
           runAsGroup: 3000
