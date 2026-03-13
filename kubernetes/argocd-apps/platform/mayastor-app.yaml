@@ -47,12 +47,8 @@ spec:
       name: mayastor-etcd-jwt-token
       jsonPointers:
         - /data
-    # Ignore etcd StatefulSet template changes from Helm
-    - group: apps
-      kind: StatefulSet
-      name: mayastor-etcd
-      jsonPointers:
-        - /spec/template
+    # NOTE: etcd StatefulSet ignoreDifferences removed for 2.10.0 upgrade
+    # (bitnami etcd 8.x → 12.x label change requires StatefulSet update)
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
