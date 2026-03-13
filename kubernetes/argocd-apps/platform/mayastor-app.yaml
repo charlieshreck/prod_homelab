@@ -11,7 +11,7 @@ spec:
     # Helm chart for Mayastor operator (correct chart without broken pre-upgrade hook)
     - repoURL: https://openebs.github.io/mayastor-extensions
       chart: mayastor
-      targetRevision: 2.9.3
+      targetRevision: 2.10.0
       helm:
         releaseName: mayastor
         valueFiles:
