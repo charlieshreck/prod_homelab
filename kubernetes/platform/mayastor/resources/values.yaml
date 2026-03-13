@@ -257,6 +257,11 @@ etcd:
       cpu: "100m"
       memory: "128Mi"
 
+  # Disable etcd NetworkPolicy — bitnami etcd 12.x defaults block non-etcd pods
+  # from connecting, which breaks agent-core/api-rest/diskpool init containers
+  networkPolicy:
+    enabled: false
+
   pdb:
     create: false
 
