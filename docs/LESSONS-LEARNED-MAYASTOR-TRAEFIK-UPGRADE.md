@@ -94,15 +94,15 @@ Mayastor CSI staging paths on kubelet nodes become stale after etcd wipes. The j
 ### Immediate (This Week)
 
 - [x] **Velero backup frequency**: Already daily (0 2 * * *) + weekly (0 3 * * 0) — no change needed. Issue was restore complexity, not backup frequency.
-- [ ] **Document Velero restore procedure**: Write a runbook with the exact steps discovered during this incident
+- [x] **Document Velero restore procedure**: Written as `velero-restore-procedure.md` runbook with full troubleshooting guide
 - [ ] **Test Velero restore**: Schedule quarterly restore tests to verify backup integrity
 - [x] **Fix worker-03 CSI**: Resolved by restarting io-engine + csi-node pods on worker-03. Root cause: stale NVMe-oF transport state after Mayastor etcd wipe. New volume attachments returned "transport error" until io-engine was restarted.
 
 ### Short-Term (This Month)
 
-- [ ] **Create upgrade runbooks**: Documented procedures for Mayastor, Traefik, and other critical components
-- [ ] **Pre-upgrade checklist**: RBAC review, release notes review, backup verification, rollback plan
-- [ ] **ArgoCD emergency pause**: Create a script/runbook for safely pausing ArgoCD during incidents without stopping all syncing (e.g., per-application sync pause instead of killing the controller)
+- [x] **Create upgrade runbooks**: Written `mayastor-upgrade.md` runbook with pre-upgrade checklist and rollback plan
+- [x] **Pre-upgrade checklist**: Included in `mayastor-upgrade.md` — release notes review, backup verification, etcd snapshot, state documentation
+- [x] **ArgoCD emergency pause**: Written `argocd-emergency-pause.md` — per-app pause (Option 1) and controller scale (Option 2)
 - [ ] **Mayastor etcd backup**: Implement etcd snapshot backup before any Mayastor upgrades
 
 ### Long-Term
