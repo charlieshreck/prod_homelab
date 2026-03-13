@@ -259,3 +259,12 @@ etcd:
 
   pdb:
     create: false
+
+  # Disable etcd pre-upgrade hook (pod anti-affinity conflicts on 3-node cluster
+  # where each worker already has an etcd pod — no node available for the hook job)
+  preUpgradeJob:
+    enabled: false
+
+# Disable Mayastor pre-upgrade hook (same scheduling issue)
+preUpgradeHook:
+  enabled: false
