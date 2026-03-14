@@ -8,6 +8,7 @@ resources:
   - resources/argocd-cm.yaml
   - resources/argocd-rbac-cm.yaml
   - resources/argocd-metrics-nodeport.yaml
+  - resources/argocd-notifications-cm.yaml
   - cloudflare-tunnel-ingress.yaml
 
 patches:
