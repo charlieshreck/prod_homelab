@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: mosquitto
-        image: eclipse-mosquitto:2.0.22
+        image: eclipse-mosquitto:2.1.2
         ports:
         - name: mqtt
           containerPort: 1883
