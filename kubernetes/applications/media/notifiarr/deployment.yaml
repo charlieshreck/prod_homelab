@@ -86,6 +86,9 @@ spec:
             secretKeyRef:
               name: plex-credentials
               key: PLEX_TOKEN
+        # Plex session monitoring interval (detects stream end for "Finished" notifications)
+        - name: DN_PLEX_0_INTERVAL
+          value: "1m"
         # Tautulli integration (only 1 instance supported - no _0_ index)
         - name: DN_TAUTULLI_URL
           value: "http://tautulli.media.svc.cluster.local:8181"
