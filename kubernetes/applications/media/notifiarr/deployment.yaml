@@ -75,6 +75,17 @@ spec:
             secretKeyRef:
               name: transmission-credentials
               key: TRANSMISSION_RPC_PASSWORD
+        # Plex integration
+        - name: DN_PLEX_0_URL
+          valueFrom:
+            secretKeyRef:
+              name: plex-credentials
+              key: PLEX_URL
+        - name: DN_PLEX_0_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: plex-credentials
+              key: PLEX_TOKEN
         # Tautulli integration (only 1 instance supported - no _0_ index)
         - name: DN_TAUTULLI_URL
           value: "http://tautulli.media.svc.cluster.local:8181"
