@@ -78,6 +78,8 @@ spec:
             env:
             - name: MATTER_HUB_URL
               value: "http://matter-hub.apps.svc.cluster.local:8482"
+            - name: MATTER_SERVER_SERVICE_PORT
+              value: "5580"
             volumeMounts:
             - name: scripts
               mountPath: /scripts
