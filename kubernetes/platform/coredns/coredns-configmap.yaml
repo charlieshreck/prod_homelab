@@ -28,6 +28,7 @@ data:
         }
         forward . 10.10.0.1 {
            max_concurrent 1000
+           force_tcp
         }
         cache 30 {
            disable success cluster.local
