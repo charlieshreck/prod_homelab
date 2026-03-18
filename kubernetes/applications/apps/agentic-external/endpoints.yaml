@@ -141,3 +141,17 @@ subsets:
       - name: http
         port: 30580
         protocol: TCP
+---
+# Afferentic business plan site (Synapse LXC)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: afferentic-external
+  namespace: apps
+subsets:
+  - addresses:
+      - ip: 10.10.0.22
+    ports:
+      - name: http
+        port: 4590
+        protocol: TCP

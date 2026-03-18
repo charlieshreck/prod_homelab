@@ -223,3 +223,25 @@ spec:
                 name: investmentology-external
                 port:
                   number: 80
+---
+# Afferentic business plan site (no auth - public)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: afferentic-cloudflare
+  namespace: apps
+  annotations:
+    gethomepage.dev/enabled: "false"
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: afferentic.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: afferentic-external
+                port:
+                  number: 80

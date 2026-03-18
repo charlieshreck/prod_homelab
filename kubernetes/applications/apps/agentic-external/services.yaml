@@ -147,3 +147,18 @@ spec:
     - name: http
       port: 80
       protocol: TCP
+---
+# Afferentic business plan site (Synapse LXC)
+apiVersion: v1
+kind: Service
+metadata:
+  name: afferentic-external
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: afferentic-external
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
