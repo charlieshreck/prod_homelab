@@ -23,6 +23,13 @@
   },
   "packageRules": [
     {
+      "description": "Maintainerr: never auto-merge — DB schema migrations require manual verification before applying any update",
+      "matchPackageNames": ["ghcr.io/maintainerr/maintainerr"],
+      "automerge": false,
+      "labels": ["requires-db-check"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
       "description": "Auto-merge patch and minor updates after stability period",
       "matchUpdateTypes": [
         "patch",
