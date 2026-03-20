@@ -11,6 +11,15 @@ spec:
     repoURL: https://emberstack.github.io/helm-charts
     chart: reflector
     targetRevision: 10.0.21
+    helm:
+      values: |
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
