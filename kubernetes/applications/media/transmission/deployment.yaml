@@ -17,6 +17,13 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: downloads
     spec:
+      initContainers:
+      - name: init-download-dirs
+        image: busybox:1.37
+        command: ['sh', '-c', 'mkdir -p /downloads/tv-sonarr /downloads/movies-radarr /downloads/incomplete && chown -R 3000:3000 /downloads/tv-sonarr /downloads/movies-radarr']
+        volumeMounts:
+        - name: downloads
+          mountPath: /downloads
       containers:
       - name: transmission
         image: lscr.io/linuxserver/transmission:4.1.1
