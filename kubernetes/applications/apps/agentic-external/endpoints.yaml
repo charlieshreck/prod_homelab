@@ -58,7 +58,7 @@ subsets:
         port: 80
         protocol: TCP
 ---
-# Backrest backup management UI (agentic cluster)
+# Backrest backup management UI (monit cluster Traefik LoadBalancer)
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -66,10 +66,10 @@ metadata:
   namespace: apps
 subsets:
   - addresses:
-      - ip: 10.20.0.40
+      - ip: 10.10.0.31
     ports:
       - name: http
-        port: 31115
+        port: 80
         protocol: TCP
 ---
 # Garage S3 storage web UI (TrueNAS-HDD)
