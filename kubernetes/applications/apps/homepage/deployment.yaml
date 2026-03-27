@@ -296,7 +296,7 @@ spec:
         - name: pleximetry
           nfs:
             server: 10.10.0.103
-            path: /mnt/Tekapo/Pleximetry
+            path: /mnt/Taupo/Pleximetry
         - name: pbs-backups
           nfs:
             server: 10.10.0.103
