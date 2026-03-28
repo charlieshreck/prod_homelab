@@ -43,7 +43,7 @@ spec:
             runAsUser: 0
       containers:
         - name: homepage
-          image: ghcr.io/gethomepage/homepage:v1.11.0
+          image: ghcr.io/gethomepage/homepage:v1.12.0
           imagePullPolicy: Always
           ports:
             - name: http
