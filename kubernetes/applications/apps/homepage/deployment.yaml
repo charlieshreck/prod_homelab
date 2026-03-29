@@ -16,7 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: homepage
       annotations:
-        backup.velero.io/backup-volumes-excludes: homepage-config,logs
+        backup.velero.io/backup-volumes-excludes: homepage-config,logs,plexopathy,tarriance,pleximetry,pbs-backups
     spec:
       serviceAccountName: homepage
       automountServiceAccountToken: true
