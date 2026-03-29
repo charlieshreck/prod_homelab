@@ -11,26 +11,24 @@ spec:
     # Helm chart for Infisical Kubernetes Operator
     - repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
       chart: secrets-operator
-      targetRevision: 0.10.2
+      targetRevision: 0.10.28
       helm:
         releaseName: infisical-operator
         values: |
-          manager:
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                cpu: 1000m
-                memory: 256Mi
-            livenessProbe:
-              timeoutSeconds: 5
-              failureThreshold: 3
-              periodSeconds: 20
-            readinessProbe:
-              timeoutSeconds: 5
-              failureThreshold: 3
-              periodSeconds: 10
+          controllerManager:
+            manager:
+              # Disable leader election: single replica only, avoids crash-loop on transient API blips
+              args:
+                - --metrics-bind-address=:8443
+                - --leader-elect=false
+                - --health-probe-bind-address=:8081
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  cpu: 500m
+                  memory: 128Mi
     # Git repository for additional resources (auth secret)
     - repoURL: https://github.com/charlieshreck/prod_homelab.git
       targetRevision: main
