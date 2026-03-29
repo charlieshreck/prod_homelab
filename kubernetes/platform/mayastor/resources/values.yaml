@@ -273,3 +273,14 @@ etcd:
 # Disable Mayastor pre-upgrade hook (same scheduling issue)
 preUpgradeHook:
   enabled: false
+
+# =============================================================================
+# LocalPV Provisioner: disable leader election
+# =============================================================================
+# Only 1 replica runs so leader election is redundant. When etcd has transient
+# disk I/O slowness (fdatasync spikes on talos-worker-01), the provisioner
+# fails to renew its lease and calls klog.Fatalf("leaderelection lost") causing
+# a CrashLoopBackOff. Disabling it eliminates this failure mode entirely.
+localpv-provisioner:
+  localpv:
+    enableLeaderElection: false
