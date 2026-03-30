@@ -4,7 +4,7 @@ metadata:
   name: maintainerr
   namespace: media
 spec:
-  replicas: 1
+  replicas: 0  # Scaled down 2026-03-30 — not actively used, evaluating retirement
   strategy:
     type: Recreate
   selector:
