@@ -46,8 +46,10 @@ spec:
                   echo "Removing files older than 7 days..."
                   find /downloads -mtime +7 -type f -delete -print
                   echo ""
-                  echo "Removing empty directories..."
-                  find /downloads -mindepth 1 -type d -empty -delete -print
+                  echo "Removing empty directories (preserving category dirs)..."
+                  find /downloads -mindepth 2 -type d -empty -delete -print
+                  echo "Re-creating category dirs if missing..."
+                  mkdir -p /downloads/tv-sonarr /downloads/radarr /downloads/incomplete
                   echo ""
                   echo "Cleanup complete. Remaining usage:"
                   du -sh /downloads 2>/dev/null
