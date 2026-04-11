@@ -44,6 +44,7 @@ spec:
         volumeMounts:
         - name: timescale-data
           mountPath: /var/lib/postgresql/data
+          subPath: pgdata
         - name: shm
           mountPath: /dev/shm
         livenessProbe:
