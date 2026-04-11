@@ -1,0 +1,208 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracearr
+  namespace: media
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tracearr
+  template:
+    metadata:
+      labels:
+        app: tracearr
+      annotations:
+        backup.velero.io/backup-volumes: timescale-data,redis-data
+    spec:
+      containers:
+      - name: timescaledb
+        image: timescale/timescaledb-ha:pg17-ts2.19.1
+        ports:
+        - containerPort: 5432
+        command:
+        - postgres
+        args:
+        - -c
+        - timescaledb.license=timescale
+        - -c
+        - timescaledb.max_tuples_decompressed_per_dml_transaction=0
+        - -c
+        - max_locks_per_transaction=4096
+        - -c
+        - timescaledb.telemetry_level=off
+        env:
+        - name: POSTGRES_USER
+          value: "tracearr"
+        - name: POSTGRES_DB
+          value: "tracearr"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tracearr-secrets
+              key: DB_PASSWORD
+        volumeMounts:
+        - name: timescale-data
+          mountPath: /home/postgres/pgdata/data
+        - name: shm
+          mountPath: /dev/shm
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - tracearr
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - tracearr
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1536Mi
+
+      - name: redis
+        image: redis:8-alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+
+      - name: tracearr
+        image: ghcr.io/connorgallopo/tracearr:latest
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: HOST
+          value: "0.0.0.0"
+        - name: TZ
+          value: "Europe/London"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: tracearr-secrets
+              key: DATABASE_URL
+        - name: REDIS_URL
+          value: "redis://localhost:6379"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tracearr-secrets
+              key: JWT_SECRET
+        - name: COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: tracearr-secrets
+              key: COOKIE_SECRET
+        - name: CORS_ORIGIN
+          value: "https://tracearr.kernow.io"
+        - name: LOG_LEVEL
+          value: "info"
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          failureThreshold: 30
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1536Mi
+
+      volumes:
+      - name: timescale-data
+        persistentVolumeClaim:
+          claimName: tracearr-timescale-data
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: tracearr-redis-data
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracearr
+  namespace: media
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: tracearr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tracearr-timescale-data
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tracearr-redis-data
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mayastor-3-replica
+  resources:
+    requests:
+      storage: 1Gi

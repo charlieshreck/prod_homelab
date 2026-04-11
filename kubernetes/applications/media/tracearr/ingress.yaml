@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tracearr
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Tracearr"
+    gethomepage.dev/description: "Media server monitoring"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "tracearr.png"
+    gethomepage.dev/pod-selector: "app=tracearr"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - tracearr.kernow.io
+      secretName: kernow-io-tls
+  rules:
+    - host: tracearr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tracearr
+                port:
+                  number: 3000

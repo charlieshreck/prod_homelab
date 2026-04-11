@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tracearr-cloudflare
+  namespace: media
+  labels:
+    app: tracearr
+spec:
+  ingressClassName: cloudflare-tunnel
+  rules:
+    - host: tracearr.kernow.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tracearr
+                port:
+                  number: 3000
