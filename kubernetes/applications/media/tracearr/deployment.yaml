@@ -19,11 +19,9 @@ spec:
     spec:
       containers:
       - name: timescaledb
-        image: timescale/timescaledb-ha:pg17
+        image: timescale/timescaledb:latest-pg17
         ports:
         - containerPort: 5432
-        command:
-        - postgres
         args:
         - -c
         - timescaledb.license=timescale
@@ -45,7 +43,7 @@ spec:
               key: DB_PASSWORD
         volumeMounts:
         - name: timescale-data
-          mountPath: /home/postgres/pgdata/data
+          mountPath: /var/lib/postgresql/data
         - name: shm
           mountPath: /dev/shm
         livenessProbe:
